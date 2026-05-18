@@ -1,15 +1,10 @@
 @startuml
 '''classes
-class Jeu{}
-
-'''classes
-class Personnage{}
-
-'''classes
+class Jeu
+class Personnage
 class  Labyrinthe
 
 '''relations
 Jeu -> Personnage
 Jeu -> Labyrinthe
-
 @enduml
