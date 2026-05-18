@@ -1,4 +1,6 @@
 @startuml
+title Q5
+
 '''classes
 class Jeu
 interface Personnage
@@ -7,6 +9,6 @@ class Labyrinthe
 
 '''relations
 Jeu "1" --> "1" Labyrinthe : comporte
-Jeu "1" --> "1" Aventurier : gère
+Jeu "1" --> "*" Personnage : gère
 Personnage <|.. Aventurier
 @enduml
