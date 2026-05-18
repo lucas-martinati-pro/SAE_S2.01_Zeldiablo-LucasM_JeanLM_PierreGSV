@@ -1,0 +1,33 @@
+@startuml
+title Q10 - Diagramme de classe mis à jour
+
+class Jeu {
+    -laby : Labyrinthe
+    -hero : Aventurier
+    +setPerso(perso : Perso) : void
+
+    +chargerJeu(nomFichier : String) : void
+    +convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
+    +setLaby(laby : Labyrinthe) : void
+}
+
+class Labyrinthe {
+    +Labyrinthe(x : int, y : int)
+    +getCases(int x, int y) : int[][]
+    +addMur(x : int, y : int) : void
+    +estTraversable(x : int, y : int) : boolean
+}
+interface Personnage
+class Aventurier {
+    +Aventurier(x : int, y : int)
+    +setPosition(x : int, y : int)
+}
+class FichierIncorrectException {
+    +FichierIncorrectException(message : String) : void
+}
+
+Jeu --> Labyrinthe
+Jeu --> Aventurier
+Personnage <|.. Aventurier
+Jeu ..> FichierIncorrectException
+@enduml
