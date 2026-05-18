@@ -1,10 +1,12 @@
 @startuml
 '''classes
 class Jeu
-class Personnage
-class  Labyrinthe
+interface Personnage
+class Aventurier
+class Labyrinthe
 
 '''relations
 Jeu "1" --> "1" Labyrinthe : comporte
 Jeu "1" --> "1" Aventurier : gère
+Personnage <|.. Aventurier
 @enduml
