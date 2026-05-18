@@ -5,6 +5,6 @@ class Personnage
 class  Labyrinthe
 
 '''relations
-Jeu -> Personnage
-Jeu -> Labyrinthe
+Jeu "1" --> "1" Labyrinthe : comporte
+Jeu "1" --> "1" Aventurier : gère
 @enduml
