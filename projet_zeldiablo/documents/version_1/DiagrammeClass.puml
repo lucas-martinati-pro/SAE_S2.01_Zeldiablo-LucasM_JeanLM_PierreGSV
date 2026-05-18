@@ -1,5 +1,4 @@
 @startuml
-title Question 5
 '''classes
 class Jeu{}
 
