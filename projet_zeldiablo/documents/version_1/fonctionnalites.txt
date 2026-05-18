@@ -1,0 +1,21 @@
+# Fonctionnalités prévues version 1
+
+- fonctionnalité 1 : nom
+  - descriptif texte : [...]
+  - critères de validation :
+    - critère 1 [...]
+    - critère 2 [...]
+  - responsables : [...]
+
+- fonctionnalité 2 : nom
+  - descriptif texte : [...]
+  - critères de validation :
+    - critère 1 [...]
+    - critère 2 [...]
+  - responsables : [...]
+
+[....]
+
+# Bilan
+
+- Quelles fonctionnalités est validée ?
