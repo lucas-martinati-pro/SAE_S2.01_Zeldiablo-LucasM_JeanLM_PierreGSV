@@ -9,7 +9,7 @@ public class Main {
         return 1;
     }
 
-    /**<
+    /**
      * simple helloWorld
      */
     public static void main(String[] args) {
