@@ -1,0 +1,28 @@
+@startuml
+title Fonctionnalité 1 — Déplacement de l'aventurier
+
+actor Joueur
+participant "j:Jeu" as Jeu
+participant "laby:Labyrinthe" as Laby
+participant "hero:Aventurier" as Hero
+
+Joueur -> Jeu :haut()
+activate Jeu
+
+Jeu -> Laby : estTraversable(x, y+1)
+activate Laby
+Laby --> Jeu : true / false
+deactivate Laby
+
+alt case traversable
+    Jeu -> Hero : setPosition(x, y+1)
+    activate Hero
+    Hero --> Jeu
+    deactivate Hero
+else mur ou hors limites
+end
+
+Jeu --> Joueur
+deactivate Jeu
+
+@enduml

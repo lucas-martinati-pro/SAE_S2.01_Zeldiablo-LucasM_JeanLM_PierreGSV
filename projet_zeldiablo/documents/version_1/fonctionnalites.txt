@@ -1,6 +1,6 @@
 # Fonctionnalités prévues version 1
 
-- fonctionnalité 1 : Déplacements
+- fonctionnalité 1 : Déplacement
   - descriptif texte : Ajouter la possibilité de se déplacer dans 4 directions différentes (haut, bas, gauche, droite) en prenant en compte les murs pour ne pas les traverser.
   - critères de validation :
     - critère 1 : Pouvoir se déplacer dans toutes les directions
@@ -14,11 +14,11 @@
     - critère 2 : Le labyrinthe possède bien des murs et des case vides
   - responsables : LE MADEC Jean
 
-- fonctionnalité 3 : toString pour le Labyrinthe
-  - descriptif texte : Affichage de la map dans le terminale
+- fonctionnalité 3 : toString pour afficher la carte
+  - descriptif texte : Affichage de la carte dans le terminale
   - critères de validation :
-    - critère 1 : Pouvoir voir la map distinctement
-    - critère 2 : Afficher tout les élément dans le labyrinthe
+    - critère 1 : Pouvoir voir la carte distinctement
+    - critère 2 : Afficher tout les élément dans la carte
     - critère 3 : ne pas avoir de décalage ou de débordement
   - responsables : GALLOIS Pierre
 
