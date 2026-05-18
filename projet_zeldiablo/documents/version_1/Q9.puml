@@ -1,0 +1,14 @@
+@startuml
+
+
+@startuml
+participant "jeu:Jeu" as jeu
+participant "perso:Personnage" as perso
+participant "laby:Labyrinthe" as laby
+
+[-> jeu : chargerJeu(String Fichier)
+activate jeu
+
+[<-- jeu : void
+
+@enduml
