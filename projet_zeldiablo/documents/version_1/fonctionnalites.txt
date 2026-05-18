@@ -1,21 +1,28 @@
 # Fonctionnalités prévues version 1
 
-- fonctionnalité 1 : nom
-  - descriptif texte : [...]
+- fonctionnalité 1 : Déplacements
+  - descriptif texte : Ajouter la possibilité de se déplacer dans 4 directions différentes (haut, bas, gauche, droite) en prenant en compte les murs pour ne pas les traverser.
   - critères de validation :
-    - critère 1 [...]
-    - critère 2 [...]
-  - responsables : [...]
+    - critère 1 : Pouvoir se déplacer dans toutes les directions
+    - critère 2 : Ne pas pouvoir traverser les murs
+  - responsables : MARTINATI Lucas
 
-- fonctionnalité 2 : nom
-  - descriptif texte : [...]
+- fonctionnalité 2 : chargerJeu
+  - descriptif texte : initialise l’aventurier et le labyrinthe
   - critères de validation :
-    - critère 1 [...]
-    - critère 2 [...]
-  - responsables : [...]
+    - critère 1 : Vérifier que le personnage est présent dans le labyrinthe et aux coordonnées prévu
+    - critère 2 : Le labyrinthe possède bien des murs et des case vides
+  - responsables : LE MADEC Jean
 
-[....]
+- fonctionnalité 3 : toString pour le Labyrinthe
+  - descriptif texte : Affichage de la map dans le terminale
+  - critères de validation :
+    - critère 1 : Pouvoir voir la map distinctement
+    - critère 2 : Afficher tout les élément dans le labyrinthe
+    - critère 3 : ne pas avoir de décalage ou de débordement
+  - responsables : GALLOIS Pierre
 
 # Bilan
 
 - Quelles fonctionnalités est validée ?
+
