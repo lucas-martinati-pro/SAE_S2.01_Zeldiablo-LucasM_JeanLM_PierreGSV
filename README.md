@@ -8,9 +8,9 @@ Liste des membres du projet :
 - Pierre GALLOIS
 
 Liste des adresses mail
-e32772u@etu.univ-lorraine.fr
-jean.le-madec3@etu.univ-lorraine.fr
-pierre.gallois-serlooten-wagner2@etu.univ-lorraine.fr
+* e32772u@etu.univ-lorraine.fr
+* jean.le-madec3@etu.univ-lorraine.fr
+* pierre.gallois-serlooten-wagner2@etu.univ-lorraine.fr
 
 ## Etat du projet
 
