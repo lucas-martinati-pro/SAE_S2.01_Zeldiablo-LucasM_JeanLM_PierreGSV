@@ -6,16 +6,21 @@ participant "j:Jeu" as Jeu
 participant "laby:Labyrinthe" as Laby
 participant "hero:Aventurier" as Hero
 
-Joueur -> Jeu :haut()
+Joueur -> Jeu : deplacerHero(action)
 activate Jeu
 
-Jeu -> Laby : estTraversable(x, y+1)
+Jeu -> Jeu : getSuivant(action)
+activate Jeu
+Jeu --> Jeu :[x, y]
+deactivate Jeu
+
+Jeu -> Laby : getCase(x, y)
 activate Laby
 Laby --> Jeu : true / false
 deactivate Laby
 
 alt case traversable
-    Jeu -> Hero : setPosition(x, y+1)
+    Jeu -> Hero : setPos(x, y)
     activate Hero
     Hero --> Jeu
     deactivate Hero

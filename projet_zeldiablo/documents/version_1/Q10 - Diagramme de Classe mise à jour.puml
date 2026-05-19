@@ -4,7 +4,11 @@ title Q10 - Diagramme de classe mis à jour
 class Jeu {
     -laby : Labyrinthe
     -hero : Aventurier
-    +setPerso(perso : Perso) : void
+    +BAS = "Bas" : static final String
+    +GAUCHE = "Gauche" : static final String
+    +DROITE = "Droite" : static final String
+
+    +setHero(perso : Personnage) : void
 
     +chargerJeu(nomFichier : String) : void
     +convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
@@ -12,15 +16,27 @@ class Jeu {
 }
 
 class Labyrinthe {
+    +MUR = '#' : static final char
+    +HERO = '@' : static final char
+    +VIDE = ' ' : static final char
+
     +Labyrinthe(x : int, y : int)
     +getCases(int x, int y) : int[][]
     +addMur(x : int, y : int) : void
     +estTraversable(x : int, y : int) : boolean
 }
-interface Personnage
+interface Personnage {
+}
 class Aventurier {
-    +Aventurier(x : int, y : int)
-    +setPosition(x : int, y : int)
+    -x : int
+    -y : int
+
+    +Aventurier(x : int, y : int) : void
+    +getX() : int
+    +getY() : int
+
+    +setPosition(x : int, y : int) : void
+
 }
 class FichierIncorrectException {
     +FichierIncorrectException(message : String) : void
