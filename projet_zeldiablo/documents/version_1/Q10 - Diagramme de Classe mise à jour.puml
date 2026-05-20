@@ -4,6 +4,7 @@ title Q10 - Diagramme de classe mis à jour
 class Jeu {
     -laby : Labyrinthe
     -hero : Aventurier
+    -fin : int[]
     +BAS = "Bas" : static final String
     +GAUCHE = "Gauche" : static final String
     +DROITE = "Droite" : static final String
@@ -18,6 +19,7 @@ class Jeu {
 class Labyrinthe {
     +MUR = '#' : static final char
     +HERO = '@' : static final char
+    +FIN = '&' : static final char
     +VIDE = ' ' : static final char
 
     +Labyrinthe(x : int, y : int)

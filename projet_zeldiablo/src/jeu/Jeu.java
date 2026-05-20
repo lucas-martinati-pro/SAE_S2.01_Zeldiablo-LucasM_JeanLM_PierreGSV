@@ -13,6 +13,7 @@ public class Jeu {
     // ########## Variables ##########
     private Labyrinthe laby;
     private Aventurier hero;
+    private int[] fin;
     /**
      * Constantes pour se déplacer en haut
      */
@@ -41,6 +42,33 @@ public class Jeu {
         this.hero = hero;
     }
 
+    /**
+     * Modifie le labyrinthe du jeu.
+     *
+     * @param laby le nouveau labyrinthe
+     */
+    public void setLaby(Labyrinthe laby) {
+        this.laby = laby;
+    }
+
+    /**
+     * Retourne le hero du jeu.
+     *
+     * @return le hero du jeu
+     */
+    public Aventurier getHero() {
+        return this.hero;
+    }
+
+    /**
+     * Retourne le labyrinthe du jeu.
+     *
+     * @return le labyrinthe du jeu
+     */
+    public Labyrinthe getLaby() {
+        return this.laby;
+    }
+
     // ########## Méthodes ##########
 
     /**
@@ -65,6 +93,7 @@ public class Jeu {
                 switch (line.charAt(j)) {
                     case Labyrinthe.MUR -> lab.addMur(j, i);
                     case Labyrinthe.HERO -> hero = new Aventurier(j, i);
+                    case Labyrinthe.FIN -> this.fin = new int[]{j, i};
                     case Labyrinthe.VIDE -> {}
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
                 }
@@ -72,7 +101,8 @@ public class Jeu {
         }
 
 
-        if (hero == null) throw new FichierIncorrectException("personnage inconnu"); // Si il y as 2 personnages, ça prend le dernière
+        if (hero == null) throw new FichierIncorrectException("hero inconnu"); // Si il y as 2 personnages, ça prend le dernière
+        else if (this.fin == null) throw new FichierIncorrectException("case de fin inconnue");
         this.laby = lab;
         this.hero = hero;
     }
@@ -118,6 +148,7 @@ public class Jeu {
      */
     private char getChar(int x, int y) {
         if (this.laby.getCase(x, y)) return Labyrinthe.MUR;
+        else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
         else if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
         return Labyrinthe.VIDE;
     }
@@ -185,7 +216,19 @@ public class Jeu {
 
         switch (this.getChar(coord[0], coord[1])) {
             case Labyrinthe.VIDE -> this.hero.setPos(coord[0], coord[1]);
+            case Labyrinthe.FIN -> {
+                this.hero.setPos(coord[0], coord[1]);
+            }
             case Labyrinthe.MUR -> throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
         }
+    }
+
+    /**
+     * Verifie si le jeu est fini, c'est-à-dire si le hero est sur la case de fin.
+     *
+     * @return true si le hero est sur la case de fin, false sinon
+     */
+    public boolean etreFini() {
+        return this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1];
     }
 }

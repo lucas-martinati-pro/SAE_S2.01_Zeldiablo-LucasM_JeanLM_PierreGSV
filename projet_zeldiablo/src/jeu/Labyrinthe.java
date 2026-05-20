@@ -17,6 +17,10 @@ public class Labyrinthe {
     /**
      * Constante pour le vide dans un fichier de labyrinthe
      */
+    public static final char FIN = '&';
+    /**
+     * Constante pour le vide dans un fichier de labyrinthe
+     */
     public static final char VIDE = ' ';
 
     // ########## Constructeur ##########

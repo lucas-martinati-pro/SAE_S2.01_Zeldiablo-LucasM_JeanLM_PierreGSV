@@ -41,7 +41,7 @@ public class MainJeu {
                 "\n Gauche (Q)" +
                 "\n Droite (D)\n");
 
-        while (true) { // Pas encore de conditions de fin
+        while (!j.etreFini()) {
             System.out.println(j.jeuToString());
             System.out.println("Nombres de déplacements : " + nbDéplacements);
             System.out.println("Quelle action voulez-vous faire ? (Z/Q/S/D)");
@@ -58,6 +58,8 @@ public class MainJeu {
                 System.err.println("Action non valide !"); // On peut également faire un e.printStackTrace();
             }
         }
-        // System.out.println("Félicitation, vous avez gagné en " + nbDéplacements + " déplacements !!!");
+        String pluriel = "";
+        if (nbDéplacements > 1) pluriel = "s";
+        System.out.println("Félicitation, vous avez gagné en " + nbDéplacements + " déplacement" + pluriel + " !!!");
     }
 }
