@@ -24,5 +24,23 @@
 
 # Bilan
 
-- Quelles fonctionnalités est validée ?
+Toutes les fonctionnalités sont validées.
 
+* réalisation
+- classe Jeu, methode chargerJeu
+- responsable: Le-Madec-Jean
+
+- classe Jeu, methode toString
+- responsable: pierre-gallois
+
+- classe Jeu, methode deplacerHero
+- responsable: lucas-martinati-pro
+
+- classe Labyrinthe
+- responsable: Le-Madec-Jean
+
+- classe Aventurier
+- responsable: pierre-gallois
+
+- tests de Jeu
+- responsable: lucas-martinati-pro
