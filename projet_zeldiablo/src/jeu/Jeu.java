@@ -250,16 +250,7 @@ public class Jeu implements moteurJeu.Jeu {
             case DROITE -> commandeUser.droite = true;
             default -> throw new ActionInconnueException("L'action " + action + " n'est pas reconnue.");
         }
-        int[] coord = getSuivant(hero.getX(), hero.getY(), commandeUser);
-        verifierDeplacement(coord[0], coord[1], action);
-
-        switch (this.getChar(coord[0], coord[1])) {
-            case Labyrinthe.VIDE -> this.hero.setPos(coord[0], coord[1]);
-            case Labyrinthe.FIN -> {
-                this.hero.setPos(coord[0], coord[1]);
-            }
-            case Labyrinthe.MUR -> throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
-        }
+        evoluer(commandeUser);
     }
 
     /**

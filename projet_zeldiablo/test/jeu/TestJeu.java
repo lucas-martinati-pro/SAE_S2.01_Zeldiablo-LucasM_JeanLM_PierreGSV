@@ -340,18 +340,6 @@ public class TestJeu {
     // ########## Tests evoluer - deplacement invalide (mur) ##########
 
     /**
-     * Verifie qu'un deplacement dans un mur leve ActionInconnueException.
-     */
-    @Test
-    public void test_evoluer_dansMur_leveException() {
-        // laby_simple.txt : murs tout autour, essayer de forcer un mur
-        assertThrows(ActionInconnueException.class, () -> {
-            jeu.evoluer(Jeu.DROITE);
-            jeu.evoluer(Jeu.DROITE);
-        });
-    }
-
-    /**
      * Verifie que la position reste inchangee apres un deplacement dans un mur.
      */
     @Test
