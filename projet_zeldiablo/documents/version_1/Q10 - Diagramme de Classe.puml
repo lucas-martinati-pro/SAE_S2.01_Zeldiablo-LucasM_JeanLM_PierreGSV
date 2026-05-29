@@ -28,7 +28,12 @@ class Labyrinthe {
     +estTraversable(x : int, y : int) : boolean
 }
 interface Personnage {
+    +getX() : int
+    +getY() : int
+
+    +setPos(x : int, y : int) : void
 }
+
 class Aventurier {
     -x : int
     -y : int
@@ -37,7 +42,7 @@ class Aventurier {
     +getX() : int
     +getY() : int
 
-    +setPosition(x : int, y : int) : void
+    +setPos(x : int, y : int) : void
 
 }
 class FichierIncorrectException {

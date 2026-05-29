@@ -1,33 +1,62 @@
 @startuml
-title Fonctionnalité 1 — Déplacement de l'aventurier
+    title Q5 - Diagramme de classe
 
-actor Joueur
-participant "j:Jeu" as Jeu
-participant "laby:Labyrinthe" as Laby
-participant "hero:Aventurier" as Hero
+class Jeu {
+    -laby : Labyrinthe
+    -hero : Aventurier
+    -fin : int[]
+    +BAS = "Bas" : static final String
+    +GAUCHE = "Gauche" : static final String
+    +DROITE = "Droite" : static final String
 
-Joueur -> Jeu : deplacerHero(action)
-activate Jeu
+    +setHero(perso : Personnage) : void
 
-Jeu -> Jeu : getSuivant(action)
-activate Jeu
-Jeu --> Jeu :[x, y]
-deactivate Jeu
+    +chargerJeu(nomFichier : String) : void
+    +convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
+    +setLaby(laby : Labyrinthe) : void
+    -getChar(x : int, y : int) : char
+    +jeuToString() : String
+    +{static} getSuivant(x : int, y : int, commandeUser : Commande) : int[]
+    +deplacerHero(commandeUser : Commande) : void
+}
 
-Jeu -> Laby : getCase(x, y)
-activate Laby
-Laby --> Jeu : true / false
-deactivate Laby
+class Labyrinthe {
+    +MUR = '#' : static final char
+    +HERO = '@' : static final char
+    +FIN = '&' : static final char
+    +VIDE = ' ' : static final char
 
-alt case traversable
-    Jeu -> Hero : setPos(x, y)
-    activate Hero
-    Hero --> Jeu
-    deactivate Hero
-else mur ou hors limites
-end
+    +Labyrinthe(x : int, y : int)
+    +getCases(int x, int y) : int[][]
+    +addMur(x : int, y : int) : void
+    +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
+    +deplacerHero(commandeUser : Commande) : void
+    +etreFini() : boolean
+}
+interface Personnage {
+    +getX() : int
+    +getY() : int
 
-Jeu --> Joueur
-deactivate Jeu
+    +setPos(x : int, y : int) : void
+}
 
+class Aventurier {
+    -x : int
+    -y : int
+
+    +Aventurier(x : int, y : int) : void
+    +getX() : int
+    +getY() : int
+
+    +setPos(x : int, y : int) : void
+
+}
+class FichierIncorrectException {
+    +FichierIncorrectException(message : String) : void
+}
+
+Jeu --> Labyrinthe
+Jeu --> Aventurier
+Personnage <|.. Aventurier
+Jeu ..> FichierIncorrectException
 @enduml
