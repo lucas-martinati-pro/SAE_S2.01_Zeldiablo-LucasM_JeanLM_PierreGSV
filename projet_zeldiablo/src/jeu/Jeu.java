@@ -1,5 +1,7 @@
 package jeu;
 
+import moteurJeu.Commande;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -174,16 +176,14 @@ public class Jeu {
      *
      * @param x la colonne actuelle
      * @param y la ligne actuelle
-     * @param action la direction du deplacement
+     * @param commandeUser la direction du deplacement
      * @return un tableau {nouvelleColonne, nouvelleLigne} apres deplacement
      */
-    public static int[] getSuivant(int x, int y, String action) {
-        switch (action) {
-            case HAUT -> y--;
-            case BAS -> y++;
-            case GAUCHE -> x--;
-            case DROITE -> x++;
-        }
+    public static int[] getSuivant(int x, int y, Commande commandeUser) {
+        if (commandeUser.haut) y--;
+        if (commandeUser.bas) y++;
+        if (commandeUser.gauche) x--;
+        if (commandeUser.droite) x++;
         return new int[] {x, y};
     }
 
@@ -193,33 +193,33 @@ public class Jeu {
      *
      * @param x la colonne de destination
      * @param y la ligne de destination
-     * @param action la direction du deplacement (pour le message d'erreur)
+     * @param commandeUser la direction du deplacement (pour le message d'erreur)
      * @throws ActionInconnueException si la case est un mur ou hors limites
      */
-    public void verifierDeplacement(int x, int y, String action) throws ActionInconnueException {
+    public void verifierDeplacement(int x, int y, Commande commandeUser) throws ActionInconnueException {
         try {
-            if (this.laby.getCase(x, y)) throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
+            if (this.laby.getCase(x, y)) throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + commandeUser);
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
+            throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + commandeUser);
         }
     }
 
     /**
      * Deplace le hero dans la direction indiquee.
      *
-     * @param action la direction du deplacement
+     * @param commandeUser la direction du deplacement
      * @throws ActionInconnueException si le deplacement est impossible
      */
-    public void deplacerHero(String action) throws ActionInconnueException {
-        int[] coord = getSuivant(hero.getX(), hero.getY(), action);
-        verifierDeplacement(coord[0], coord[1], action);
+    public void deplacerHero(Commande commandeUser) throws ActionInconnueException {
+        int[] coord = getSuivant(hero.getX(), hero.getY(), commandeUser);
+        verifierDeplacement(coord[0], coord[1], commandeUser);
 
         switch (this.getChar(coord[0], coord[1])) {
             case Labyrinthe.VIDE -> this.hero.setPos(coord[0], coord[1]);
             case Labyrinthe.FIN -> {
                 this.hero.setPos(coord[0], coord[1]);
             }
-            case Labyrinthe.MUR -> throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
+            case Labyrinthe.MUR -> throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + commandeUser);
         }
     }
 
