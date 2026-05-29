@@ -19,7 +19,9 @@ class Jeu {
     -getChar(x : int, y : int) : char
     +jeuToString() : String
     +{static} getSuivant(x : int, y : int, commandeUser : Commande) : int[]
+    +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
     +deplacer(commandeUser : Commande) : void
+    +etreFini() : boolean
 }
 class Labyrinthe {
     +MUR = '#' : static final char
@@ -30,8 +32,6 @@ class Labyrinthe {
     +Labyrinthe(x : int, y : int)
     +getCases(int x, int y) : int[][]
     +addMur(x : int, y : int) : void
-    +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
-    +etreFini() : boolean
 }
 interface Personnage {
     +getX() : int
