@@ -1,0 +1,56 @@
+@startuml
+title Q10 - Diagramme de classe mis à jour
+
+class Jeu {
+    -laby : Labyrinthe
+    -hero : Aventurier
+    -fin : int[]
+    +BAS = "Bas" : static final String
+    +GAUCHE = "Gauche" : static final String
+    +DROITE = "Droite" : static final String
+
+    +setHero(perso : Personnage) : void
+
+    +chargerJeu(nomFichier : String) : void
+    +convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
+    +setLaby(laby : Labyrinthe) : void
+}
+
+class Labyrinthe {
+    +MUR = '#' : static final char
+    +HERO = '@' : static final char
+    +FIN = '&' : static final char
+    +VIDE = ' ' : static final char
+
+    +Labyrinthe(x : int, y : int)
+    +getCases(int x, int y) : int[][]
+    +addMur(x : int, y : int) : void
+    +estTraversable(x : int, y : int) : boolean
+}
+interface Personnage {
+    +getX() : int
+    +getY() : int
+
+    +setPos(x : int, y : int) : void
+}
+
+class Aventurier {
+    -x : int
+    -y : int
+
+    +Aventurier(x : int, y : int) : void
+    +getX() : int
+    +getY() : int
+
+    +setPos(x : int, y : int) : void
+
+}
+class FichierIncorrectException {
+    +FichierIncorrectException(message : String) : void
+}
+
+Jeu --> Labyrinthe
+Jeu --> Aventurier
+Personnage <|.. Aventurier
+Jeu ..> FichierIncorrectException
+@enduml

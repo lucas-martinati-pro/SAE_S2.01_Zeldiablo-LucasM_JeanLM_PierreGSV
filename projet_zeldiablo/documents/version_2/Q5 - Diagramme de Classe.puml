@@ -1,5 +1,5 @@
 @startuml
-title Q10 - Diagramme de classe mis à jour
+    title Q5 - Diagramme de classe
 
 class Jeu {
     -laby : Labyrinthe
@@ -14,6 +14,10 @@ class Jeu {
     +chargerJeu(nomFichier : String) : void
     +convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
     +setLaby(laby : Labyrinthe) : void
+    -getChar(x : int, y : int) : char
+    +jeuToString() : String
+    +{static} getSuivant(x : int, y : int, commandeUser : Commande) : int[]
+    +deplacerHero(commandeUser : Commande) : void
 }
 
 class Labyrinthe {
@@ -25,10 +29,17 @@ class Labyrinthe {
     +Labyrinthe(x : int, y : int)
     +getCases(int x, int y) : int[][]
     +addMur(x : int, y : int) : void
-    +estTraversable(x : int, y : int) : boolean
+    +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
+    +deplacerHero(commandeUser : Commande) : void
+    +etreFini() : boolean
 }
 interface Personnage {
+    +getX() : int
+    +getY() : int
+
+    +setPos(x : int, y : int) : void
 }
+
 class Aventurier {
     -x : int
     -y : int
@@ -37,7 +48,7 @@ class Aventurier {
     +getX() : int
     +getY() : int
 
-    +setPosition(x : int, y : int) : void
+    +setPos(x : int, y : int) : void
 
 }
 class FichierIncorrectException {
