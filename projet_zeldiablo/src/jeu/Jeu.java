@@ -233,4 +233,49 @@ public class Jeu implements moteurJeu.Jeu {
     public boolean etreFini() {
         return this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1];
     }
+
+    // ==================== Compatibilités Testes ====================
+    /**
+     * Deplace le hero dans la direction indiquee.
+     *
+     * @param action la direction du deplacement
+     * @throws ActionInconnueException si le deplacement est impossible
+     */
+    public void evoluer(String action) throws ActionInconnueException {
+        Commande commandeUser = new Commande();
+        switch (action) {
+            case HAUT -> commandeUser.haut = true;
+            case BAS -> commandeUser.bas = true;
+            case GAUCHE -> commandeUser.gauche = true;
+            case DROITE -> commandeUser.droite = true;
+            default -> throw new ActionInconnueException("L'action " + action + " n'est pas reconnue.");
+        }
+        int[] coord = getSuivant(hero.getX(), hero.getY(), commandeUser);
+        verifierDeplacement(coord[0], coord[1], action);
+
+        switch (this.getChar(coord[0], coord[1])) {
+            case Labyrinthe.VIDE -> this.hero.setPos(coord[0], coord[1]);
+            case Labyrinthe.FIN -> {
+                this.hero.setPos(coord[0], coord[1]);
+            }
+            case Labyrinthe.MUR -> throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
+        }
+    }
+
+    /**
+     * Verifie si un deplacement vers la position (x, y) est possible.
+     * Lance une exception si la case est un mur ou hors limites.
+     *
+     * @param x la colonne de destination
+     * @param y la ligne de destination
+     * @param action la direction du deplacement (pour le message d'erreur)
+     * @throws ActionInconnueException si la case est un mur ou hors limites
+     */
+    public void verifierDeplacement(int x, int y, String action) throws ActionInconnueException {
+        try {
+            if (this.laby.getCase(x, y)) throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
+        }
+    }
 }
