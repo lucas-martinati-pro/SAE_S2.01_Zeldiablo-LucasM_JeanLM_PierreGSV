@@ -33,6 +33,7 @@ class Labyrinthe {
     +Labyrinthe(x : int, y : int)
     +getCases(int x, int y) : int[][]
     +addMur(x : int, y : int) : void
+    +returnSize() : int[]
 }
 interface Personnage {
     +getX() : int
