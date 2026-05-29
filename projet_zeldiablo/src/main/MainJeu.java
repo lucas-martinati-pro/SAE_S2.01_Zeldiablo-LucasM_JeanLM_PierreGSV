@@ -1,3 +1,5 @@
+package main;
+
 import jeu.ActionInconnueException;
 import jeu.FichierIncorrectException;
 import jeu.Jeu;
