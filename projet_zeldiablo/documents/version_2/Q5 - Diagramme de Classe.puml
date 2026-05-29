@@ -10,6 +10,8 @@ class Jeu {
     +DROITE = "Droite" : static final String
 
     +setHero(perso : Personnage) : void
+    +getHero() : Personnage
+    +getLaby() : Labyrinthe
 
     +chargerJeu(nomFichier : String) : void
     +convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
@@ -17,10 +19,12 @@ class Jeu {
     -getChar(x : int, y : int) : char
     +jeuToString() : String
     +{static} getSuivant(x : int, y : int, commandeUser : Commande) : int[]
-    +deplacerHero(commandeUser : Commande) : void
+    +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
+    +deplacer(commandeUser : Commande) : void
+    +etreFini() : boolean
 }
-
 class Labyrinthe {
+    +murs : boolean[][]
     +MUR = '#' : static final char
     +HERO = '@' : static final char
     +FIN = '&' : static final char
@@ -29,9 +33,6 @@ class Labyrinthe {
     +Labyrinthe(x : int, y : int)
     +getCases(int x, int y) : int[][]
     +addMur(x : int, y : int) : void
-    +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
-    +deplacerHero(commandeUser : Commande) : void
-    +etreFini() : boolean
 }
 interface Personnage {
     +getX() : int
@@ -39,7 +40,6 @@ interface Personnage {
 
     +setPos(x : int, y : int) : void
 }
-
 class Aventurier {
     -x : int
     -y : int
@@ -54,7 +54,18 @@ class Aventurier {
 class FichierIncorrectException {
     +FichierIncorrectException(message : String) : void
 }
+interface DessinJeu {
+    +{abstract} dessiner(image : BufferedImage) : void
+}
+class DessinLaby {
+    -jeu : Jeu
 
+    +DessinLaby(jeu Jeu) : void
+    +dessiner(image : BufferedImage) : void
+}
+
+DessinJeu <|-- DessinLaby
+DessinLaby "1" --> "1" Jeu : affiche
 Jeu --> Labyrinthe
 Jeu --> Aventurier
 Personnage <|.. Aventurier
