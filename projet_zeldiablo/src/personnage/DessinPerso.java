@@ -1,7 +1,5 @@
 package personnage;
 
-import arkanoidJeu.modele.Balle;
-import arkanoidJeu.modele.Raquette;
 import moteurJeu.DessinJeu;
 
 import java.awt.*;
@@ -25,7 +23,7 @@ public class DessinPerso implements DessinJeu {
 
         // dessine l'image a afficher avec les primitives de graphics2D
 
-        // dessine la balle
+        // dessine le perso
         g.setColor(Color.blue);
         Personnage perso = jeuPerso.getPerso();
         g.fillOval(perso.getX() * TAILLE, perso.getY() * TAILLE, TAILLE, TAILLE);
