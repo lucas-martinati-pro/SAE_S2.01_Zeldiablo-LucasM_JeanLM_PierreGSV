@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Classe principale gerant la logique du jeu Sokoban.
  */
-public class Jeu {
+public class Jeu implements moteurJeu.Jeu {
     // ########## Variables ##########
     private Labyrinthe laby;
     private Aventurier hero;
@@ -210,7 +210,8 @@ public class Jeu {
      * @param commandeUser la direction du deplacement
      * @throws ActionInconnueException si le deplacement est impossible
      */
-    public void deplacerHero(Commande commandeUser) throws ActionInconnueException {
+    @Override
+    public void evoluer(Commande commandeUser) throws ActionInconnueException {
         int[] coord = getSuivant(hero.getX(), hero.getY(), commandeUser);
         verifierDeplacement(coord[0], coord[1], commandeUser);
 
