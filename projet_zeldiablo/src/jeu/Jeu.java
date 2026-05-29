@@ -208,19 +208,20 @@ public class Jeu implements moteurJeu.Jeu {
      * Deplace le hero dans la direction indiquee.
      *
      * @param commandeUser la direction du deplacement
-     * @throws ActionInconnueException si le deplacement est impossible
      */
     @Override
-    public void evoluer(Commande commandeUser) throws ActionInconnueException {
+    public void evoluer(Commande commandeUser) {
         int[] coord = getSuivant(hero.getX(), hero.getY(), commandeUser);
-        verifierDeplacement(coord[0], coord[1], commandeUser);
-
-        switch (this.getChar(coord[0], coord[1])) {
-            case Labyrinthe.VIDE -> this.hero.setPos(coord[0], coord[1]);
-            case Labyrinthe.FIN -> {
-                this.hero.setPos(coord[0], coord[1]);
+        try {
+            verifierDeplacement(coord[0], coord[1], commandeUser);
+            switch (this.getChar(coord[0], coord[1])) {
+                case Labyrinthe.VIDE -> this.hero.setPos(coord[0], coord[1]);
+                case Labyrinthe.FIN -> {
+                    this.hero.setPos(coord[0], coord[1]);
+                }
             }
-            case Labyrinthe.MUR -> throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + commandeUser);
+        } catch (ActionInconnueException e) {
+            // Ignorer le déplacement si c'est un mur
         }
     }
 

@@ -13,6 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static arkanoidJeu.ArkanoidDessin.TAILLE;
+
 /**
  * Classe principale permettant de lancer le jeu
  */
@@ -53,8 +55,10 @@ public class MainJeu {
 
         DessinLaby jeu = new DessinLaby(j);
 
+        int[] size = j.getLaby().returnSize();
+
         MoteurGraphique moteur = new MoteurGraphique(j, jeu);
-        moteur.lancerJeu(400, 400);
+        moteur.lancerJeu(TAILLE * size[0], TAILLE * size[1]);
 
         jeu.dessiner(new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB));
 

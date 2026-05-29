@@ -18,13 +18,6 @@ public class Commande {
 
 	public Commande() {}
 
-	public void reset() {
-		this.gauche = false;
-		this.droite = false;
-		this.haut = false;
-		this.bas = false;
-	}
-
 	/**
 	 * constructeur par copie
 	 * copie la commande pour en creer une nouvelle

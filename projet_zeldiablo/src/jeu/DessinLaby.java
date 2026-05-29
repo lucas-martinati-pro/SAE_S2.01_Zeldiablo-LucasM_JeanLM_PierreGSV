@@ -29,13 +29,12 @@ public class DessinLaby implements DessinJeu {
                     g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
                 }
                 case Labyrinthe.MUR -> {
-                    g.setColor(Color.GRAY);
+                    g.setColor(Color.BLACK);
                     g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
                 }
                 case Labyrinthe.VIDE -> {
+                    g.setColor(Color.WHITE);
                     g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
-                    g.setColor(new Color(0, 0, 0, 50));
-                    g.setStroke(new BasicStroke(2));
                 }
                 case Labyrinthe.HERO -> {
                     g.setColor(Color.BLUE);
