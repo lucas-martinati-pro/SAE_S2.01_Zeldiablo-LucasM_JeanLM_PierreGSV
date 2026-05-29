@@ -24,6 +24,7 @@ class Jeu {
     +etreFini() : boolean
 }
 class Labyrinthe {
+    +murs : boolean[][]
     +MUR = '#' : static final char
     +HERO = '@' : static final char
     +FIN = '&' : static final char
