@@ -6,6 +6,14 @@ public class Personnage {
     private int x;
     private int y;
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public Personnage(int x, int y) {
         if (x < 0) this.x = 0;
         else this.x = x;
