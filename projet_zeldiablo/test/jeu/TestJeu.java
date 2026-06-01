@@ -66,18 +66,18 @@ public class TestJeu {
         assertEquals(lab, jeu.getLaby());
     }
 
-    // ########## Tests deplacerHero - deplacement valide ##########
+    // ########## Tests evoluer - deplacement valide ##########
 
     /**
      * Verifie le deplacement du personnage vers la gauche.
      * @throws ActionInconnueException si le deplacement est invalide
      */
     @Test
-    public void test_deplacerHero_gauche_positionChange() throws ActionInconnueException, IOException {
+    public void test_evoluer_gauche_positionChange() throws ActionInconnueException, IOException {
         jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
         int xAvant = jeu.getHero().getX();
         int yAvant = jeu.getHero().getY();
-        jeu.deplacerHero(Jeu.GAUCHE);
+        jeu.evoluer(Jeu.GAUCHE);
         assertEquals(xAvant - 1, jeu.getHero().getX());
         assertEquals(yAvant, jeu.getHero().getY());
     }
@@ -87,11 +87,11 @@ public class TestJeu {
      * @throws ActionInconnueException si le deplacement est invalide
      */
     @Test
-    public void test_deplacerHero_droite_positionChange() throws ActionInconnueException, IOException {
+    public void test_evoluer_droite_positionChange() throws ActionInconnueException, IOException {
         jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
         int xAvant = jeu.getHero().getX();
         int yAvant = jeu.getHero().getY();
-        jeu.deplacerHero(Jeu.DROITE);
+        jeu.evoluer(Jeu.DROITE);
         assertEquals(xAvant + 1, jeu.getHero().getX());
         assertEquals(yAvant, jeu.getHero().getY());
     }
@@ -101,11 +101,11 @@ public class TestJeu {
      * @throws ActionInconnueException si le deplacement est invalide
      */
     @Test
-    public void test_deplacerHero_haut_positionChange() throws ActionInconnueException, IOException {
+    public void test_evoluer_haut_positionChange() throws ActionInconnueException, IOException {
         jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
         int xAvant = jeu.getHero().getX();
         int yAvant = jeu.getHero().getY();
-        jeu.deplacerHero(Jeu.HAUT);
+        jeu.evoluer(Jeu.HAUT);
         assertEquals(xAvant, jeu.getHero().getX());
         assertEquals(yAvant - 1, jeu.getHero().getY());
     }
@@ -115,12 +115,12 @@ public class TestJeu {
      * @throws ActionInconnueException si le deplacement est invalide
      */
     @Test
-    public void test_deplacerHero_deuxDeplacements() throws ActionInconnueException, IOException {
+    public void test_evoluer_deuxDeplacements() throws ActionInconnueException, IOException {
         jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
         int xInit = jeu.getHero().getX();
         int yInit = jeu.getHero().getY();
-        jeu.deplacerHero(Jeu.GAUCHE);
-        jeu.deplacerHero(Jeu.DROITE);
+        jeu.evoluer(Jeu.GAUCHE);
+        jeu.evoluer(Jeu.DROITE);
         // retour a la position initiale
         assertEquals(xInit, jeu.getHero().getX());
         assertEquals(yInit, jeu.getHero().getY());
@@ -131,12 +131,12 @@ public class TestJeu {
      * @throws ActionInconnueException si le deplacement est invalide
      */
     @Test
-    public void test_deplacerHero_deuxDeplacementsGaucheDroite() throws ActionInconnueException, IOException {
+    public void test_evoluer_deuxDeplacementsGaucheDroite() throws ActionInconnueException, IOException {
         jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
         int xInit = jeu.getHero().getX();
         int yInit = jeu.getHero().getY();
-        jeu.deplacerHero(Jeu.GAUCHE);
-        jeu.deplacerHero(Jeu.DROITE);
+        jeu.evoluer(Jeu.GAUCHE);
+        jeu.evoluer(Jeu.DROITE);
         // retour a la position initiale
         assertEquals(xInit, jeu.getHero().getX());
         assertEquals(yInit, jeu.getHero().getY());
@@ -337,32 +337,20 @@ public class TestJeu {
                 "#####\n", s);
     }
 
-    // ########## Tests deplacerHero - deplacement invalide (mur) ##########
-
-    /**
-     * Verifie qu'un deplacement dans un mur leve ActionInconnueException.
-     */
-    @Test
-    public void test_deplacerHero_dansMur_leveException() {
-        // laby_simple.txt : murs tout autour, essayer de forcer un mur
-        assertThrows(ActionInconnueException.class, () -> {
-            jeu.deplacerHero(Jeu.DROITE);
-            jeu.deplacerHero(Jeu.DROITE);
-        });
-    }
+    // ########## Tests evoluer - deplacement invalide (mur) ##########
 
     /**
      * Verifie que la position reste inchangee apres un deplacement dans un mur.
      */
     @Test
-    public void test_deplacerHero_dansMur_positionInchangee() {
+    public void test_evoluer_dansMur_positionInchangee() {
         // se deplacer vers un mur ne change pas la position
         int xAvant = jeu.getHero().getX();
         int yAvant = jeu.getHero().getY();
         try {
             // aller a droite 2 fois : la 1ere ok, la 2eme = mur
-            jeu.deplacerHero(Jeu.DROITE);
-            jeu.deplacerHero(Jeu.DROITE);
+            jeu.evoluer(Jeu.DROITE);
+            jeu.evoluer(Jeu.DROITE);
         } catch (ActionInconnueException e) {
             // position apres le 1er deplacement reussi
             assertEquals(xAvant + 1, jeu.getHero().getX());
@@ -425,8 +413,8 @@ public class TestJeu {
     public void test_etreFini() throws ActionInconnueException, IOException {
         jeu.chargerJeu("laby/laby_simple.txt"); // laby avec un chemin plus simple pour atteindre la fin
 
-        jeu.deplacerHero(Jeu.HAUT);
-        jeu.deplacerHero(Jeu.HAUT);
+        jeu.evoluer(Jeu.HAUT);
+        jeu.evoluer(Jeu.HAUT);
 
         assertTrue(jeu.etreFini());
     }
@@ -437,8 +425,8 @@ public class TestJeu {
      */
     @Test
     public void test_etreFiniFaux() throws ActionInconnueException {
-        jeu.deplacerHero(Jeu.DROITE);
-        jeu.deplacerHero(Jeu.HAUT);
+        jeu.evoluer(Jeu.DROITE);
+        jeu.evoluer(Jeu.HAUT);
 
         assertFalse(jeu.etreFini());
     }

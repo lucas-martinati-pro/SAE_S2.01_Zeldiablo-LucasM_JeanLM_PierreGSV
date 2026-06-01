@@ -2,7 +2,10 @@ package jeu;
 
 import moteurJeu.DessinJeu;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import static arkanoidJeu.ArkanoidDessin.TAILLE;
 
 public class DessinLaby implements DessinJeu {
     private Jeu jeu;
@@ -14,10 +17,35 @@ public class DessinLaby implements DessinJeu {
 
     @Override
     public void dessiner(BufferedImage image) {
+        Graphics2D g = (Graphics2D) image.getGraphics();
+
         String game = jeu.jeuToString();
 
+        int x = 0, y = 0;
         for (char c : game.toCharArray()) {
-
+            switch (c) {
+                case Labyrinthe.FIN -> {
+                    g.setColor(Color.GREEN);
+                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
+                }
+                case Labyrinthe.MUR -> {
+                    g.setColor(Color.BLACK);
+                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
+                }
+                case Labyrinthe.VIDE -> {
+                    g.setColor(Color.WHITE);
+                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
+                }
+                case Labyrinthe.HERO -> {
+                    g.setColor(Color.BLUE);
+                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
+                }
+                case '\n' -> {
+                    y++;
+                    x = -1;
+                }
+            }
+            x++;
         }
     }
 }

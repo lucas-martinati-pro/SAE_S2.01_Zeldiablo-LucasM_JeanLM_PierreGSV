@@ -1,7 +1,7 @@
 @startuml
     title Q5 - Diagramme de classe
 
-class Jeu {
+class jeu.Jeu {
     -laby : Labyrinthe
     -hero : Aventurier
     -fin : int[]
@@ -20,10 +20,14 @@ class Jeu {
     +jeuToString() : String
     +{static} getSuivant(x : int, y : int, commandeUser : Commande) : int[]
     +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
-    +deplacer(commandeUser : Commande) : void
+    +evoluer(commandeUser : Commande) : void
     +etreFini() : boolean
 }
-class Labyrinthe {
+interface moteurJeu.Jeu {
+    +evoluer(commandeUser : Commande) : void
+    +etreFini() : boolean
+}
+class jeu.Labyrinthe {
     +murs : boolean[][]
     +MUR = '#' : static final char
     +HERO = '@' : static final char
@@ -33,14 +37,15 @@ class Labyrinthe {
     +Labyrinthe(x : int, y : int)
     +getCases(int x, int y) : int[][]
     +addMur(x : int, y : int) : void
+    +returnSize() : int[]
 }
-interface Personnage {
+interface jeu.Personnage {
     +getX() : int
     +getY() : int
 
     +setPos(x : int, y : int) : void
 }
-class Aventurier {
+class jeu.Aventurier {
     -x : int
     -y : int
 
@@ -49,15 +54,14 @@ class Aventurier {
     +getY() : int
 
     +setPos(x : int, y : int) : void
-
 }
-class FichierIncorrectException {
+class jeu.FichierIncorrectException {
     +FichierIncorrectException(message : String) : void
 }
-interface DessinJeu {
+interface moteurJeu.DessinJeu {
     +{abstract} dessiner(image : BufferedImage) : void
 }
-class DessinLaby {
+class jeu.DessinLaby {
     -jeu : Jeu
 
     +DessinLaby(jeu Jeu) : void
@@ -65,9 +69,11 @@ class DessinLaby {
 }
 
 DessinJeu <|-- DessinLaby
-DessinLaby "1" --> "1" Jeu : affiche
-Jeu --> Labyrinthe
-Jeu --> Aventurier
+DessinLaby "1" --> "1" jeu.Jeu : affiche
+
+jeu.Jeu --> Labyrinthe
+moteurJeu.Jeu <|-- jeu.Jeu
+jeu.Jeu --> Aventurier
 Personnage <|.. Aventurier
-Jeu ..> FichierIncorrectException
+jeu.Jeu "1" --> "1" FichierIncorrectException : lève
 @enduml
