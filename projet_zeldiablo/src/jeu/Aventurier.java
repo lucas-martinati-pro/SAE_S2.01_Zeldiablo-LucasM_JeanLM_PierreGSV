@@ -18,7 +18,9 @@ public class Aventurier extends Personnage {
       * Affiche les informations sur l'aventurier.
       */
      public String toString() {
-         System.out.println("Position : (" + x + ", " + y + ")");
-         System.out.println("Vie : " + vie);
+         StringBuilder res = new StringBuilder();
+         res.append("Position : (" + x + ", " + y + ")\n");
+         res.append("Vie : " + vie);
+         return res.toString();
      }
 }
