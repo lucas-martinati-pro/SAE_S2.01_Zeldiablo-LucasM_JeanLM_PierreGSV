@@ -1,7 +1,7 @@
 package jeu;
 
 /**
- * Classe representant le labyrinthe du jeu Sokoban.
+ * Classe representant le labyrinthe du jeu.
  */
 public class Labyrinthe {
     // ########## Variables ##########
