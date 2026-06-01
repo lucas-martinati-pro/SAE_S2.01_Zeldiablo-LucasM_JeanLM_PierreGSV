@@ -68,7 +68,14 @@ public class Controleur implements KeyListener {
 			this.commandeEnCours.bas = true;
 			this.commandeARetourner.bas = true;
 			break;
+
+		//si on appuie sur espace, on attaque
+		case ' ':
+			this.commandeEnCours.space = true;
+			this.commandeARetourner.space = true;
+			break;
 		}
+
 
 	}
 
@@ -89,6 +96,9 @@ public class Controleur implements KeyListener {
 			break;
 		case 's':
 			this.commandeEnCours.bas = false;
+			break;
+		case ' ':
+			this.commandeEnCours.space = false;
 			break;
 		}
 

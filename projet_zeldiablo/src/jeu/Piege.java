@@ -28,7 +28,7 @@ public class Piege implements Case {
 
     @Override
     public void effet(Personnage perso) {
-        System.out.println("Vous avez déclenché un piège ! Vous perdez 1 point de vie.");
+        System.out.println("\uD83E\uDEA4 : Vous avez déclenché un piège ! -1pv ❤.");
         this.isRevele = true;
         perso.addVie(-1);
     }
