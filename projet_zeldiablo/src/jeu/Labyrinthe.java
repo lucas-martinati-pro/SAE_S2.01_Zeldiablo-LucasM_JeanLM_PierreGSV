@@ -27,6 +27,13 @@ public class Labyrinthe {
      */
     public static final char PIEGE = '$';
 
+    /**
+     * Constante pour un MurFriable dans un fichier de labyrinthe
+     */
+    public static final char MurFriable = '*';
+
+
+
     // ########## Constructeur ##########
 
     /**

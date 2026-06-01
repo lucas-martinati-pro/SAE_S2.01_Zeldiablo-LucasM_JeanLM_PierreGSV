@@ -106,6 +106,7 @@ public class Jeu implements moteurJeu.Jeu {
                     case Labyrinthe.FIN -> this.fin = new int[]{j, i};
                     case Labyrinthe.VIDE -> {}
                     case Labyrinthe.PIEGE -> cases.add(new Piege(j, i));
+                    case Labyrinthe.MurFriable -> cases.add(new MurFriable(j,i));
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
                 }
             }
