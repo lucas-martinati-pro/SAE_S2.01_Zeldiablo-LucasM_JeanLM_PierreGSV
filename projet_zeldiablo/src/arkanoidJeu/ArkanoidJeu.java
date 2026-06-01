@@ -50,8 +50,7 @@ public class ArkanoidJeu implements Jeu {
 	/**
 	 * methode appelee par le moteur pour faire evoluer le jeu
 	 * 
-	 * @param c
-	 *            commande faite par l'utilisateur (vient du moteur)
+	 * @param c commande faite par l'utilisateur (vient du moteur)
 	 */
 	public void evoluer(Commande c) {
 		// on fait avancer la balle

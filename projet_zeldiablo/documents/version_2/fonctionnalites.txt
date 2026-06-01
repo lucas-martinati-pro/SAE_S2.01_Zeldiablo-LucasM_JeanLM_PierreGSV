@@ -1,0 +1,55 @@
+# Fonctionnalités prévues version 2
+
+- fonctionnalité 1 : Gestion des niveaux
+  - descriptif texte : Le jeu est constitué de plusieurs niveaux.
+  - critères de validation :
+    - critère 1 : Un niveau décrit le labyrinthe et les monstres qui y sont contenus.
+    - critère 2 : Il est possible de choisir le niveau à lancer au démarrage de l'application (en modifiant la chaîne de caractère passée dans le main).
+    - critère 3 : Testez en ajoutant un second niveau à définir au préalable.
+  - responsables : GALLOIS Pierre
+
+- fonctionnalité 2 : Fin du jeu : mort du héros
+  - descriptif texte : Lorsque le héros n'a plus de points de vie, le jeu s'arrête et la partie est perdue.
+  - critères de validation :
+    - critère 1 : Le héros par défaut dispose de 5 points de vie.
+    - critère 2 : Chaque monstre fait 1 point de dégât lorsque le héros se fait attaquer.
+    - critère 3 : Quand le héros meurt, un message de fin est affiché sur la console et le jeu s'arrête.
+  - responsables : LE MADEC Jean
+
+- fonctionnalité 3 : Cases déclencheur
+  - descriptif texte : Lorsque une entité arrive sur certaines cases, ces cases déclenchent un effet.
+  - critères de validation :
+    - critère 1 : Les cases avec effet sont des cases traversables.
+    - critère 2 : Lorsqu'un personnage (héros ou monstre) marche sur cette case, elle déclenche immédiatement un effet.
+    - critère 3 : Cet effet se traduit, pour le moment, par un affichage dans la console à préciser.
+  - responsables : MARTINATI Lucas
+
+- fonctionnalité 4 : Dégâts d'une bombe
+  - descriptif texte : Lorsqu'une bombe explose, des langues de feu jaillissent horizontalement et verticalement et font des dégâts sur les cases atteintes.
+  - critères de validation :
+    - critère 1 : La bombe n'est déclenchée que quand son timer arrive à 0.
+    - critère 2 : Les langues de feu ne se propagent que horizontalement et verticalement.
+    - critère 3 : Les langues de feu ont une taille donnée (par exemple elles ne se propagent que de 3 cases dans chaque direction).
+    - critère 4 : Les murs et les obstacles bloquent la propagation des langues de feu.
+    - critère 5 : Tous les personnages traversés par les langues de feu subissent des dégâts.
+  - responsables : MARTINATI Lucas
+
+- fonctionnalité 5 : Dépôt d'une bombe
+  - descriptif texte : Un héros attaque désormais en posant des bombes sur sa case. Les bombes déposées sont en nombre limité, leur timer est initialisé lorsqu'elles sont posées.
+  - critères de validation :
+    - critère 1 : Lorsqu'un héros décide d'attaquer, il pose une bombe sur sa case.
+    - critère 2 : Le héros peut sortir de sa case, mais la case de la bombe n'est plus traversable tant que la bombe n'a pas explosé.
+    - critère 3 : Lorsque le timer de la bombe arrive à 0, la bombe explose et effectue des dégâts.
+    - critère 4 : Un héros dispose d'un nombre maximal de bombes posées simultanément : il ne peut pas poser plus de 3 bombes simultanément sur le labyrinthe.
+    - critère 5 : Une fois qu'une bombe a explosé, le héros peut à nouveau poser une bombe en remplacement sur le labyrinthe.
+  - responsables : GALLOIS Pierre
+
+- fonctionnalité 6 : Murs friables
+  - descriptif texte : Certaines cases du labyrinthe sont des murs friables qui peuvent être détruits par des bombes.
+  - critères de validation :
+    - critère 1 : Un mur friable est un type de case du labyrinthe.
+    - critère 2 : Un mur friable n'est pas traversable (tant qu'il n'est pas détruit).
+    - critère 3 : Lorsqu'une explosion de bombe rencontre un mur friable, le mur friable empêche la propagation de l'explosion dans cette direction. Il est considéré comme détruit et peut ensuite être traversé.
+  - responsables : LE MADEC Jean
+
+# Bilan
