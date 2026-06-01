@@ -67,7 +67,7 @@ public class DessinLaby implements DessinJeu {
                     }
                 }
                 case "MurFriable" -> {
-                    g.setColor(Color.LIGHT_GRAY);
+                    g.setColor(Color.GRAY);
                     g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
                 }
                 case "Bombe" -> {
@@ -86,7 +86,7 @@ public class DessinLaby implements DessinJeu {
         Personnage hero = jeu.getHero();
         if (hero != null) {
             g.setColor(Color.BLUE);
-            g.fillOval(hero.getX() * TAILLE, hero.getY() * TAILLE, TAILLE, TAILLE);
+            g.fillOval(hero.getX() * TAILLE + 2, hero.getY() * TAILLE + 2, TAILLE - 3, TAILLE - 3);
         }
     }
 }

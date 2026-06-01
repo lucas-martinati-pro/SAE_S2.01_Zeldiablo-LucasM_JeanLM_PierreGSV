@@ -94,38 +94,9 @@ public class MainZeldiablo {
                 }
 
                 j.getHero().addVie(5);
-
-                size = j.getLaby().returnSize();
             } else {
                 fini = true;
             }
-
         }
-
-        /**
-        while (!j.etreFini()) {
-            c.reset();
-            System.out.println(j.jeuToString());
-            System.out.println("Nombres de déplacements : " + nbDéplacements);
-            System.out.println("Quelle action voulez-vous faire ? (Z/Q/S/D)");
-            String action = sc.nextLine().toUpperCase();
-            try {
-                switch (action) {
-                    case "Z" -> c.haut = true;
-                    case "S" -> c.bas = true;
-                    case "Q" -> c.gauche = true;
-                    case "D" -> c.droite = true;
-                    default -> throw new ActionInconnueException("L'action " + action + " n'est pas reconnue.");
-                }
-                j.deplacerHero(c);
-                nbDéplacements++;
-            } catch (ActionInconnueException e) {
-                System.err.println("Action non valide !"); // On peut également faire un e.printStackTrace();
-            }
-        }
-        String pluriel = "";
-        if (nbDéplacements > 1) pluriel = "s";
-        System.out.println("Félicitation, vous avez gagné en " + nbDéplacements + " déplacement" + pluriel + " !!!");
-         */
     }
 }
