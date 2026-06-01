@@ -26,8 +26,8 @@ public class MainJeu {
         String laby = "laby/laby.txt";
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Veuillez choisir un fichier (laby/laby.txt seras choisi automatiquement si aucune réponse) : ");
-        String choix = sc.nextLine();
+        String choix = "laby/laby_simple.txt";
+        System.out.println("le choix du fichier dans le Main est '" + choix + "'");
         if (choix != "") laby = choix;
         Jeu j = new Jeu();
 
