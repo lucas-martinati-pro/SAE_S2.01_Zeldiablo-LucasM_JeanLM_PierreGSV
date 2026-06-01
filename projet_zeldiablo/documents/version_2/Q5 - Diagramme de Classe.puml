@@ -1,5 +1,5 @@
 @startuml
-    title Q5 - Diagramme de classe
+title Q5 - Diagramme de classe
 
 class jeu.Jeu {
     -laby : Labyrinthe

@@ -2,7 +2,7 @@ package zeldiablo;
 
 import zeldiablo.environnement.Case;
 import zeldiablo.entite.Monstre;
-import zeldiablo.objet.Bombe;
+import zeldiablo.environnement.Bombe;
 import zeldiablo.entite.Personnage;
 import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.entite.Aventurier;
@@ -10,17 +10,6 @@ import zeldiablo.exception.ActionInconnueException;
 import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.environnement.Piege;
 import zeldiablo.environnement.MurFriable;
-
-import zeldiablo.exception.ActionInconnueException;
-import zeldiablo.environnement.Case;
-import zeldiablo.entite.Personnage;
-import zeldiablo.exception.FichierIncorrectException;
-import zeldiablo.environnement.Labyrinthe;
-import zeldiablo.environnement.Piege;
-import zeldiablo.objet.Bombe;
-import zeldiablo.entite.Aventurier;
-import zeldiablo.environnement.MurFriable;
-import zeldiablo.entite.Monstre;
 
 import moteurJeu.Commande;
 
@@ -41,9 +30,7 @@ public class Jeu implements moteurJeu.Jeu {
     private Aventurier hero;
     private ArrayList<Personnage> monstres = new ArrayList<>();
     private int[] fin;
-    private int sense = 0;
     private ArrayList<Case> cases = new ArrayList<>();
-    private ArrayList<int[]> casesExplosion = new ArrayList<>();
     /**
      * Constantes pour se déplacer en haut
      */
@@ -112,10 +99,6 @@ public class Jeu implements moteurJeu.Jeu {
         return monstres;
     }
 
-    public ArrayList<int[]> getCasesExplosion() {
-        return new ArrayList<>(casesExplosion);
-    }
-
     public Case getCase(int x, int y) {
         for (Case c : cases) {
             if (c.getCoord()[0] == x && c.getCoord()[1] == y) return c;
@@ -163,68 +146,6 @@ public class Jeu implements moteurJeu.Jeu {
         this.hero = hero;
     }
 
-    public void exploser(int x, int y) {
-        int degâts = -5;
-        ArrayList<int[]> casesTouchees = new ArrayList<>();
-        casesTouchees.add(new int[]{x, y}); // Case centrale de la bombe
-
-        // 4 directions : Droite, Gauche, Bas, Haut
-        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        for (int[] dir : directions) {
-            for (int i = 1; i <= 3; i++) { // Extension jusqu'à 3 cases (langues de feu)
-                int cx = x + dir[0] * i;
-                int cy = y + dir[1] * i;
-
-                try {
-                    // Si on touche un mur incassable, la flamme s'arrête
-                    if (this.laby.getCase(cx, cy)) break;
-                } catch (Exception e) { break; } // Hors des limites
-
-                casesTouchees.add(new int[]{cx, cy});
-
-                // Si on détruit un objet comme un mur friable, la flamme s'arrête
-                Case c = getCase(cx, cy);
-                if (c instanceof MurFriable) break;
-            }
-        }
-
-        ArrayList<int[]> explosionVisuel = new ArrayList<>(casesTouchees);
-        this.casesExplosion = explosionVisuel;
-
-        new Timer().schedule(new java.util.TimerTask() {
-            @Override
-            public void run() {
-                if (casesExplosion == explosionVisuel) {
-                    casesExplosion.clear();
-                }
-            }
-        }, 250);
-
-        // Appliquer l'explosion et les dégâts sur les cases touchées
-        for (int[] coord : casesTouchees) {
-            int cx = coord[0];
-            int cy = coord[1];
-
-            // Dégâts au héro
-            if (this.hero.getX() == cx && this.hero.getY() == cy) this.hero.addVie(degâts);
-
-            // Dégâts aux monstres
-            for (Personnage m : this.monstres) {
-                if (m.getX() == cx && m.getY() == cy) {
-                    m.addVie(degâts);
-                    verifMort();
-                    break; // Un même monstre ne prend les dégâts qu'une fois
-                }
-            }
-
-            // Détruire la case si destructible (Mur friable, autre bombe...)
-            Case c = getCase(cx, cy);
-            if (c != null) {
-                detruire(cx, cy);
-            }
-        }
-    }
-
     public void startMonsters() {
 
         Timer t = new Timer();
@@ -242,7 +163,7 @@ public class Jeu implements moteurJeu.Jeu {
                            monstreAttaque(hero.getX(), hero.getY()); // il attaque dès qu'il peut
                            evoluerMonster(commandeUser);
                        }
-                   }, Duration.ofSeconds(1).toMillis(), Duration.ofSeconds(1).toMillis());
+                   }, new Long(300), new Long(300)); // 300ms d'attente entre chaque saut
     }
 
     /**
@@ -316,22 +237,10 @@ public class Jeu implements moteurJeu.Jeu {
      * @return un tableau {nouvelleColonne, nouvelleLigne} apres deplacement
      */
     public int[] getSuivant(int x, int y, Commande commandeUser) {
-        if (commandeUser.haut) {
-            y--;
-            this.sense = 0;
-        }
-        if (commandeUser.bas) {
-            y++;
-            this.sense = 1;
-        }
-        if (commandeUser.gauche) {
-            x--;
-            this.sense = 2;
-        }
-        if (commandeUser.droite) {
-            x++;
-            this.sense = 3;
-        }
+        if (commandeUser.haut) y--;
+        if (commandeUser.bas) y++;
+        if (commandeUser.gauche) x--;
+        if (commandeUser.droite) x++;
         if (commandeUser.space) {
             if (this.getCase(this.hero.getX(), this.hero.getY()) == null) this.hero.attaquer(this);
         }

@@ -1,18 +1,9 @@
 package zeldiablo;
 
 import zeldiablo.environnement.Case;
-import zeldiablo.objet.Bombe;
 import zeldiablo.entite.Personnage;
 import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.environnement.Piege;
-import zeldiablo.environnement.MurFriable;
-
-import zeldiablo.environnement.Case;
-import zeldiablo.entite.Personnage;
-import zeldiablo.environnement.Labyrinthe;
-import zeldiablo.environnement.Piege;
-import zeldiablo.objet.Bombe;
-import zeldiablo.environnement.MurFriable;
 
 import moteurJeu.DessinJeu;
 
