@@ -1,5 +1,27 @@
 package zeldiablo;
 
+import zeldiablo.environnement.Case;
+import zeldiablo.entite.Monstre;
+import zeldiablo.objet.Bombe;
+import zeldiablo.entite.Personnage;
+import zeldiablo.environnement.Labyrinthe;
+import zeldiablo.entite.Aventurier;
+import zeldiablo.exception.ActionInconnueException;
+import zeldiablo.exception.FichierIncorrectException;
+import zeldiablo.environnement.Piege;
+import zeldiablo.environnement.MurFriable;
+
+import zeldiablo.exception.ActionInconnueException;
+import zeldiablo.environnement.Case;
+import zeldiablo.entite.Personnage;
+import zeldiablo.exception.FichierIncorrectException;
+import zeldiablo.environnement.Labyrinthe;
+import zeldiablo.environnement.Piege;
+import zeldiablo.objet.Bombe;
+import zeldiablo.entite.Aventurier;
+import zeldiablo.environnement.MurFriable;
+import zeldiablo.entite.Monstre;
+
 import moteurJeu.Commande;
 
 import java.io.BufferedReader;
