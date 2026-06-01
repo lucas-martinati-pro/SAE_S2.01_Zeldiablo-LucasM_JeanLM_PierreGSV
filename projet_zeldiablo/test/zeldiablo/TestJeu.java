@@ -1,4 +1,4 @@
-package jeu;
+package zeldiablo;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

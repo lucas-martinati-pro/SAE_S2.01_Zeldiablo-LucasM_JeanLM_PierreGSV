@@ -1,4 +1,4 @@
-package jeu;
+package zeldiablo;
 
 import moteurJeu.DessinJeu;
 
@@ -38,7 +38,7 @@ public class DessinLaby implements DessinJeu {
                 }
                 case Labyrinthe.HERO -> {
                     g.setColor(Color.BLUE);
-                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
+                    g.fillOval(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
                 } case Labyrinthe.PIEGE -> {
                     if (((Piege) jeu.getCase(x, y)).getIsRevele()) {
                         g.setColor(Color.ORANGE);
@@ -48,13 +48,8 @@ public class DessinLaby implements DessinJeu {
                         g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
                     }
                 } case Labyrinthe.MurFriable -> {
-                    if (((MurFriable) jeu.getCase(x, y)).estDetruit()) {
-                        g.setColor(Color.WHITE);
-                        g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
-                    } else {
-                        g.setColor(Color.LIGHT_GRAY);
-                        g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
-                    }
+                    g.setColor(Color.LIGHT_GRAY);
+                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
                 }
                 case '\n' -> {
                     y++;

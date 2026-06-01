@@ -1,4 +1,4 @@
-package jeu;
+package zeldiablo;
 
 public class Aventurier extends Personnage {
 
@@ -11,7 +11,7 @@ public class Aventurier extends Personnage {
         if (vie > 0) this.vie = vie;
         else this.vie = 0;
     }
-    
+
     public void DepotBombe(){
     }
 

@@ -1,4 +1,4 @@
-package jeu;
+package zeldiablo;
 
 /**
  * Classe representant le labyrinthe du jeu.
@@ -26,7 +26,6 @@ public class Labyrinthe {
      * Constante pour un piège dans un fichier de labyrinthe
      */
     public static final char PIEGE = '$';
-
     /**
      * Constante pour un MurFriable dans un fichier de labyrinthe
      */

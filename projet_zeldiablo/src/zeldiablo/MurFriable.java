@@ -1,9 +1,8 @@
-package jeu;
+package zeldiablo;
 
 public class MurFriable implements Case {
     private int x;
     private int y;
-    private boolean isBreak = false;
 
     public MurFriable(int x, int y) {
         if (x > 0) this.x = x;
@@ -11,7 +10,6 @@ public class MurFriable implements Case {
         if (y > 0) this.y = y;
         else this.y = y;
     }
-
 
     @Override
     public String getType() {
@@ -23,16 +21,7 @@ public class MurFriable implements Case {
         return new int[]{x, y};
     }
 
-    public void detruire(){
-        this.isBreak = true;
-    }
-
-    public boolean estDetruit(){
-        return this.isBreak;
-    }
-
     @Override
     public void effet(Personnage perso) {
-
     }
 }

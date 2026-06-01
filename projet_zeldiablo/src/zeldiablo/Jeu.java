@@ -1,4 +1,4 @@
-package jeu;
+package zeldiablo;
 
 import moteurJeu.Commande;
 
@@ -167,8 +167,24 @@ public class Jeu implements moteurJeu.Jeu {
         if (this.laby.getCase(x, y)) return Labyrinthe.MUR;
         else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
         else if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
-        else if (this.getCase(x, y) != null) return Labyrinthe.PIEGE;
-        return Labyrinthe.VIDE;
+        else {
+            Case c = this.getCase(x, y);
+            if (c != null) {
+                switch (c.getType()) {
+                    case "MurFriable" -> {
+                        return Labyrinthe.MurFriable;
+                    }
+                    case "Piege" -> {
+                        return Labyrinthe.PIEGE;
+                    }
+                }
+            }
+            return Labyrinthe.VIDE;
+        }
+    }
+
+    public void detruire(int x, int y) {
+        this.cases.remove(getCase(x, y));
     }
 
     /**
@@ -248,20 +264,18 @@ public class Jeu implements moteurJeu.Jeu {
             switch (this.getChar(coord[0], coord[1])) {
                 case Labyrinthe.PIEGE -> {
                     for (Case c : cases) {
-                        if (c.getCoord()[0] == coord[0] && c.getCoord()[1] == coord[1]) {
+                        int[] coordCase = c.getCoord();
+                        if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
                             c.effet(this.hero);
                             break;
                         }
                     }
                     this.hero.setPos(coord[0], coord[1]);
                 }
-                case Labyrinthe.VIDE -> this.hero.setPos(coord[0], coord[1]);
-                case Labyrinthe.FIN -> {
-                    this.hero.setPos(coord[0], coord[1]);
-                }
+                case Labyrinthe.VIDE, Labyrinthe.FIN -> this.hero.setPos(coord[0], coord[1]);
             }
         } catch (ActionInconnueException e) {
-            // Ignorer le déplacement si c'est un mur
+            // Ignorer le déplacement si c'est un mur ou un mur friable
         }
     }
 

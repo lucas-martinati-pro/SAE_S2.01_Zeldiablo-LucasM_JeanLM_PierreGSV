@@ -1,4 +1,4 @@
-package jeu;
+package zeldiablo;
 
 public abstract class Personnage {
     protected int x;

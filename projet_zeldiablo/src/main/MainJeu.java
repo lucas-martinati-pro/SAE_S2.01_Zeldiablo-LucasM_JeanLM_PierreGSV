@@ -1,9 +1,8 @@
 package main;
 
-import jeu.ActionInconnueException;
-import jeu.DessinLaby;
-import jeu.FichierIncorrectException;
-import jeu.Jeu;
+import zeldiablo.DessinLaby;
+import zeldiablo.FichierIncorrectException;
+import zeldiablo.Jeu;
 import moteurJeu.Commande;
 import moteurJeu.MoteurGraphique;
 

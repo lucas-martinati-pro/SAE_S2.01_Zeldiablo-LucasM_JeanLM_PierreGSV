@@ -1,19 +1,19 @@
 # Fonctionnalités prévues version 2
 
 - fonctionnalité 1 : Gestion des niveaux
-  - descriptif texte : Le jeu est constitué de plusieurs niveaux.
+  - descriptif texte : Le zeldiablo est constitué de plusieurs niveaux.
   - critères de validation :
     - critère 1 : Un niveau décrit le labyrinthe et les monstres qui y sont contenus.
     - critère 2 : Il est possible de choisir le niveau à lancer au démarrage de l'application (en modifiant la chaîne de caractère passée dans le main).
     - critère 3 : Testez en ajoutant un second niveau à définir au préalable.
   - responsables : GALLOIS Pierre
 
-- fonctionnalité 2 : Fin du jeu : mort du héros
-  - descriptif texte : Lorsque le héros n'a plus de points de vie, le jeu s'arrête et la partie est perdue.
+- fonctionnalité 2 : Fin du zeldiablo : mort du héros
+  - descriptif texte : Lorsque le héros n'a plus de points de vie, le zeldiablo s'arrête et la partie est perdue.
   - critères de validation :
     - critère 1 : Le héros par défaut dispose de 5 points de vie.
     - critère 2 : Chaque monstre fait 1 point de dégât lorsque le héros se fait attaquer.
-    - critère 3 : Quand le héros meurt, un message de fin est affiché sur la console et le jeu s'arrête.
+    - critère 3 : Quand le héros meurt, un message de fin est affiché sur la console et le zeldiablo s'arrête.
   - responsables : LE MADEC Jean
 
 - fonctionnalité 3 : Cases piégées

@@ -1,4 +1,4 @@
-package jeu;
+package zeldiablo;
 
 public class Piege implements Case {
     private int x;

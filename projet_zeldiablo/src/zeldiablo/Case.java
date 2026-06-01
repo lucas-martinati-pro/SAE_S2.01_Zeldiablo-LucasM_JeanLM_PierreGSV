@@ -1,4 +1,4 @@
-package jeu;
+package zeldiablo;
 
 /**
  * Interface représentant une case dans le jeu.
