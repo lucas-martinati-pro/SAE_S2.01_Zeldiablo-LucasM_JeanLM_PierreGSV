@@ -5,23 +5,24 @@ class jeu.Jeu {
     -laby : Labyrinthe
     -hero : Aventurier
     -fin : int[]
+    +HAUT = "Haut" : static final String
     +BAS = "Bas" : static final String
     +GAUCHE = "Gauche" : static final String
     +DROITE = "Droite" : static final String
 
-    +setHero(perso : Personnage) : void
-    +getHero() : Personnage
+    +setLaby(laby : Labyrinthe) : void
+    +setHero(hero : Aventurier) : void
+    +getHero() : Aventurier
     +getLaby() : Labyrinthe
 
     +chargerJeu(nomFichier : String) : void
     +convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
-    +setLaby(laby : Labyrinthe) : void
     -getChar(x : int, y : int) : char
     +jeuToString() : String
     +{static} getSuivant(x : int, y : int, commandeUser : Commande) : int[]
-    +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
-    +evoluer(commandeUser : Commande) : void
     +etreFini() : boolean
+    +evoluer(commandeUser : Commande) : void
+    +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
 }
 interface moteurJeu.Jeu {
     +evoluer(commandeUser : Commande) : void
