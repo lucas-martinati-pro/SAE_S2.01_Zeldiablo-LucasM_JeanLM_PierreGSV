@@ -51,7 +51,7 @@ public class TestJeu {
      */
     @Test
     public void test_setPerso_modifiePerso() {
-        Aventurier p = new Aventurier(2, 2);
+        Aventurier p = new Aventurier(2, 2, 3);
         jeu.setHero(p);
         assertEquals(p, jeu.getHero());
     }

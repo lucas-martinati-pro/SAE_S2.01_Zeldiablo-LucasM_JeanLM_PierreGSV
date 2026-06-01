@@ -16,12 +16,12 @@
     - critère 3 : Quand le héros meurt, un message de fin est affiché sur la console et le jeu s'arrête.
   - responsables : LE MADEC Jean
 
-- fonctionnalité 3 : Cases déclencheur
-  - descriptif texte : Lorsque une entité arrive sur certaines cases, ces cases déclenchent un effet.
+- fonctionnalité 3 : Cases piégées
+  - descriptif texte : Lorsque une entité (héros ou monstre) arrive sur une case piégée, il subit des dégâts.
   - critères de validation :
-    - critère 1 : Les cases avec effet sont des cases traversables.
-    - critère 2 : Lorsqu'un personnage (héros ou monstre) marche sur cette case, elle déclenche immédiatement un effet.
-    - critère 3 : Cet effet se traduit, pour le moment, par un affichage dans la console à préciser.
+    - critère 1 : Les dégâts ne se déclenchent que lorsque le joueur arrive sur la case, il peut ensuite rester sur cette case aussi longtemps qu'il le souhaite sans subir d'autres dégâts.
+    - critère 2 : Lorsque la case devient à nouveau vide, le piège se réamorce.
+    - critère 3 : (optionnel) Lorsqu'une case a été détectée comme un piège, elle s'affiche différemment dans le labyrinthe (en brun) ce qui permet au joueur d'en tenir compte ensuite.
   - responsables : MARTINATI Lucas
 
 - fonctionnalité 4 : Dégâts d'une bombe
