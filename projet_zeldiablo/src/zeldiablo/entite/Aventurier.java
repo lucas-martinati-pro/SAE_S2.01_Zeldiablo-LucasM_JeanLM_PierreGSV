@@ -7,7 +7,6 @@ import zeldiablo.Jeu;
 public class Aventurier extends Personnage {
     private Jeu jeu;
 
-
     /**
      * Créer un avanturier
      * @param x coordonné x de l'avanturier

@@ -56,8 +56,6 @@ public class MainZeldiablo {
 
         Commande c = new Commande();
 
-        int nbDéplacements = 0;
-
         System.out.println("Voici les actions disponibles :" +
                 "\n Haut (Z)" +
                 "\n Bas (S)" +

@@ -24,7 +24,6 @@ public class DessinLaby implements DessinJeu {
         else this.jeu = new Jeu();
     }
 
-
     /**
      * Dessin tous les éléments du jeu
      * @param image image sur laquelle dessiner
