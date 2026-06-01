@@ -161,6 +161,7 @@ public class Jeu implements moteurJeu.Jeu {
         if (this.laby.getCase(x, y)) return Labyrinthe.MUR;
         else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
         else if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
+        else if (this.getCase(x, y) != null) return Labyrinthe.PIEGE;
         return Labyrinthe.VIDE;
     }
 
