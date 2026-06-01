@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Classe principale gerant la logique du jeu Sokoban.
+ * Classe principale gerant la logique du jeu.
  */
 public class Jeu implements moteurJeu.Jeu {
     // ########## Variables ##########
@@ -74,7 +74,7 @@ public class Jeu implements moteurJeu.Jeu {
     // ########## Méthodes ##########
 
     /**
-     * Charge un jeu Sokoban a partir d'un fichier texte.
+     * Charge un jeu a partir d'un fichier texte.
      * Lit le fichier ligne par ligne pour construire le labyrinthe,
      * positionner les murs, les caisses, les depots et le personnage.
      *
@@ -94,7 +94,7 @@ public class Jeu implements moteurJeu.Jeu {
             for (int j = 0; j < line.length(); j++) {
                 switch (line.charAt(j)) {
                     case Labyrinthe.MUR -> lab.addMur(j, i);
-                    case Labyrinthe.HERO -> hero = new Aventurier(j, i);
+                    case Labyrinthe.HERO -> hero = new Aventurier(j, i, 3);
                     case Labyrinthe.FIN -> this.fin = new int[]{j, i};
                     case Labyrinthe.VIDE -> {}
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));

@@ -1,30 +1,28 @@
 package jeu;
 
 public abstract class Personnage {
-    // attribut //
+
     protected int x;
     protected int y;
-    protected int pv;
+    protected int vie;
 
-
-    public int getX(){
-        return this.x;
+    public int getX() {
+        return x;
     };
 
-    public int getY(){
-        return this.y;
+    public int getY() {
+        return y;
     };
 
-    public void setPos(int x, int y){
-        this.x = x;
-        this.y = y;
+    public void setPos(int x, int y) {
+        if (x > 0) this.x = x;
+        else this.x = 0;
+        if (y > 0) this.y = y;
+        else this.y = 0;
     };
 
-    public int getVie(){
-        return pv;
+    public void addVie(int i) {
+        this.vie += i;
     };
-    public void setVie(int Vie){
 
-    };
-    public boolean estMorts(){};
 }
