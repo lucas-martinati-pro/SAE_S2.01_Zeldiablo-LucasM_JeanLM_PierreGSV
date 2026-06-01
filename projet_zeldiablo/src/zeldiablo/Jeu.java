@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Timer;
 
@@ -103,7 +104,6 @@ public class Jeu implements moteurJeu.Jeu {
     public ArrayList<Personnage> getMonstres() {
         return monstres;
     }
-
 
     public Case getCase(int x, int y) {
         for (Case c : cases) {

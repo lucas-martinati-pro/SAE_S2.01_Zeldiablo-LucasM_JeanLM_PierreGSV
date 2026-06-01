@@ -7,8 +7,11 @@ import zeldiablo.environnement.Piege;
 
 import moteurJeu.DessinJeu;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import static arkanoidJeu.ArkanoidDessin.TAILLE;
 
@@ -38,8 +41,12 @@ public class DessinLaby implements DessinJeu {
             for (int x = 0; x < coordonnee[0]; x++) {
                 switch (jeu.getChar(x, y)) {
                     case Labyrinthe.FIN -> {
-                        g.setColor(Color.GREEN);
-                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                        try {
+                            BufferedImage finImage = ImageIO.read(new File("sprite/fin.png"));
+                            g.drawImage(finImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     case Labyrinthe.MUR -> {
                         g.setColor(Color.BLACK);
@@ -59,20 +66,32 @@ public class DessinLaby implements DessinJeu {
             switch (c.getType()) {
                 case "Piege" -> {
                     if (((Piege) c).getIsRevele()) {
-                        g.setColor(Color.ORANGE);
-                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                        try {
+                            BufferedImage piegeImage = ImageIO.read(new File("sprite/piege.png"));
+                            g.drawImage(piegeImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         g.setColor(Color.WHITE);
                         g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
                     }
                 }
                 case "MurFriable" -> {
-                    g.setColor(Color.GRAY);
-                    g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    try {
+                        BufferedImage murFriableImage = ImageIO.read(new File("sprite/murFriable.png"));
+                        g.drawImage(murFriableImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 case "Bombe" -> {
-                    g.setColor(Color.MAGENTA);
-                    g.fillOval(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    try {
+                        BufferedImage bombeImage = ImageIO.read(new File("sprite/bombe.png"));
+                        g.drawImage(bombeImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -84,20 +103,32 @@ public class DessinLaby implements DessinJeu {
         }
 
         for (Personnage m : jeu.getMonstres()) {
-            g.setColor(Color.RED);
-            g.fillOval(m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE);
+            try {
+                BufferedImage monstreImage = ImageIO.read(new File("sprite/monstre.png"));
+                g.drawImage(monstreImage, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         for (int i = 0; i < jeu.getHero().getVie(); i++) {
-            g.setColor(Color.RED);
-            g.fillOval(coordonnee[0] * TAILLE - (i + 1) * 15, 5, 10, 10);
+            try {
+                BufferedImage coeurImage = ImageIO.read(new File("sprite/coeur.png"));
+                g.drawImage(coeurImage, coordonnee[0] * TAILLE - (i + 1) * 15, 5, 15, 15, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         // Mettre le héros après les monstres pour qu'il soit dessiné par-dessus
         Personnage hero = jeu.getHero();
         if (hero != null) {
-            g.setColor(Color.BLUE);
-            g.fillOval(hero.getX() * TAILLE + 2, hero.getY() * TAILLE + 2, TAILLE - 3, TAILLE - 3);
+            try {
+                BufferedImage heroImage = ImageIO.read(new File("sprite/hero.png"));
+                g.drawImage(heroImage, hero.getX() * TAILLE, hero.getY() * TAILLE, TAILLE, TAILLE, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
