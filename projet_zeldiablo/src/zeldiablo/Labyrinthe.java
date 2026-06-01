@@ -34,6 +34,10 @@ public class Labyrinthe {
      * Constante pour un MurFriable dans un fichier de labyrinthe
      */
     public static final char MurFriable = '*';
+    /**
+     * Constante pour une Bombe dans un fichier de labyrinthe
+     */
+    public static final char BOMBE = 'B';
 
 
     // ########## Constructeur ##########

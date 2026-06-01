@@ -14,13 +14,10 @@ public class Aventurier extends Personnage {
         super(x, y, vie);
     }
 
-    public void setJeu(Jeu jeu) {
-        if (jeu != null) this.jeu = jeu;
-        else this.jeu = new Jeu();
-    }
-
-    public void attaquer() {
+    public void attaquer(Jeu jeu) {
         jeu.addBombe(x, y);
-        jeu.getCase(x, y).effet(this);
+        Case bombe = jeu.getCase(x, y);
+        ((Bombe) bombe).setJeu(jeu);
+        bombe.effet(this);
     }
 }

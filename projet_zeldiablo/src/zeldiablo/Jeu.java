@@ -89,14 +89,14 @@ public class Jeu implements moteurJeu.Jeu {
         return monstres;
     }
 
-    // ########## Méthodes ##########
-
     public Case getCase(int x, int y) {
         for (Case c : cases) {
             if (c.getCoord()[0] == x && c.getCoord()[1] == y) return c;
         }
         return null;
     }
+
+    // ########## Méthodes ##########
 
     /**
      * Charge un jeu a partir d'un fichier texte.
@@ -137,20 +137,20 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     public void exploser(int x, int y) {
+        int degâts = -5;
         for (int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
-                if (this.getChar(i, j) == Labyrinthe.HERO) this.hero.addVie(-2);
+                if (this.hero.getX() == x && this.hero.getY() == y) this.hero.addVie(degâts);
                 for (Personnage m : this.monstres) {
                     if (m.getX() == i && m.getY() == j) {
-                        m.addVie(-2);
+                        m.addVie(degâts);
+                        verifMort();
                         break;
                     }
                 }
-                for (Case c : cases) {
-                    int[] coordCase = c.getCoord();
-                    if (coordCase[0] == i && coordCase[1] == j) {
-                        detruire(i, j);
-                    }
+                Case c = getCase(i, j);
+                if (c != null) {
+                    detruire(i, j);
                 }
             }
         }
@@ -221,6 +221,7 @@ public class Jeu implements moteurJeu.Jeu {
                 if (c.getCoord()[0] == x && c.getCoord()[1] == y) {
                     if (c instanceof Piege) return Labyrinthe.PIEGE;
                     if (c instanceof MurFriable) return Labyrinthe.MurFriable;
+                    if (c instanceof Bombe) return Labyrinthe.BOMBE;
                 }
             }
             for (Personnage m : this.monstres) {
@@ -261,7 +262,7 @@ public class Jeu implements moteurJeu.Jeu {
             this.sense = 3;
         }
         if (commandeUser.space) {
-            this.hero.attaquer();
+            if (this.getCase(this.hero.getX(), this.hero.getY()) == null) this.hero.attaquer(this);
         }
         return new int[] {x, y};
     }
@@ -279,7 +280,7 @@ public class Jeu implements moteurJeu.Jeu {
             int yRayon = coord[1];
             for (Personnage m : this.monstres) {
                 if (m.getX() == xRayon && m.getY() == yRayon) {
-                    this.hero.attaquer();
+                    m.attaquer(this.hero);
                 }
             }
         }
@@ -317,7 +318,9 @@ public class Jeu implements moteurJeu.Jeu {
                     for (Case c : cases) {
                         int[] coordCase = c.getCoord();
                         if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
-                            c.effet(this.hero);
+                            if (this.hero.getX() != coord[0] || this.hero.getY() != coord[1]) {
+                                c.effet(this.hero);
+                            }
                             break;
                         }
                     }
@@ -340,7 +343,10 @@ public class Jeu implements moteurJeu.Jeu {
                         for (Case c : cases) {
                             int[] coordCase = c.getCoord();
                             if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
-                                c.effet(m);
+                                if (m.getX() != coord[0] || m.getY() != coord[1]) {
+                                    c.effet(m);
+                                    verifMort();
+                                }
                                 break;
                             }
                         }
@@ -368,6 +374,17 @@ public class Jeu implements moteurJeu.Jeu {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void verifMort() {
+        for (int i = 0; i < this.monstres.size(); i++) {
+            Personnage m = this.monstres.get(i);
+            if (m.etreMort()) {
+                System.out.println("Vous avez tué un monstre ! \uD83D\uDC7E");
+                this.monstres.remove(m);
+                i--;
+            }
         }
     }
 

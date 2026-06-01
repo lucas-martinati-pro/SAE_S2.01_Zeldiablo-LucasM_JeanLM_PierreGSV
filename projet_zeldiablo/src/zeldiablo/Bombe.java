@@ -31,13 +31,13 @@ public class Bombe implements Case {
 
     @Override
     public void effet(Personnage perso) {
-        Time time = new Time(1000);
-        try {
-            time.wait();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        jeu.exploser(x, y);
-        jeu.detruire(x, y);
+        new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            jeu.exploser(x, y);
+        }).start();
     }
 }
