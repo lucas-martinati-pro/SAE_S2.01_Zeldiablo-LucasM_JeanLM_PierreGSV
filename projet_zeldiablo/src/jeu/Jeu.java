@@ -250,7 +250,15 @@ public class Jeu implements moteurJeu.Jeu {
      * @return true si le hero est sur la case de fin, false sinon
      */
     public boolean etreFini() {
-        return (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1]) || (this.hero.etreMort());
+        if (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1]) {
+            System.out.println("Félicitation, vous avez gagné !!!");
+            return true;
+        } else if (this.hero.etreMort()) {
+            System.out.println("Vous êtes mort ! Vous avez perdu !");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // ==================== Compatibilités Testes ====================
