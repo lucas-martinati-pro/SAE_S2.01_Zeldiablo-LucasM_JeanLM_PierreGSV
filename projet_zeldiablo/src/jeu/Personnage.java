@@ -1,7 +1,6 @@
 package jeu;
 
 public abstract class Personnage {
-
     protected int x;
     protected int y;
     protected int vie;
