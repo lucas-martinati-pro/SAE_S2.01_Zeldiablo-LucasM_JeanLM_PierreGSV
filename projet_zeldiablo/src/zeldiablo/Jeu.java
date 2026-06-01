@@ -157,6 +157,7 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     public void startMonsters() {
+
         Timer t = new Timer();
         t.schedule(new java.util.TimerTask() {
                        @Override
@@ -169,6 +170,7 @@ public class Jeu implements moteurJeu.Jeu {
                                case 2 -> commandeUser.gauche = true;
                                case 3 -> commandeUser.droite = true;
                            }
+                           monstreAttaque(hero.getX(), hero.getY()); // il attaque dès qu'il peut
                            evoluerMonster(commandeUser);
                        }
                    }, Duration.ofSeconds(1).toMillis(), Duration.ofSeconds(1).toMillis());
