@@ -108,7 +108,7 @@ public class Jeu implements moteurJeu.Jeu {
             for (int j = 0; j < line.length(); j++) {
                 switch (line.charAt(j)) {
                     case Labyrinthe.MUR -> lab.addMur(j, i);
-                    case Labyrinthe.HERO -> hero = new Aventurier(j, i, 3);
+                    case Labyrinthe.HERO -> hero = new Aventurier(j, i, 5);
                     case Labyrinthe.FIN -> this.fin = new int[]{j, i};
                     case Labyrinthe.VIDE -> {}
                     case Labyrinthe.PIEGE -> cases.add(new Piege(j, i));
@@ -167,6 +167,7 @@ public class Jeu implements moteurJeu.Jeu {
         if (this.laby.getCase(x, y)) return Labyrinthe.MUR;
         else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
         else if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
+        else if (this.getCase(x, y) != null) return Labyrinthe.PIEGE;
         return Labyrinthe.VIDE;
     }
 
@@ -256,7 +257,15 @@ public class Jeu implements moteurJeu.Jeu {
      * @return true si le hero est sur la case de fin, false sinon
      */
     public boolean etreFini() {
-        return this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1];
+        if (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1]) {
+            System.out.println("Félicitation, vous avez gagné !!! \uD83C\uDFC6");
+            return true;
+        } else if (this.hero.etreMort()) {
+            System.out.println("Vous êtes mort ! Vous avez perdu ! \uD83D\uDC80");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // ==================== Compatibilités Testes ====================
