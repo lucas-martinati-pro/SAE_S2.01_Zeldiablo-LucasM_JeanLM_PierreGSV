@@ -22,6 +22,10 @@ public class Labyrinthe {
      * Constante pour le vide dans un fichier de labyrinthe
      */
     public static final char VIDE = ' ';
+    /**
+     * Constante pour un piège dans un fichier de labyrinthe
+     */
+    public static final char PIEGE = '$';
 
     // ########## Constructeur ##########
 

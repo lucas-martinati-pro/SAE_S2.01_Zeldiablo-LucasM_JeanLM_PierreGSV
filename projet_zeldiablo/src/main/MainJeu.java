@@ -6,6 +6,8 @@ import jeu.FichierIncorrectException;
 import jeu.Jeu;
 import moteurJeu.Commande;
 import moteurJeu.MoteurGraphique;
+import personnage.DessinPerso;
+import personnage.JeuPerso;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

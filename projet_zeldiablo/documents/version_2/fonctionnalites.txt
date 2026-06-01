@@ -24,7 +24,16 @@
     - critère 3 : (optionnel) Lorsqu'une case a été détectée comme un piège, elle s'affiche différemment dans le labyrinthe (en brun) ce qui permet au joueur d'en tenir compte ensuite.
   - responsables : MARTINATI Lucas
 
-- fonctionnalité 4 : Dégâts d'une bombe
+- fonctionnalité 4 : Attaque du joueur
+  - descriptif texte : Lorsque le joueur appuie sur une touche donnée (par défaut la touche espace), il exécute une attaque contre les monstres qui se trouvent à côté de lui.
+  - critères de validation :
+    - critère 1 : L'attaque a effectivement lieu quand le joueur appuie sur la touche.
+    - critère 2 : TOUS les monstres à côté du joueur prennent un point de dégât.
+    - critère 3 : TOUS les monstres éloignés du joueur ne subissent pas de dégâts.
+    - critère 4 : S'il n'y a aucun monstre autour du joueur, l'attaque à quand même lieu et empêche le déplacement du joueur, mais les monstres ne prennent pas de dégâts.
+  - responsables : GALLOIS Pierre
+
+- fonctionnalité 5 : Dégâts d'une bombe
   - descriptif texte : Lorsqu'une bombe explose, des langues de feu jaillissent horizontalement et verticalement et font des dégâts sur les cases atteintes.
   - critères de validation :
     - critère 1 : La bombe n'est déclenchée que quand son timer arrive à 0.
@@ -34,7 +43,7 @@
     - critère 5 : Tous les personnages traversés par les langues de feu subissent des dégâts.
   - responsables : MARTINATI Lucas
 
-- fonctionnalité 5 : Dépôt d'une bombe
+- fonctionnalité 6 : Dépôt d'une bombe
   - descriptif texte : Un héros attaque désormais en posant des bombes sur sa case. Les bombes déposées sont en nombre limité, leur timer est initialisé lorsqu'elles sont posées.
   - critères de validation :
     - critère 1 : Lorsqu'un héros décide d'attaquer, il pose une bombe sur sa case.
@@ -42,9 +51,9 @@
     - critère 3 : Lorsque le timer de la bombe arrive à 0, la bombe explose et effectue des dégâts.
     - critère 4 : Un héros dispose d'un nombre maximal de bombes posées simultanément : il ne peut pas poser plus de 3 bombes simultanément sur le labyrinthe.
     - critère 5 : Une fois qu'une bombe a explosé, le héros peut à nouveau poser une bombe en remplacement sur le labyrinthe.
-  - responsables : GALLOIS Pierre
+  - responsables : MARTINATI Lucas
 
-- fonctionnalité 6 : Murs friables
+- fonctionnalité 7 : Murs friables
   - descriptif texte : Certaines cases du labyrinthe sont des murs friables qui peuvent être détruits par des bombes.
   - critères de validation :
     - critère 1 : Un mur friable est un type de case du labyrinthe.

@@ -22,9 +22,14 @@ public class Piege implements Case {
         return new int[]{x, y};
     }
 
+    public boolean getIsRevele() {
+        return isRevele;
+    }
+
     @Override
     public void effet(Personnage perso) {
         System.out.println("Vous avez déclenché un piège ! Vous perdez 1 point de vie.");
+        this.isRevele = true;
         perso.addVie(-1);
     }
 }

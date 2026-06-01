@@ -16,6 +16,7 @@ public class Jeu implements moteurJeu.Jeu {
     private Labyrinthe laby;
     private Aventurier hero;
     private int[] fin;
+    private ArrayList<Case> cases = new ArrayList<>();
     /**
      * Constantes pour se déplacer en haut
      */
@@ -73,6 +74,13 @@ public class Jeu implements moteurJeu.Jeu {
 
     // ########## Méthodes ##########
 
+    public Case getCase(int x, int y) {
+        for (Case c : cases) {
+            if (c.getCoord()[0] == x && c.getCoord()[1] == y) return c;
+        }
+        return null;
+    }
+
     /**
      * Charge un jeu a partir d'un fichier texte.
      * Lit le fichier ligne par ligne pour construire le labyrinthe,
@@ -97,6 +105,7 @@ public class Jeu implements moteurJeu.Jeu {
                     case Labyrinthe.HERO -> hero = new Aventurier(j, i, 3);
                     case Labyrinthe.FIN -> this.fin = new int[]{j, i};
                     case Labyrinthe.VIDE -> {}
+                    case Labyrinthe.PIEGE -> cases.add(new Piege(j, i));
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
                 }
             }
@@ -215,6 +224,15 @@ public class Jeu implements moteurJeu.Jeu {
         try {
             verifierDeplacement(coord[0], coord[1], commandeUser);
             switch (this.getChar(coord[0], coord[1])) {
+                case Labyrinthe.PIEGE -> {
+                    for (Case c : cases) {
+                        if (c.getCoord()[0] == coord[0] && c.getCoord()[1] == coord[1]) {
+                            c.effet(this.hero);
+                            break;
+                        }
+                    }
+                    this.hero.setPos(coord[0], coord[1]);
+                }
                 case Labyrinthe.VIDE -> this.hero.setPos(coord[0], coord[1]);
                 case Labyrinthe.FIN -> {
                     this.hero.setPos(coord[0], coord[1]);
