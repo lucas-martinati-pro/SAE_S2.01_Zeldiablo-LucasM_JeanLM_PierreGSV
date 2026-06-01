@@ -12,6 +12,9 @@ public class Aventurier extends Personnage {
         else this.vie = 0;
     }
 
+    public void DepotBombe(){
+
+    }
      // ########## Méthodes ##########
 
      /**
