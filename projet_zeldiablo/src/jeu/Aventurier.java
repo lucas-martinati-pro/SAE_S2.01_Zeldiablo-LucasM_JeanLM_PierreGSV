@@ -1,31 +1,24 @@
 package jeu;
 
-public class Aventurier implements Personnage {
+public class Aventurier extends Personnage {
     // ########## Variables ##########
-    int x;
-    int y;
 
-    public Aventurier(int x, int y) {
+    public Aventurier(int x, int y, int vie) {
         if (x > 0) this.x = x;
         else this.x = 0;
         if (y > 0) this.y = y;
         else this.y = 0;
+        if (vie > 0) this.vie = vie;
+        else this.vie = 0;
     }
 
-    // ########## Getters/Setters ##########
-    public int getX() {
-        return x;
-    }
+     // ########## Méthodes ##########
 
-    public int getY() {
-        return y;
-    }
-
-    // ########## Méthodes ##########
-    public void setPos(int x, int y) {
-        if (x > 0) this.x = x;
-        else this.x = 0;
-        if (y > 0) this.y = y;
-        else this.y = 0;
-    }
+     /**
+      * Affiche les informations sur l'aventurier.
+      */
+     public String toString() {
+         System.out.println("Position : (" + x + ", " + y + ")");
+         System.out.println("Vie : " + vie);
+     }
 }

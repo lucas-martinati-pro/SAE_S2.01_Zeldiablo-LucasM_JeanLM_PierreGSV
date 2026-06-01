@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Classe principale gerant la logique du jeu Sokoban.
+ * Classe principale gerant la logique du jeu.
  */
 public class Jeu implements moteurJeu.Jeu {
     // ########## Variables ##########
@@ -74,7 +74,7 @@ public class Jeu implements moteurJeu.Jeu {
     // ########## Méthodes ##########
 
     /**
-     * Charge un jeu Sokoban a partir d'un fichier texte.
+     * Charge un jeu a partir d'un fichier texte.
      * Lit le fichier ligne par ligne pour construire le labyrinthe,
      * positionner les murs, les caisses, les depots et le personnage.
      *
