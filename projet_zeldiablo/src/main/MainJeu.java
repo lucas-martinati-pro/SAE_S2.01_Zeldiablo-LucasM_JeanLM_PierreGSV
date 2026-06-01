@@ -25,12 +25,21 @@ public class MainJeu {
      * @param args arguments du main
      */
     public static void main(String[] args) throws InterruptedException {
-        String laby = "laby/laby.txt";
+        String laby = "laby/niveaux/lvl1.txt";
         Scanner sc = new Scanner(System.in);
 
-        String choix = "laby/laby_simple.txt";
-        System.out.println("le choix du fichier dans le Main est '" + choix + "'");
-        if (choix != "") laby = choix;
+        System.out.println("Veuillez Choisir le niveau :" +
+                "\n 1, 2, 3, 4, 5, 6, 7, 8, 9, 10");
+
+        int choix = 1;
+        try {
+            choix = Integer.parseInt(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.err.println("Veuillez entrer un nombre valide !");
+            main(args);
+        }
+
+        laby = "laby/niveaux/lvl" + choix + ".txt";
         Jeu j = new Jeu();
 
         try {
