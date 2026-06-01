@@ -1,7 +1,7 @@
 package main;
 
 import zeldiablo.DessinLaby;
-import zeldiablo.FichierIncorrectException;
+import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.Jeu;
 import moteurJeu.Commande;
 import moteurJeu.MoteurGraphique;
