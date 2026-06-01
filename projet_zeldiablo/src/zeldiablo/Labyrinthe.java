@@ -36,7 +36,6 @@ public class Labyrinthe {
     public static final char MurFriable = '*';
 
 
-
     // ########## Constructeur ##########
 
     /**

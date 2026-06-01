@@ -34,6 +34,7 @@ public abstract class Personnage {
         return this.vie < 1;
     }
 
-    public void attaquer() {
+    public void attaquer(Personnage victime) {
+        if (!etreMort()) victime.addVie(-2);
     }
 }
