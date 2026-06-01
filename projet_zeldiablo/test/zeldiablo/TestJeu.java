@@ -430,4 +430,19 @@ public class TestJeu {
 
         assertFalse(jeu.etreFini());
     }
+
+    @Test
+    public  void test_Hero_mort(){
+        Aventurier hero = new Aventurier(0,0,0);
+
+        assertTrue(hero.etreMort());
+    }
+
+    @Test
+    public void test_EtreFini_HeroMort (){
+        Aventurier hero = new Aventurier(0,0,0);
+        jeu.setHero(hero);
+
+        assertTrue(jeu.etreFini());
+    }
 }
