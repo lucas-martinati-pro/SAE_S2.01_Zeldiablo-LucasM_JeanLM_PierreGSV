@@ -136,6 +136,26 @@ public class Jeu implements moteurJeu.Jeu {
         this.hero = hero;
     }
 
+    public void exploser(int x, int y) {
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (this.getChar(i, j) == Labyrinthe.HERO) this.hero.addVie(-2);
+                for (Personnage m : this.monstres) {
+                    if (m.getX() == i && m.getY() == j) {
+                        m.addVie(-2);
+                        break;
+                    }
+                }
+                for (Case c : cases) {
+                    int[] coordCase = c.getCoord();
+                    if (coordCase[0] == i && coordCase[1] == j) {
+                        detruire(i, j);
+                    }
+                }
+            }
+        }
+    }
+
     public void startMonsters() {
         Timer t = new Timer();
         t.schedule(new java.util.TimerTask() {
@@ -244,6 +264,25 @@ public class Jeu implements moteurJeu.Jeu {
             this.hero.attaquer();
         }
         return new int[] {x, y};
+    }
+
+    public void addBombe(int x, int y) {
+        cases.add(new Bombe(x, y));
+    }
+
+    public void monstreAttaque(int x, int y) {
+        int[][] rayon = {{x - 1, y - 1}, {x, y - 1}, {x + 1, y - 1},
+                {x - 1, y}, {x + 1, y},
+                {x -1, y + 1}, {x, y + 1}, {x + 1, y + 1}};
+        for (int[] coord : rayon) {
+            int xRayon = coord[0];
+            int yRayon = coord[1];
+            for (Personnage m : this.monstres) {
+                if (m.getX() == xRayon && m.getY() == yRayon) {
+                    this.hero.attaquer();
+                }
+            }
+        }
     }
 
     /**

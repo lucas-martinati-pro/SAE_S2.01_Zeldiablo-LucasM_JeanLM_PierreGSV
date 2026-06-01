@@ -1,6 +1,7 @@
 package zeldiablo;
 
 public class Aventurier extends Personnage {
+    private Jeu jeu;
 
 
     /**
@@ -13,8 +14,13 @@ public class Aventurier extends Personnage {
         super(x, y, vie);
     }
 
-    public void depotBombe() {
-    	// TODO : implémenter le dépôt de bombe
-    	System.out.println("Bombe déposée !");
+    public void setJeu(Jeu jeu) {
+        if (jeu != null) this.jeu = jeu;
+        else this.jeu = new Jeu();
+    }
+
+    public void attaquer() {
+        jeu.addBombe(x, y);
+        jeu.getCase(x, y).effet(this);
     }
 }

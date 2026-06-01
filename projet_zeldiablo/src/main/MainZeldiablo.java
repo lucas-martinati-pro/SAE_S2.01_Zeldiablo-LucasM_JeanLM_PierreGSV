@@ -62,7 +62,8 @@ public class MainZeldiablo {
                 "\n Haut (Z)" +
                 "\n Bas (S)" +
                 "\n Gauche (Q)" +
-                "\n Droite (D)\n");
+                "\n Droite (D)\n" +
+                " Space (Espace) : pour poser une bombe !");
 
         DessinLaby jeu = new DessinLaby(j);
 

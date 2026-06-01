@@ -66,6 +66,10 @@ public class DessinLaby implements DessinJeu {
                     g.setColor(Color.LIGHT_GRAY);
                     g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
                 }
+                case "Bombe" -> {
+                    g.setColor(Color.MAGENTA);
+                    g.fillOval(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                }
             }
         }
 
