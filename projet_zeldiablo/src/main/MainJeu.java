@@ -6,8 +6,6 @@ import jeu.FichierIncorrectException;
 import jeu.Jeu;
 import moteurJeu.Commande;
 import moteurJeu.MoteurGraphique;
-import personnage.DessinPerso;
-import personnage.JeuPerso;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -25,21 +23,24 @@ public class MainJeu {
      * @param args arguments du main
      */
     public static void main(String[] args) throws InterruptedException {
-        String laby = "laby/niveaux/lvl1.txt";
+        String laby;
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Veuillez Choisir le niveau :" +
                 "\n 1, 2, 3, 4, 5, 6, 7, 8, 9, 10");
 
-        int choix = 1;
-        try {
-            choix = Integer.parseInt(sc.nextLine());
-        } catch (NumberFormatException e) {
-            System.err.println("Veuillez entrer un nombre valide !");
-            main(args);
+        String choix = sc.nextLine();
+        int lvl = 1;
+        if (!choix.isEmpty()) {
+            try {
+                lvl = Integer.parseInt(choix);
+            } catch (NumberFormatException e) {
+                System.err.println("Veuillez entrer un nombre valide !");
+                main(args);
+            }
         }
 
-        laby = "laby/niveaux/lvl" + choix + ".txt";
+        laby = "laby/niveaux/lvl" + lvl + ".txt";
         Jeu j = new Jeu();
 
         try {
