@@ -138,20 +138,50 @@ public class Jeu implements moteurJeu.Jeu {
 
     public void exploser(int x, int y) {
         int degâts = -5;
-        for (int i = x - 1; i <= x + 1; i++) {
-            for (int j = y - 1; j <= y + 1; j++) {
-                if (this.hero.getX() == x && this.hero.getY() == y) this.hero.addVie(degâts);
-                for (Personnage m : this.monstres) {
-                    if (m.getX() == i && m.getY() == j) {
-                        m.addVie(degâts);
-                        verifMort();
-                        break;
-                    }
+        ArrayList<int[]> casesTouchees = new ArrayList<>();
+        casesTouchees.add(new int[]{x, y}); // Case centrale de la bombe
+
+        // 4 directions : Droite, Gauche, Bas, Haut
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        for (int[] dir : directions) {
+            for (int i = 1; i <= 3; i++) { // Extension jusqu'à 3 cases (langues de feu)
+                int cx = x + dir[0] * i;
+                int cy = y + dir[1] * i;
+
+                try {
+                    // Si on touche un mur incassable, la flamme s'arrête
+                    if (this.laby.getCase(cx, cy)) break;
+                } catch (Exception e) { break; } // Hors des limites
+
+                casesTouchees.add(new int[]{cx, cy});
+
+                // Si on détruit un objet comme un mur friable, la flamme s'arrête
+                Case c = getCase(cx, cy);
+                if (c instanceof MurFriable) break;
+            }
+        }
+
+        // Appliquer l'explosion et les dégâts sur les cases touchées
+        for (int[] coord : casesTouchees) {
+            int cx = coord[0];
+            int cy = coord[1];
+
+            // Dégâts au héro
+            if (this.hero.getX() == cx && this.hero.getY() == cy) this.hero.addVie(degâts);
+
+            // Dégâts aux monstres
+            for (Personnage m : this.monstres) {
+                if (m.getX() == cx && m.getY() == cy) {
+                    m.addVie(degâts);
+                    verifMort();
+                    break; // Un même monstre ne prend les dégâts qu'une fois
                 }
-                Case c = getCase(i, j);
-                if (c != null) {
-                    detruire(i, j);
-                }
+            }
+
+            // Détruire la case si destructible (Mur friable, autre bombe...)
+            Case c = getCase(cx, cy);
+            if (c != null) {
+                detruire(cx, cy);
             }
         }
     }
