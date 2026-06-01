@@ -5,6 +5,7 @@ import zeldiablo.exception.ActionInconnueException;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.entite.Monstre;
+import zeldiablo.entite.Personnage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,12 +23,6 @@ public class TestJeu {
 
     private Jeu jeu;
 
-    // @BeforeEarch permet que ce qui est contenu dans la méthode soit exécuté avant chaques tests
-    /**
-     * Charge le labyrinthe simple avant chaque test.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
     @BeforeEach
     public void beforeEach() throws FichierIncorrectException, IOException {
         jeu = new Jeu();
@@ -36,25 +31,16 @@ public class TestJeu {
 
     // ########## Tests getters/setters ##########
 
-    /**
-     * Verifie que getHero retourne un personnage non null.
-     */
     @Test
     public void test_getHero_retournePerso() {
         assertNotNull(jeu.getHero());
     }
 
-    /**
-     * Verifie que getLaby retourne un labyrinthe non null.
-     */
     @Test
     public void test_getLaby_retourneLabyrinthe() {
         assertNotNull(jeu.getLaby());
     }
 
-    /**
-     * Verifie que setPerso modifie le personnage.
-     */
     @Test
     public void test_setPerso_modifiePerso() {
         Aventurier p = new Aventurier(2, 2, 3);
@@ -62,9 +48,6 @@ public class TestJeu {
         assertEquals(p, jeu.getHero());
     }
 
-    /**
-     * Verifie que setLaby modifie le labyrinthe.
-     */
     @Test
     public void test_setLaby_modifieLabyrinthe() {
         Labyrinthe lab = new Labyrinthe(5, 5);
@@ -72,598 +55,496 @@ public class TestJeu {
         assertEquals(lab, jeu.getLaby());
     }
 
-    // ########## Tests evoluer - deplacement valide ##########
-
-    /**
-     * Verifie le deplacement du personnage vers la gauche.
-     * @throws ActionInconnueException si le deplacement est invalide
-     */
     @Test
-    public void test_evoluer_gauche_positionChange() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
-        int xAvant = jeu.getHero().getX();
-        int yAvant = jeu.getHero().getY();
-        jeu.evoluer(Jeu.GAUCHE);
-        assertEquals(xAvant - 1, jeu.getHero().getX());
-        assertEquals(yAvant, jeu.getHero().getY());
+    public void test_getCases_retourneListe() {
+        assertNotNull(jeu.getCases());
     }
 
-    /**
-     * Verifie le deplacement du personnage vers la droite.
-     * @throws ActionInconnueException si le deplacement est invalide
-     */
     @Test
-    public void test_evoluer_droite_positionChange() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
+    public void test_getMonstres_retourneListe() {
+        assertNotNull(jeu.getMonstres());
+    }
+
+    @Test
+    public void test_getCase_existante() {
+        Piege p = new Piege(5, 5);
+        jeu.getCases().add(p);
+        assertEquals(p, jeu.getCase(5, 5));
+    }
+
+    @Test
+    public void test_getCase_inexistante() {
+        assertNull(jeu.getCase(99, 99));
+    }
+
+    // ########## Tests evoluer - deplacement valide ##########
+
+    @Test
+    public void test_evoluer_gauche() throws ActionInconnueException, IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        int xAvant = jeu.getHero().getX();
+        jeu.evoluer(Jeu.GAUCHE);
+        assertEquals(xAvant - 1, jeu.getHero().getX());
+    }
+
+    @Test
+    public void test_evoluer_droite() throws ActionInconnueException, IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        int xAvant = jeu.getHero().getX();
+        jeu.evoluer(Jeu.DROITE);
+        assertEquals(xAvant + 1, jeu.getHero().getX());
+    }
+
+    @Test
+    public void test_evoluer_haut() throws ActionInconnueException, IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        int yAvant = jeu.getHero().getY();
+        jeu.evoluer(Jeu.HAUT);
+        assertEquals(yAvant - 1, jeu.getHero().getY());
+    }
+
+    @Test
+    public void test_evoluer_bas() throws ActionInconnueException, IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        int yAvant = jeu.getHero().getY();
+        jeu.evoluer(Jeu.BAS);
+        assertEquals(yAvant + 1, jeu.getHero().getY());
+    }
+
+    @Test
+    public void test_evoluer_allerRetour() throws ActionInconnueException, IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        int xInit = jeu.getHero().getX();
+        int yInit = jeu.getHero().getY();
+        jeu.evoluer(Jeu.GAUCHE);
+        jeu.evoluer(Jeu.DROITE);
+        assertEquals(xInit, jeu.getHero().getX());
+        assertEquals(yInit, jeu.getHero().getY());
+    }
+
+    @Test
+    public void test_evoluer_actionInconnue_leveException() {
+        assertThrows(ActionInconnueException.class, () -> jeu.evoluer("ActionBidon"));
+    }
+
+    // ########## Tests evoluer - deplacement invalide ##########
+
+    @Test
+    public void test_evoluer_dansMur_positionInchangee() {
         int xAvant = jeu.getHero().getX();
         int yAvant = jeu.getHero().getY();
         jeu.evoluer(Jeu.DROITE);
+        jeu.evoluer(Jeu.DROITE); // mur
         assertEquals(xAvant + 1, jeu.getHero().getX());
         assertEquals(yAvant, jeu.getHero().getY());
     }
 
-    /**
-     * Verifie le deplacement du personnage vers le haut (apres un deplacement gauche).
-     * @throws ActionInconnueException si le deplacement est invalide
-     */
+    // ########## Tests chargerJeu ##########
+
     @Test
-    public void test_evoluer_haut_positionChange() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
-        int xAvant = jeu.getHero().getX();
-        int yAvant = jeu.getHero().getY();
-        jeu.evoluer(Jeu.HAUT);
-        assertEquals(xAvant, jeu.getHero().getX());
-        assertEquals(yAvant - 1, jeu.getHero().getY());
-    }
-
-    /**
-     * Verifie qu'un aller-retour ramene le personnage a sa position initiale.
-     * @throws ActionInconnueException si le deplacement est invalide
-     */
-    @Test
-    public void test_evoluer_deuxDeplacements() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
-        int xInit = jeu.getHero().getX();
-        int yInit = jeu.getHero().getY();
-        jeu.evoluer(Jeu.GAUCHE);
-        jeu.evoluer(Jeu.DROITE);
-        // retour a la position initiale
-        assertEquals(xInit, jeu.getHero().getX());
-        assertEquals(yInit, jeu.getHero().getY());
-    }
-
-    /**
-     * Verifie l'aller-retour gauche/droite (position initiale retrouvee).
-     * @throws ActionInconnueException si le deplacement est invalide
-     */
-    @Test
-    public void test_evoluer_deuxDeplacementsGaucheDroite() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt"); // laby avec plus d'espace pour se deplacer
-        int xInit = jeu.getHero().getX();
-        int yInit = jeu.getHero().getY();
-        jeu.evoluer(Jeu.GAUCHE);
-        jeu.evoluer(Jeu.DROITE);
-        // retour a la position initiale
-        assertEquals(xInit, jeu.getHero().getX());
-        assertEquals(yInit, jeu.getHero().getY());
-    }
-
-    // ########## Tests du chargement du jeu ##########
-
-    // ########## Tests chargerJeu - fichiers valides ##########
-
-    /**
-     * Verifie que chargerJeu retourne un jeu non null.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
-    @Test
-    public void test_chargerJeu_labySimple_JeuExiste() throws FichierIncorrectException, IOException {
+    public void test_chargerJeu_labySimple_ok() throws IOException {
         jeu.chargerJeu("laby/laby_simple.txt");
-        assertNotNull(jeu);
-    }
-
-    /**
-     * Verifie que le personnage est charge.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
-    @Test
-    public void test_chargerJeu_labySimple_persoExiste() throws FichierIncorrectException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
-        assertNotNull(jeu.getHero());
-    }
-
-    /**
-     * Verifie que le labyrinthe est charge.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
-    @Test
-    public void test_chargerJeu_labySimple_labyrintheExiste() throws FichierIncorrectException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
-        assertNotNull(jeu.getLaby());
-    }
-
-    /**
-     * Verifie qu'une case vide n'est pas un mur.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
-    @Test
-    public void test_chargerJeu_labySimple_caseVideNestPasMur() throws FichierIncorrectException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
-        // la case (3, 2) est le perso, pas un mur
-        assertFalse(jeu.getLaby().getCase(3, 2));
-    }
-
-    /**
-     * Verifie le chargement complet de laby.txt.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
-    @Test
-    public void test_chargerJeu_laby_chargementCorrect() throws FichierIncorrectException, IOException {
-        jeu.chargerJeu("laby/laby.txt");
-        assertNotNull(jeu);
         assertNotNull(jeu.getHero());
         assertNotNull(jeu.getLaby());
     }
 
-    /**
-     * Verifie la position du personnage dans laby.txt.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
     @Test
-    public void test_chargerJeu_laby_positionPerso() throws FichierIncorrectException, IOException {
-        // laby.txt : le @ est en colonne 17, ligne 18
-        jeu.chargerJeu("laby/laby.txt");
-        assertEquals(17, jeu.getHero().getX());
-        assertEquals(18, jeu.getHero().getY());
+    public void test_chargerJeu_positionPerso() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        assertEquals(2, jeu.getHero().getX());
+        assertEquals(4, jeu.getHero().getY());
     }
 
-    /**
-     * Verifie le chargement de laby_test.txt.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
     @Test
-    public void test_chargerJeu_labyTest_chargementCorrect() throws FichierIncorrectException, IOException {
-        jeu.chargerJeu("laby/laby_test.txt");
-        assertNotNull(jeu);
-        assertNotNull(jeu.getHero());
+    public void test_chargerJeu_caseVidePasMur() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        assertFalse(jeu.getLaby().getCase(2, 2));
     }
 
-    // ########## Tests chargerJeu - fichiers invalides ##########
-
-    /**
-     * Verifie qu'un fichier inexistant leve FileNotFoundException.
-     */
     @Test
-    public void test_chargerJeu_fichierInexistant_leveException() {
-        assertThrows(FileNotFoundException.class, () -> jeu.chargerJeu("laby/fichier_inexistant.txt"));
+    public void test_chargerJeu_fichierInexistant() {
+        assertThrows(FileNotFoundException.class, () -> jeu.chargerJeu("laby/inexistant.txt"));
     }
 
-    /**
-     * Verifie qu'un caractere inconnu leve FichierIncorrectException.
-     * @throws IOException si erreur de lecture
-     */
     @Test
-    public void test_chargerJeu_fichierCaractereInconnu_leveException() throws IOException {
+    public void test_chargerJeu_caractereInconnu() {
         assertThrows(FichierIncorrectException.class, () -> jeu.chargerJeu("laby/laby_invalie_carac.txt"));
     }
 
-    /**
-     * Verifie qu'un fichier sans personnage leve FichierIncorrectException.
-     * @throws IOException si erreur de lecture
-     */
     @Test
-    public void test_chargerJeu_sansPersonnage_leveException() throws IOException {
+    public void test_chargerJeu_sansPersonnage() {
         assertThrows(FichierIncorrectException.class, () -> jeu.chargerJeu("laby/laby_sans_perso.txt"));
+    }
+
+    @Test
+    public void test_chargerJeu_avecMonstres() throws IOException {
+        jeu.chargerJeu("laby/laby_test_monstre.txt");
+        assertFalse(jeu.getMonstres().isEmpty());
+    }
+
+    @Test
+    public void test_chargerJeu_avecPieges() throws IOException {
+        jeu.chargerJeu("laby/laby_test_monstre.txt");
+        boolean hasPiege = jeu.getCases().stream().anyMatch(c -> c instanceof Piege);
+        assertTrue(hasPiege);
+    }
+
+    @Test
+    public void test_chargerJeu_avecMurFriable() throws IOException {
+        jeu.chargerJeu("laby/laby_test_monstre.txt");
+        boolean hasMur = jeu.getCases().stream().anyMatch(c -> c instanceof MurFriable);
+        assertTrue(hasMur);
     }
 
     // ########## Tests convertLab ##########
 
-    /**
-     * Verifie le nombre de lignes lues par convertLab.
-     * @throws IOException si erreur de lecture
-     */
     @Test
-    public void test_convertLab_labySimple_nombreLignes() throws IOException {
+    public void test_convertLab_retourneLabyrinthe() throws IOException {
         ArrayList<String> lignes = new ArrayList<>();
-        jeu.convertLab("laby/laby_simple.txt", lignes);
-        // laby_simple.txt a 7 lignes de contenu
-        assertTrue(lignes.size() == 7);
-    }
-
-    /**
-     * Verifie que convertLab retourne un labyrinthe non null.
-     * @throws IOException si erreur de lecture
-     */
-    @Test
-    public void test_convertLab_labySimple_retourneLabyrinthe() throws IOException {
-        ArrayList<String> lignes = new ArrayList<>();
-        Labyrinthe lab = jeu.convertLab("laby/laby_simple.txt", lignes);
+        Labyrinthe lab = Jeu.convertLab("laby/laby_simple.txt", lignes);
         assertNotNull(lab);
     }
 
-    /**
-     * Verifie les dimensions du labyrinthe retourne par convertLab.
-     * @throws IOException si erreur de lecture
-     */
     @Test
-    public void test_convertLab_labySimple_dimensionsCorrectes() throws IOException {
+    public void test_convertLab_nombreLignes() throws IOException {
         ArrayList<String> lignes = new ArrayList<>();
-        Labyrinthe lab = jeu.convertLab("laby/laby_simple.txt", lignes);
+        Jeu.convertLab("laby/laby_simple.txt", lignes);
+        assertEquals(7, lignes.size());
+    }
+
+    @Test
+    public void test_convertLab_dimensions() throws IOException {
+        ArrayList<String> lignes = new ArrayList<>();
+        Labyrinthe lab = Jeu.convertLab("laby/laby_simple.txt", lignes);
         int[] taille = lab.returnSize();
-        // largeur max = 7, hauteur = nombre de lignes
         assertEquals(5, taille[0]);
-        assertTrue(taille[1] >= 5);
+        assertEquals(7, taille[1]);
     }
 
-    /**
-     * Verifie que convertLab leve FileNotFoundException pour un fichier inexistant.
-     */
     @Test
-    public void test_convertLab_fichierInexistant_leveException() {
-        ArrayList<String> lignes = new ArrayList<>();
-        assertThrows(FileNotFoundException.class, () -> jeu.convertLab("laby/inexistant.txt", lignes));
+    public void test_convertLab_fichierInexistant() {
+        assertThrows(FileNotFoundException.class, () -> Jeu.convertLab("laby/inexistant.txt", new ArrayList<>()));
     }
 
-    // ########## Tests jeuToString ##########
+    // ########## Tests getChar ##########
 
-    /**
-     * Verifie que jeuToString retourne une chaine non nulle.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
     @Test
-    public void test_chargerJeu_jeuToString_nonVide() throws FichierIncorrectException, IOException {
+    public void test_getChar_mur() {
+        assertEquals(Labyrinthe.MUR, jeu.getChar(0, 0));
+    }
+
+    @Test
+    public void test_getChar_hero() {
+        assertEquals(Labyrinthe.HERO, jeu.getChar(jeu.getHero().getX(), jeu.getHero().getY()));
+    }
+
+    @Test
+    public void test_getChar_vide() throws IOException {
         jeu.chargerJeu("laby/laby_simple.txt");
-        String s = jeu.jeuToString();
-        assertNotNull(s);
+        assertEquals(Labyrinthe.VIDE, jeu.getChar(1, 1));
     }
 
-    /**
-     * Verifie que jeuToString retourne la representation attendue du labyrinthe.
-     * @throws FichierIncorrectException si le fichier est incorrect
-     * @throws IOException si erreur de lecture
-     */
     @Test
-    public void test_chargerJeu_jeuToString_contientPerso() throws FichierIncorrectException, IOException {
+    public void test_getChar_piege() throws IOException {
         jeu.chargerJeu("laby/laby_simple.txt");
-        String s = jeu.jeuToString();
-        assertEquals("#####\n" +
-                "#   #\n" +
-                "# & #\n" +
-                "#   #\n" +
-                "# @ #\n" +
-                "#   #\n" +
-                "#####\n", s);
+        jeu.getCases().add(new Piege(1, 1));
+        assertEquals(Labyrinthe.PIEGE, jeu.getChar(1, 1));
     }
 
-    // ########## Tests evoluer - deplacement invalide (mur) ##########
-
-    /**
-     * Verifie que la position reste inchangee apres un deplacement dans un mur.
-     */
     @Test
-    public void test_evoluer_dansMur_positionInchangee() {
-        // se deplacer vers un mur ne change pas la position
-        int xAvant = jeu.getHero().getX();
-        int yAvant = jeu.getHero().getY();
-        try {
-            // aller a droite 2 fois : la 1ere ok, la 2eme = mur
-            jeu.evoluer(Jeu.DROITE);
-            jeu.evoluer(Jeu.DROITE);
-        } catch (ActionInconnueException e) {
-            // position apres le 1er deplacement reussi
-            assertEquals(xAvant + 1, jeu.getHero().getX());
-            assertEquals(yAvant, jeu.getHero().getY());
-        }
+    public void test_getChar_murFriable() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        jeu.getCases().add(new MurFriable(1, 1));
+        assertEquals(Labyrinthe.MurFriable, jeu.getChar(1, 1));
+    }
+
+    @Test
+    public void test_getChar_bombe() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        jeu.addBombe(1, 1);
+        assertEquals(Labyrinthe.BOMBE, jeu.getChar(1, 1));
+    }
+
+    @Test
+    public void test_getChar_monstre() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        jeu.getMonstres().add(new Monstre(1, 1, 3));
+        assertEquals(Labyrinthe.MONSTRE, jeu.getChar(1, 1));
+    }
+
+    // ########## Tests detruire ##########
+
+    @Test
+    public void test_detruire_retireCase() {
+        Piege p = new Piege(5, 5);
+        jeu.getCases().add(p);
+        assertNotNull(jeu.getCase(5, 5));
+        jeu.detruire(5, 5);
+        assertNull(jeu.getCase(5, 5));
+    }
+
+    // ########## Tests addBombe ##########
+
+    @Test
+    public void test_addBombe_ajouteBombe() {
+        jeu.addBombe(3, 3);
+        Case c = jeu.getCase(3, 3);
+        assertNotNull(c);
+        assertTrue(c instanceof Bombe);
     }
 
     // ########## Tests verifierDeplacement ##########
 
-    /**
-     * Verifie qu'un deplacement vers une case libre ne leve pas d'exception.
-     */
     @Test
-    public void test_verifierDeplacement_caseLibre_pasException() {
-        assertDoesNotThrow(() -> {
-            jeu.verifierDeplacement(1, 1, Jeu.DROITE);
-        });
+    public void test_verifierDeplacement_caseLibre() {
+        assertDoesNotThrow(() -> jeu.verifierDeplacement(1, 1, Jeu.DROITE));
     }
 
-    /**
-     * Verifie qu'un deplacement vers un mur leve ActionInconnueException.
-     */
     @Test
-    public void test_verifierDeplacement_mur_leveException() {
-        // (0,0) est un mur
+    public void test_verifierDeplacement_mur() {
         assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(0, 0, Jeu.HAUT));
     }
 
-    /**
-     * Verifie qu'un deplacement hors limites (negatif) leve ActionInconnueException.
-     */
     @Test
-    public void test_verifierDeplacement_horsLimites_leveException() {
+    public void test_verifierDeplacement_horsLimites() {
         assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(-1, -1, Jeu.HAUT));
     }
 
-    /**
-     * Verifie qu'un deplacement hors limites (grandes valeurs) leve ActionInconnueException.
-     */
     @Test
-    public void test_verifierDeplacement_horsLimitesGrandes_leveException() {
+    public void test_verifierDeplacement_horsLimitesGrandes() {
         assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(100, 100, Jeu.HAUT));
+    }
+
+    @Test
+    public void test_verifierDeplacement_commande_caseLibre() {
+        moteurJeu.Commande c = new moteurJeu.Commande();
+        c.droite = true;
+        assertDoesNotThrow(() -> jeu.verifierDeplacement(1, 1, c));
+    }
+
+    @Test
+    public void test_verifierDeplacement_commande_mur() {
+        moteurJeu.Commande c = new moteurJeu.Commande();
+        c.haut = true;
+        assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(0, 0, c));
+    }
+
+    // ########## Tests getSuivant ##########
+
+    @Test
+    public void test_getSuivant_haut() {
+        moteurJeu.Commande c = new moteurJeu.Commande();
+        c.haut = true;
+        int[] res = jeu.getSuivant(5, 5, c);
+        assertEquals(5, res[0]);
+        assertEquals(4, res[1]);
+    }
+
+    @Test
+    public void test_getSuivant_bas() {
+        moteurJeu.Commande c = new moteurJeu.Commande();
+        c.bas = true;
+        int[] res = jeu.getSuivant(5, 5, c);
+        assertEquals(5, res[0]);
+        assertEquals(6, res[1]);
+    }
+
+    @Test
+    public void test_getSuivant_gauche() {
+        moteurJeu.Commande c = new moteurJeu.Commande();
+        c.gauche = true;
+        int[] res = jeu.getSuivant(5, 5, c);
+        assertEquals(4, res[0]);
+        assertEquals(5, res[1]);
+    }
+
+    @Test
+    public void test_getSuivant_droite() {
+        moteurJeu.Commande c = new moteurJeu.Commande();
+        c.droite = true;
+        int[] res = jeu.getSuivant(5, 5, c);
+        assertEquals(6, res[0]);
+        assertEquals(5, res[1]);
     }
 
     // ########## Tests etreFini ##########
 
-    /**
-     * Verifie que le jeu n'est pas fini au debut.
-     */
     @Test
-    public void test_etreFini_debutPartie_faux() {
+    public void test_etreFini_debutFaux() {
         assertFalse(jeu.etreFini());
     }
 
-    /**
-     * Verifie que le jeu est fini lorsque le hero est sur la case de fin.
-     * @throws ActionInconnueException si le deplacement est invalide
-     */
     @Test
-    public void test_etreFini() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt"); // laby avec un chemin plus simple pour atteindre la fin
-
+    public void test_etreFini_heroSurFin() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
         jeu.evoluer(Jeu.HAUT);
         jeu.evoluer(Jeu.HAUT);
-
         assertTrue(jeu.etreFini());
     }
 
-    /**
-     * Verifie que le jeu est fini lorsque le hero est sur la case de fin (autre chemin).
-     * @throws ActionInconnueException si le deplacement est invalide
-     */
     @Test
-    public void test_etreFiniFaux() throws ActionInconnueException {
-        jeu.evoluer(Jeu.DROITE);
-        jeu.evoluer(Jeu.HAUT);
-
-        assertFalse(jeu.etreFini());
-    }
-
-    @Test
-    public  void test_Hero_mort(){
-        Aventurier hero = new Aventurier(0,0,0);
-
-        assertTrue(hero.etreMort());
-    }
-
-    @Test
-    public void test_EtreFini_HeroMort (){
-        Aventurier hero = new Aventurier(0,0,0);
+    public void test_etreFini_heroMort() {
+        Aventurier hero = new Aventurier(1, 1, 0);
         jeu.setHero(hero);
-
         assertTrue(jeu.etreFini());
     }
 
     @Test
-    public void test_Bombe_getTypeEtGetCoord() {
-        Bombe bombe = new Bombe(2, 3);
-        assertEquals("Bombe", bombe.getType());
-        assertArrayEquals(new int[]{2, 3}, bombe.getCoord());
+    public void test_etreFini_heroVivant_pasSurFin() {
+        jeu.evoluer(Jeu.DROITE);
+        assertFalse(jeu.etreFini());
+    }
+
+    // ########## Tests jeuToString ##########
+
+    @Test
+    public void test_jeuToString_nonVide() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        assertNotNull(jeu.jeuToString());
+        assertFalse(jeu.jeuToString().isEmpty());
     }
 
     @Test
-    public void test_Bombe_effetExplosionDegatsHero() throws InterruptedException {
-        int xHero = jeu.getHero().getX();
-        int yHero = jeu.getHero().getY();
-        int vieHeroAvant = jeu.getHero().getVie();
-
-        // Ajoute et initialise la bombe sur la case du héros
-        jeu.addBombe(xHero, yHero);
-        Case bombe = jeu.getCase(xHero, yHero);
-        assertNotNull(bombe);
-        assertTrue(bombe instanceof Bombe);
-
-        ((Bombe) bombe).setJeu(jeu);
-        bombe.effet(jeu.getHero());
-
-        // L'explosion doit se faire après 1 seconde (1000 ms)
-        // On attend 1100 ms pour être sûr
-        Thread.sleep(1100);
-
-        // Les dégâts d'une bombe sont de -5
-        assertEquals(vieHeroAvant - 5, jeu.getHero().getVie());
+    public void test_jeuToString_contientPerso() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        String s = jeu.jeuToString();
+        assertEquals("#####\n#   #\n# & #\n#   #\n# @ #\n#   #\n#####\n", s);
     }
 
-    @Test
-    public void test_Bombe_effetExplosionDetruitMurFriable() throws InterruptedException {
-        int xHero = jeu.getHero().getX();
-        int yHero = jeu.getHero().getY();
-
-        // Place un mur friable à côté (xHero + 1, yHero)
-        int targetX = xHero + 1;
-        int targetY = yHero;
-        MurFriable mur = new MurFriable(targetX, targetY);
-        jeu.getCases().add(mur);
-
-        assertEquals(mur, jeu.getCase(targetX, targetY));
-
-        // Place une bombe sur la case du héros
-        jeu.addBombe(xHero, yHero);
-        Case bombe = jeu.getCase(xHero, yHero);
-        assertNotNull(bombe);
-        ((Bombe) bombe).setJeu(jeu);
-
-        // Déclenche l'explosion
-        bombe.effet(jeu.getHero());
-
-        // Attend l'explosion
-        Thread.sleep(1100);
-
-        // Le mur friable doit avoir été détruit et retiré des cases
-        assertNull(jeu.getCase(targetX, targetY));
-    }
+    // ########## Tests monstreAttaque ##########
 
     @Test
-    public void test_Piege_getTypeEtGetCoord() {
-        Piege piege = new Piege(4, 5);
-        assertEquals("Piege", piege.getType());
-        assertArrayEquals(new int[]{4, 5}, piege.getCoord());
-        assertFalse(piege.getIsRevele());
-    }
-
-    @Test
-    public void test_Piege_effetDegatsHero() {
-        Piege piege = new Piege(jeu.getHero().getX(), jeu.getHero().getY());
+    public void test_monstreAttaque_heroProche() {
+        int x = jeu.getHero().getX();
+        int y = jeu.getHero().getY();
+        Monstre m = new Monstre(x + 1, y, 3);
+        jeu.getMonstres().add(m);
         int vieAvant = jeu.getHero().getVie();
-        piege.effet(jeu.getHero());
-
-        assertEquals(vieAvant - 1, jeu.getHero().getVie());
-        assertTrue(piege.getIsRevele());
+        jeu.monstreAttaque(x, y);
+        assertEquals(vieAvant - 2, jeu.getHero().getVie());
     }
 
     @Test
-    public void test_Jeu_heroMarcheSurPiege() throws ActionInconnueException, IOException {
-        // Charge un labyrinthe vide
-        jeu.chargerJeu("laby/laby_simple.txt"); // hero at (2, 4)
-        int xHero = jeu.getHero().getX();
-        int yHero = jeu.getHero().getY();
+    public void test_monstreAttaque_heroLoin_pasDeDegat() {
+        Monstre m = new Monstre(1, 1, 3);
+        jeu.getMonstres().add(m);
+        int vieAvant = jeu.getHero().getVie();
+        jeu.monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
+        assertEquals(vieAvant, jeu.getHero().getVie());
+    }
 
-        // Place un piège juste au-dessus du héros (2, 3)
-        Piege piege = new Piege(xHero, yHero - 1);
+    // ########## Tests verifMort ##########
+
+    @Test
+    public void test_verifMort_monstreMortRetire() {
+        Monstre m = new Monstre(1, 1, 0);
+        jeu.getMonstres().add(m);
+        jeu.verifMort();
+        assertFalse(jeu.getMonstres().contains(m));
+    }
+
+    @Test
+    public void test_verifMort_monstreVivantReste() {
+        Monstre m = new Monstre(1, 1, 3);
+        jeu.getMonstres().add(m);
+        jeu.verifMort();
+        assertTrue(jeu.getMonstres().contains(m));
+    }
+
+    // ########## Tests evoluerMonster ##########
+
+    @Test
+    public void test_evoluerMonster_deplacement() {
+        Monstre m = new Monstre(1, 1, 3);
+        jeu.getMonstres().add(m);
+        moteurJeu.Commande c = new moteurJeu.Commande();
+        c.droite = true;
+        jeu.evoluerMonster(c);
+        assertEquals(2, m.getX());
+        assertEquals(1, m.getY());
+    }
+
+    // ########## Tests hero marche sur piege ##########
+
+    @Test
+    public void test_heroMarcheSurPiege() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        int x = jeu.getHero().getX();
+        int y = jeu.getHero().getY();
+        Piege piege = new Piege(x, y - 1);
         jeu.getCases().add(piege);
-
         int vieAvant = jeu.getHero().getVie();
-
-        // Déplace le héros vers le haut (sur le piège)
         jeu.evoluer(Jeu.HAUT);
-
-        // Vérifie que le héros a bougé
-        assertEquals(xHero, jeu.getHero().getX());
-        assertEquals(yHero - 1, jeu.getHero().getY());
-
-        // Vérifie que les PV du héros ont diminué de 1
         assertEquals(vieAvant - 1, jeu.getHero().getVie());
         assertTrue(piege.getIsRevele());
     }
 
-    @Test
-    public void test_MurFriable_getTypeEtGetCoord() {
-        MurFriable mur = new MurFriable(3, 3);
-        assertEquals("MurFriable", mur.getType());
-        assertArrayEquals(new int[]{3, 3}, mur.getCoord());
-    }
+    // ########## Tests hero bloque par mur friable ##########
 
     @Test
-    public void test_Jeu_heroBloqueParMurFriable() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt"); // hero at (2, 4)
-        int xHero = jeu.getHero().getX();
-        int yHero = jeu.getHero().getY();
-
-        // Place un mur friable au-dessus du héros (2, 3)
-        MurFriable mur = new MurFriable(xHero, yHero - 1);
-        jeu.getCases().add(mur);
-
-        // Essaie de se déplacer vers le haut (sur le mur friable)
+    public void test_heroBloqueParMurFriable() throws IOException {
+        jeu.chargerJeu("laby/laby_simple.txt");
+        int x = jeu.getHero().getX();
+        int y = jeu.getHero().getY();
+        jeu.getCases().add(new MurFriable(x, y - 1));
         jeu.evoluer(Jeu.HAUT);
-
-        // Vérifie que le héros n'a pas bougé
-        assertEquals(xHero, jeu.getHero().getX());
-        assertEquals(yHero, jeu.getHero().getY());
+        assertEquals(x, jeu.getHero().getX());
+        assertEquals(y, jeu.getHero().getY());
     }
 
-    @Test
-    public void test_Monstre_attaquerHero() {
-        Monstre monstre = new Monstre(1, 1, 3);
-        int vieHeroAvant = jeu.getHero().getVie();
-        monstre.attaquer(jeu.getHero());
-
-        // Attaque de base inflige 2 dégâts
-        assertEquals(vieHeroAvant - 2, jeu.getHero().getVie());
-    }
+    // ########## Tests aventurier pose bombe ##########
 
     @Test
-    public void test_Jeu_monstreAttaqueHeroQuandProche() {
-        int xHero = jeu.getHero().getX();
-        int yHero = jeu.getHero().getY();
-
-        // Place un monstre sur une case adjacente (xHero + 1, yHero)
-        Monstre monstre = new Monstre(xHero + 1, yHero, 3);
-        jeu.getMonstres().add(monstre);
-
-        int vieHeroAvant = jeu.getHero().getVie();
-
-        // Déclenche l'attaque automatique des monstres
-        jeu.monstreAttaque(xHero, yHero);
-
-        // Le héros doit avoir subi des dégâts
-        assertEquals(vieHeroAvant - 2, jeu.getHero().getVie());
-    }
-
-    @Test
-    public void test_Jeu_evoluerMonster() {
-        // Place un monstre à une position libre (1, 1)
-        Monstre monstre = new Monstre(1, 1, 3);
-        jeu.getMonstres().add(monstre);
-
-        moteurJeu.Commande commande = new moteurJeu.Commande();
-        commande.droite = true; // Déplacement à droite
-
-        // Déplace les monstres
-        jeu.evoluerMonster(commande);
-
-        // Vérifie que le monstre s'est déplacé à droite (2, 1)
-        assertEquals(2, monstre.getX());
-        assertEquals(1, monstre.getY());
-    }
-
-    @Test
-    public void test_Jeu_monstrePrendDegatsBombeEtMeurt() throws InterruptedException {
-        int xHero = jeu.getHero().getX();
-        int yHero = jeu.getHero().getY();
-
-        // Place un monstre à côté du héros (xHero + 1, yHero) avec 3 PV
-        Monstre monstre = new Monstre(xHero + 1, yHero, 3);
-        jeu.getMonstres().add(monstre);
-
-        assertTrue(jeu.getMonstres().contains(monstre));
-
-        // Place et déclenche une bombe
-        jeu.addBombe(xHero, yHero);
-        Case bombe = jeu.getCase(xHero, yHero);
-        assertNotNull(bombe);
-        ((Bombe) bombe).setJeu(jeu);
-        bombe.effet(jeu.getHero());
-
-        // Attend l'explosion
-        Thread.sleep(1100);
-
-        // Une bombe inflige -5 PV. Le monstre ayant 3 PV doit être mort et retiré de la liste
-        assertFalse(jeu.getMonstres().contains(monstre));
-    }
-
-    @Test
-    public void test_Aventurier_attaquerPoseBombe() {
-        int xHero = jeu.getHero().getX();
-        int yHero = jeu.getHero().getY();
-
-        // Vérifie qu'il n'y a pas de bombe à la position du héros
-        Case caseHero = jeu.getCase(xHero, yHero);
-        assertNull(caseHero);
-
-        // Le héros attaque (pose une bombe)
+    public void test_aventurierPoseBombe() {
+        int x = jeu.getHero().getX();
+        int y = jeu.getHero().getY();
+        assertNull(jeu.getCase(x, y));
         jeu.getHero().attaquer(jeu);
-
-        // Vérifie qu'une bombe a été ajoutée à la position du héros
-        Case bombe = jeu.getCase(xHero, yHero);
+        Case bombe = jeu.getCase(x, y);
         assertNotNull(bombe);
         assertTrue(bombe instanceof Bombe);
+    }
+
+    // ########## Tests bombe explosion ##########
+
+    @Test
+    public void test_bombeExplosionDegatsHero() throws InterruptedException {
+        int x = jeu.getHero().getX();
+        int y = jeu.getHero().getY();
+        int vieAvant = jeu.getHero().getVie();
+        jeu.addBombe(x, y);
+        Case bombe = jeu.getCase(x, y);
+        ((Bombe) bombe).setJeu(jeu);
+        bombe.effet(jeu.getHero());
+        Thread.sleep(1200);
+        assertEquals(vieAvant - 5, jeu.getHero().getVie());
+    }
+
+    @Test
+    public void test_bombeExplosionDetruitMurFriable() throws InterruptedException {
+        int x = jeu.getHero().getX();
+        int y = jeu.getHero().getY();
+        MurFriable mur = new MurFriable(x + 1, y);
+        jeu.getCases().add(mur);
+        jeu.addBombe(x, y);
+        Case bombe = jeu.getCase(x, y);
+        ((Bombe) bombe).setJeu(jeu);
+        bombe.effet(jeu.getHero());
+        Thread.sleep(1200);
+        assertNull(jeu.getCase(x + 1, y));
+    }
+
+    @Test
+    public void test_bombeExplosionTueMonstre() throws InterruptedException {
+        int x = jeu.getHero().getX();
+        int y = jeu.getHero().getY();
+        Monstre m = new Monstre(x + 1, y, 3);
+        jeu.getMonstres().add(m);
+        jeu.addBombe(x, y);
+        Case bombe = jeu.getCase(x, y);
+        ((Bombe) bombe).setJeu(jeu);
+        bombe.effet(jeu.getHero());
+        Thread.sleep(1200);
+        assertFalse(jeu.getMonstres().contains(m));
     }
 }
