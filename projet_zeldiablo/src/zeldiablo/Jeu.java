@@ -319,4 +319,20 @@ public class Jeu implements moteurJeu.Jeu {
             throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
         }
     }
+
+    /**
+     * Genere une representation textuelle du jeu sous forme de chaine de caracteres.
+     *
+     * @return la representation textuelle du jeu
+     */
+    public String jeuToString() {
+        String res = "";
+        int[] coordonnee = this.laby.returnSize();
+
+        for (int y = 0; y < coordonnee[1]; y++) {
+            for (int x = 0; x < coordonnee[0]; x++) res += this.getChar(x, y);
+            res += "\n";
+        }
+        return res;
+    }
 }
