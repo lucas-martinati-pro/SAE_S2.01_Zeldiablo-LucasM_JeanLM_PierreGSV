@@ -102,7 +102,7 @@ public class Jeu implements moteurJeu.Jeu {
             for (int j = 0; j < line.length(); j++) {
                 switch (line.charAt(j)) {
                     case Labyrinthe.MUR -> lab.addMur(j, i);
-                    case Labyrinthe.HERO -> hero = new Aventurier(j, i, 3);
+                    case Labyrinthe.HERO -> hero = new Aventurier(j, i, 5);
                     case Labyrinthe.FIN -> this.fin = new int[]{j, i};
                     case Labyrinthe.VIDE -> {}
                     case Labyrinthe.PIEGE -> cases.add(new Piege(j, i));
