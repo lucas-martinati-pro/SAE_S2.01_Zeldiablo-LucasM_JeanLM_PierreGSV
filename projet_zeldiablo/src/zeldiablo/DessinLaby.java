@@ -19,44 +19,48 @@ public class DessinLaby implements DessinJeu {
     public void dessiner(BufferedImage image) {
         Graphics2D g = (Graphics2D) image.getGraphics();
 
-        String game = jeu.jeuToString();
+        int[] coordonnee = jeu.getLaby().returnSize();
 
-        int x = 0, y = 0;
-        for (char c : game.toCharArray()) {
-            switch (c) {
-                case Labyrinthe.FIN -> {
-                    g.setColor(Color.GREEN);
-                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
-                }
-                case Labyrinthe.MUR -> {
-                    g.setColor(Color.BLACK);
-                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
-                }
-                case Labyrinthe.VIDE -> {
-                    g.setColor(Color.WHITE);
-                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
-                }
-                case Labyrinthe.HERO -> {
-                    g.setColor(Color.BLUE);
-                    g.fillOval(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
-                } case Labyrinthe.PIEGE -> {
-                    if (((Piege) jeu.getCase(x, y)).getIsRevele()) {
-                        g.setColor(Color.ORANGE);
-                        g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
-                    } else {
-                        g.setColor(Color.WHITE);
-                        g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
+        for (int y = 0; y < coordonnee[1]; y++) {
+            for (int x = 0; x < coordonnee[0]; x++) {
+                switch (jeu.getChar(x, y)) {
+                    case Labyrinthe.FIN -> {
+                        g.setColor(Color.GREEN);
+                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
                     }
-                } case Labyrinthe.MurFriable -> {
-                    g.setColor(Color.LIGHT_GRAY);
-                    g.fillRect(x*TAILLE, y*TAILLE, TAILLE, TAILLE);
-                }
-                case '\n' -> {
-                    y++;
-                    x = -1;
+                    case Labyrinthe.MUR -> {
+                        g.setColor(Color.BLACK);
+                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    }
+                    case Labyrinthe.VIDE -> {
+                        g.setColor(Color.WHITE);
+                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    }
+                    case Labyrinthe.HERO -> {
+                        g.setColor(Color.BLUE);
+                        g.fillOval(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    }
                 }
             }
-            x++;
+        }
+        for (Case c : jeu.getCases()) {
+            int x = c.getCoord()[0];
+            int y = c.getCoord()[1];
+            switch (c.getType()) {
+                case "Piege" -> {
+                    if (((Piege) c).getIsRevele()) {
+                        g.setColor(Color.ORANGE);
+                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    } else {
+                        g.setColor(Color.WHITE);
+                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    }
+                }
+                case "MurFriable" -> {
+                    g.setColor(Color.LIGHT_GRAY);
+                    g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                }
+            }
         }
     }
 }

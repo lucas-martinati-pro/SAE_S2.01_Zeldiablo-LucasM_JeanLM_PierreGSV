@@ -15,7 +15,7 @@ import static arkanoidJeu.ArkanoidDessin.TAILLE;
 /**
  * Classe principale permettant de lancer le jeu
  */
-public class MainJeu {
+public class MainZeldiablo {
     /**
      * main
      *

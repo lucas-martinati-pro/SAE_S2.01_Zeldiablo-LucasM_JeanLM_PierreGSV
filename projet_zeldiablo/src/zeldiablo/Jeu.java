@@ -78,6 +78,10 @@ public class Jeu implements moteurJeu.Jeu {
         return this.laby;
     }
 
+    public ArrayList<Case> getCases() {
+        return cases;
+    }
+
     // ########## Méthodes ##########
 
     public Case getCase(int x, int y) {
@@ -163,7 +167,7 @@ public class Jeu implements moteurJeu.Jeu {
      * @param y la ligne a verifier
      * @return le caractere correspondant a l'element a cette position
      */
-    private char getChar(int x, int y) {
+    public char getChar(int x, int y) {
         if (this.laby.getCase(x, y)) return Labyrinthe.MUR;
         else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
         else if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
@@ -185,22 +189,6 @@ public class Jeu implements moteurJeu.Jeu {
 
     public void detruire(int x, int y) {
         this.cases.remove(getCase(x, y));
-    }
-
-    /**
-     * Genere une representation textuelle du jeu sous forme de chaine de caracteres.
-     *
-     * @return la representation textuelle du jeu
-     */
-    public String jeuToString() {
-        String res = "";
-        int[] coordonnee = this.laby.returnSize();
-
-        for (int y = 0; y < coordonnee[1]; y++) {
-            for (int x = 0; x < coordonnee[0]; x++) res += this.getChar(x, y);
-            res += "\n";
-        }
-        return res;
     }
 
     /**
