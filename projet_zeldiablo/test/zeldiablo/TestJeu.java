@@ -5,7 +5,6 @@ import zeldiablo.exception.ActionInconnueException;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.entite.Monstre;
-import zeldiablo.entite.Personnage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -453,8 +452,6 @@ public class TestJeu {
         assertTrue(jeu.etreFini());
     }
 
-<<<<<<< HEAD
-=======
     @Test
     public void test_Bombe_getTypeEtGetCoord() {
         Bombe bombe = new Bombe(2, 3);
@@ -669,5 +666,4 @@ public class TestJeu {
         assertNotNull(bombe);
         assertTrue(bombe instanceof Bombe);
     }
->>>>>>> 19c7d9a1673c903e390a00a6644e754e41e74425
 }

@@ -31,6 +31,7 @@ public class Jeu implements moteurJeu.Jeu {
     private ArrayList<Personnage> monstres = new ArrayList<>();
     private int[] fin;
     private ArrayList<Case> cases = new ArrayList<>();
+    private boolean recharger = true;
     /**
      * Constantes pour se déplacer en haut
      */
@@ -242,7 +243,18 @@ public class Jeu implements moteurJeu.Jeu {
         if (commandeUser.gauche) x--;
         if (commandeUser.droite) x++;
         if (commandeUser.space) {
-            if (this.getCase(this.hero.getX(), this.hero.getY()) == null) this.hero.attaquer(this);
+            if (recharger && this.getCase(this.hero.getX(), this.hero.getY()) == null) { // temps de recharge de la bombe pour éviter les spams
+                recharger = false;
+                this.hero.attaquer(this);
+                new Thread (() -> { // Obliger de créer un nouveau Thread car sinon ça bloque le jeu pendant 2 secondes, et c'est pas très drôle
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    recharger = true;
+                }).start();
+            }
         }
         return new int[] {x, y};
     }
