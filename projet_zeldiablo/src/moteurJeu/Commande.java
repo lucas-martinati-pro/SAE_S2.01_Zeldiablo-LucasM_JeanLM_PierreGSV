@@ -15,6 +15,7 @@ public class Commande {
 	public boolean droite;
 	public boolean haut;
 	public boolean bas;
+	public boolean space;
 
 	public Commande() {}
 
@@ -28,5 +29,6 @@ public class Commande {
 		this.haut = commandeACopier.haut;
 		this.gauche = commandeACopier.gauche;
 		this.droite = commandeACopier.droite;
+		this.space = commandeACopier.space;
 	}
 }

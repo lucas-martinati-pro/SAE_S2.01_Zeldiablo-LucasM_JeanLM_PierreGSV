@@ -34,6 +34,12 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public static final String DROITE = "Droite";
 
+    /**
+    * Constantes pour attaquer
+    */
+
+    public static final String SPACE = "Space";
+
     // ########## Getters/Setters ##########
 
     /**
@@ -193,6 +199,7 @@ public class Jeu implements moteurJeu.Jeu {
         if (commandeUser.bas) y++;
         if (commandeUser.gauche) x--;
         if (commandeUser.droite) x++;
+        if (commandeUser.space) x++; // pour attaquer (x++ temporaire pour bien voir sont fonctionnement)
         return new int[] {x, y};
     }
 
@@ -266,6 +273,7 @@ public class Jeu implements moteurJeu.Jeu {
             case BAS -> commandeUser.bas = true;
             case GAUCHE -> commandeUser.gauche = true;
             case DROITE -> commandeUser.droite = true;
+            case SPACE -> commandeUser.space = true;
             default -> throw new ActionInconnueException("L'action " + action + " n'est pas reconnue.");
         }
         evoluer(commandeUser);
