@@ -83,11 +83,6 @@ public class DessinLaby implements DessinJeu {
             g.fillOval(m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE);
         }
 
-        for (int[] coord : jeu.getCasesExplosion()) {
-            g.setColor(new Color(255, 140, 0, 180));
-            g.fillRect(coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE);
-        }
-
         // Mettre le héros après les monstres pour qu'il soit dessiné par-dessus
         Personnage hero = jeu.getHero();
         if (hero != null) {

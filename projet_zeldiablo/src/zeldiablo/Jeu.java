@@ -163,7 +163,7 @@ public class Jeu implements moteurJeu.Jeu {
                            monstreAttaque(hero.getX(), hero.getY()); // il attaque dès qu'il peut
                            evoluerMonster(commandeUser);
                        }
-                   }, new Long(300), new Long(300)); // 300ms d'attente entre chaque saut
+                   }, new Long(100), new Long(100)); // 100ms d'attente entre chaque saut
     }
 
     /**
@@ -314,29 +314,29 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     public void evoluerMonster(Commande commandeUser) {
-        for (Personnage m : this.monstres) {
-            int[] coord = getSuivant(m.getX(), m.getY(), commandeUser);
-            try {
-                verifierDeplacement(coord[0], coord[1], commandeUser);
-                switch (this.getChar(coord[0], coord[1])) {
-                    case Labyrinthe.PIEGE -> {
-                        for (Case c : cases) {
-                            int[] coordCase = c.getCoord();
-                            if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
-                                if (m.getX() != coord[0] || m.getY() != coord[1]) {
-                                    c.effet(m);
-                                    verifMort();
-                                }
-                                break;
+        int index = (int) Math.floor(Math.random() * this.monstres.size());
+        Personnage m = this.monstres.get(index);
+        int[] coord = getSuivant(m.getX(), m.getY(), commandeUser);
+        try {
+            verifierDeplacement(coord[0], coord[1], commandeUser);
+            switch (this.getChar(coord[0], coord[1])) {
+                case Labyrinthe.PIEGE -> {
+                    for (Case c : cases) {
+                        int[] coordCase = c.getCoord();
+                        if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
+                            if (m.getX() != coord[0] || m.getY() != coord[1]) {
+                                c.effet(m);
+                                verifMort();
                             }
+                            break;
                         }
-                        m.setPos(coord[0], coord[1]);
                     }
-                    case Labyrinthe.VIDE, Labyrinthe.FIN -> m.setPos(coord[0], coord[1]);
+                    m.setPos(coord[0], coord[1]);
                 }
-            } catch (ActionInconnueException e) {
-                // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
+                case Labyrinthe.VIDE, Labyrinthe.FIN -> m.setPos(coord[0], coord[1]);
             }
+        } catch (ActionInconnueException e) {
+            // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
         }
     }
 
