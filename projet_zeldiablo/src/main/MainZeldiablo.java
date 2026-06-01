@@ -74,6 +74,36 @@ public class MainZeldiablo {
 
         jeu.dessiner(new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB));
 
+        boolean fini = true;
+        while (fini) {
+            fini = true;
+            moteur = null;
+            String path = "laby/niveaux/lvl";
+            if (j.etreFini() && !(j.getHero().etreMort())) {
+                fini = false;
+                System.out.println("next level");
+                lvl++;
+
+                path += lvl + ".txt";
+
+                try {
+                    j.chargerJeu(path);
+                }catch (IOException e) {
+                    System.err.println("Une erreur s'est produite lors de la lecture du fichier : " + e.getMessage());
+                }catch (FichierIncorrectException e) {
+                    System.err.println("Le fichier n'est pas valide, veuillez réessayer : " + e.getMessage());
+
+                }
+
+                j.getHero().addVie(5);
+
+                size = j.getLaby().returnSize();
+            } else {
+                fini = true;
+            }
+
+        }
+
         /**
         while (!j.etreFini()) {
             c.reset();
