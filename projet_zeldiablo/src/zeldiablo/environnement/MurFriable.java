@@ -1,4 +1,8 @@
-package zeldiablo;
+package zeldiablo.environnement;
+
+import zeldiablo.entite.Personnage;
+
+import zeldiablo.entite.Personnage;
 
 public class MurFriable implements Case {
     private int x;

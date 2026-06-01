@@ -1,4 +1,4 @@
-package zeldiablo;
+package zeldiablo.environnement;
 
 /**
  * Classe representant le labyrinthe du jeu.
@@ -39,7 +39,6 @@ public class Labyrinthe {
      */
     public static final char BOMBE = 'B';
 
-
     // ########## Constructeur ##########
 
     /**
@@ -56,7 +55,6 @@ public class Labyrinthe {
     }
 
     // ########## Méthodes ##########
-
     /**
      * Ajoute un mur a la position (x, y) dans le labyrinthe.
      *

@@ -1,8 +1,11 @@
-package zeldiablo;
+package zeldiablo.entite;
+
+import zeldiablo.environnement.Case;
+import zeldiablo.environnement.Bombe;
+import zeldiablo.Jeu;
 
 public class Aventurier extends Personnage {
     private Jeu jeu;
-
 
     /**
      * Créer un avanturier

@@ -1,7 +1,7 @@
 package main;
 
 import zeldiablo.DessinLaby;
-import zeldiablo.FichierIncorrectException;
+import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.Jeu;
 import moteurJeu.Commande;
 import moteurJeu.MoteurGraphique;
@@ -55,8 +55,6 @@ public class MainZeldiablo {
         j.startMonsters();
 
         Commande c = new Commande();
-
-        int nbDéplacements = 0;
 
         System.out.println("Voici les actions disponibles :" +
                 "\n Haut (Z)" +

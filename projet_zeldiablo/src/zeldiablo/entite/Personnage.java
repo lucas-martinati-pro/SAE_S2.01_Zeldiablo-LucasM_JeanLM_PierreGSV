@@ -1,4 +1,4 @@
-package zeldiablo;
+package zeldiablo.entite;
 
 public abstract class Personnage {
     protected int x;
@@ -11,6 +11,10 @@ public abstract class Personnage {
 
     public int getY() {
         return y;
+    }
+
+    public int getVie() {
+        return vie;
     }
 
     public Personnage(int x, int y, int vie) {

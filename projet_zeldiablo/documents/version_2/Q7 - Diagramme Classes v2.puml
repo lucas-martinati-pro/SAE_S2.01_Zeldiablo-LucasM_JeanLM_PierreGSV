@@ -1,0 +1,61 @@
+@startuml
+title Q7 - Diagramme Classes v2
+
+class Jeu {
+    - hero : Aventurier
+    - monstres : ArrayList<Monstre>
+    - laby : Labyrinthe
+    + getHero() : Aventurier
+    + getLaby() : Labyrinthe
+    + chargerJeu(fichier : String)
+    + deplacerHero()
+}
+class DessinLaby {
+    - jeu : Jeu
+    + dessiner(image : BufferedImage)
+
+abstract class entite.Personnage {
+    # x : int
+    # y : int
+    # pv : int
+    + getX() : int
+    + getY() : int
+    + attaquer()
+}
+class entite.Aventurier extends entite.Personnage {
+    + poserBombe()
+}
+class entite.Monstre extends entite.Personnage {
+    + deplacerVersAventurier()
+}
+class environmnement.Labyrinthe {
+    - plateau : Case[][]
+    + getCase(x : int, y : int) : Case
+}
+class environmnement.Case {
+    - x : int
+    - y : int
+    - estMur : boolean
+    + estMur() : boolean
+}
+class environmnement.MurFriable extends environmnement.Case {
+    + detruire()
+}
+class environmnement.Piege extends environmnement.Case {
+    + declencher()
+}
+class environmnement.Bombe {
+    - x : int
+    - y : int
+    - delay : int
+    + exploser()
+}
+class exception.ActionInconnueException
+class exception.FichierIncorrectException
+
+Jeu --> Aventurier : possède
+Jeu --> Monstre : possède
+Jeu --> Labyrinthe : contient
+Labyrinthe "1" *-- "*" Case : composé de
+Aventurier ..> Bombe : utilise
+@enduml

@@ -1,5 +1,16 @@
 package zeldiablo;
 
+import zeldiablo.environnement.Case;
+import zeldiablo.entite.Monstre;
+import zeldiablo.environnement.Bombe;
+import zeldiablo.entite.Personnage;
+import zeldiablo.environnement.Labyrinthe;
+import zeldiablo.entite.Aventurier;
+import zeldiablo.exception.ActionInconnueException;
+import zeldiablo.exception.FichierIncorrectException;
+import zeldiablo.environnement.Piege;
+import zeldiablo.environnement.MurFriable;
+
 import moteurJeu.Commande;
 
 import java.io.BufferedReader;
@@ -19,7 +30,6 @@ public class Jeu implements moteurJeu.Jeu {
     private Aventurier hero;
     private ArrayList<Personnage> monstres = new ArrayList<>();
     private int[] fin;
-    private int sense = 0;
     private ArrayList<Case> cases = new ArrayList<>();
     /**
      * Constantes pour se déplacer en haut
@@ -136,27 +146,8 @@ public class Jeu implements moteurJeu.Jeu {
         this.hero = hero;
     }
 
-    public void exploser(int x, int y) {
-        int degâts = -5;
-        for (int i = x - 1; i <= x + 1; i++) {
-            for (int j = y - 1; j <= y + 1; j++) {
-                if (this.hero.getX() == x && this.hero.getY() == y) this.hero.addVie(degâts);
-                for (Personnage m : this.monstres) {
-                    if (m.getX() == i && m.getY() == j) {
-                        m.addVie(degâts);
-                        verifMort();
-                        break;
-                    }
-                }
-                Case c = getCase(i, j);
-                if (c != null) {
-                    detruire(i, j);
-                }
-            }
-        }
-    }
-
     public void startMonsters() {
+
         Timer t = new Timer();
         t.schedule(new java.util.TimerTask() {
                        @Override
@@ -169,9 +160,10 @@ public class Jeu implements moteurJeu.Jeu {
                                case 2 -> commandeUser.gauche = true;
                                case 3 -> commandeUser.droite = true;
                            }
+                           monstreAttaque(hero.getX(), hero.getY()); // il attaque dès qu'il peut
                            evoluerMonster(commandeUser);
                        }
-                   }, Duration.ofSeconds(1).toMillis(), Duration.ofSeconds(1).toMillis());
+                   }, new Long(100), new Long(100)); // 100ms d'attente entre chaque saut
     }
 
     /**
@@ -245,22 +237,10 @@ public class Jeu implements moteurJeu.Jeu {
      * @return un tableau {nouvelleColonne, nouvelleLigne} apres deplacement
      */
     public int[] getSuivant(int x, int y, Commande commandeUser) {
-        if (commandeUser.haut) {
-            y--;
-            this.sense = 0;
-        }
-        if (commandeUser.bas) {
-            y++;
-            this.sense = 1;
-        }
-        if (commandeUser.gauche) {
-            x--;
-            this.sense = 2;
-        }
-        if (commandeUser.droite) {
-            x++;
-            this.sense = 3;
-        }
+        if (commandeUser.haut) y--;
+        if (commandeUser.bas) y++;
+        if (commandeUser.gauche) x--;
+        if (commandeUser.droite) x++;
         if (commandeUser.space) {
             if (this.getCase(this.hero.getX(), this.hero.getY()) == null) this.hero.attaquer(this);
         }
@@ -334,29 +314,29 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     public void evoluerMonster(Commande commandeUser) {
-        for (Personnage m : this.monstres) {
-            int[] coord = getSuivant(m.getX(), m.getY(), commandeUser);
-            try {
-                verifierDeplacement(coord[0], coord[1], commandeUser);
-                switch (this.getChar(coord[0], coord[1])) {
-                    case Labyrinthe.PIEGE -> {
-                        for (Case c : cases) {
-                            int[] coordCase = c.getCoord();
-                            if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
-                                if (m.getX() != coord[0] || m.getY() != coord[1]) {
-                                    c.effet(m);
-                                    verifMort();
-                                }
-                                break;
+        int index = (int) Math.floor(Math.random() * this.monstres.size());
+        Personnage m = this.monstres.get(index);
+        int[] coord = getSuivant(m.getX(), m.getY(), commandeUser);
+        try {
+            verifierDeplacement(coord[0], coord[1], commandeUser);
+            switch (this.getChar(coord[0], coord[1])) {
+                case Labyrinthe.PIEGE -> {
+                    for (Case c : cases) {
+                        int[] coordCase = c.getCoord();
+                        if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
+                            if (m.getX() != coord[0] || m.getY() != coord[1]) {
+                                c.effet(m);
+                                verifMort();
                             }
+                            break;
                         }
-                        m.setPos(coord[0], coord[1]);
                     }
-                    case Labyrinthe.VIDE, Labyrinthe.FIN -> m.setPos(coord[0], coord[1]);
+                    m.setPos(coord[0], coord[1]);
                 }
-            } catch (ActionInconnueException e) {
-                // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
+                case Labyrinthe.VIDE, Labyrinthe.FIN -> m.setPos(coord[0], coord[1]);
             }
+        } catch (ActionInconnueException e) {
+            // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
         }
     }
 

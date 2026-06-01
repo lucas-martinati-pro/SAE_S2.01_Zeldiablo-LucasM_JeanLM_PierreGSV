@@ -1,5 +1,12 @@
 package zeldiablo;
 
+import zeldiablo.environnement.*;
+import zeldiablo.exception.ActionInconnueException;
+import zeldiablo.entite.Aventurier;
+import zeldiablo.exception.FichierIncorrectException;
+import zeldiablo.entite.Monstre;
+import zeldiablo.entite.Personnage;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -446,4 +453,221 @@ public class TestJeu {
         assertTrue(jeu.etreFini());
     }
 
+<<<<<<< HEAD
+=======
+    @Test
+    public void test_Bombe_getTypeEtGetCoord() {
+        Bombe bombe = new Bombe(2, 3);
+        assertEquals("Bombe", bombe.getType());
+        assertArrayEquals(new int[]{2, 3}, bombe.getCoord());
+    }
+
+    @Test
+    public void test_Bombe_effetExplosionDegatsHero() throws InterruptedException {
+        int xHero = jeu.getHero().getX();
+        int yHero = jeu.getHero().getY();
+        int vieHeroAvant = jeu.getHero().getVie();
+
+        // Ajoute et initialise la bombe sur la case du héros
+        jeu.addBombe(xHero, yHero);
+        Case bombe = jeu.getCase(xHero, yHero);
+        assertNotNull(bombe);
+        assertTrue(bombe instanceof Bombe);
+
+        ((Bombe) bombe).setJeu(jeu);
+        bombe.effet(jeu.getHero());
+
+        // L'explosion doit se faire après 1 seconde (1000 ms)
+        // On attend 1100 ms pour être sûr
+        Thread.sleep(1100);
+
+        // Les dégâts d'une bombe sont de -5
+        assertEquals(vieHeroAvant - 5, jeu.getHero().getVie());
+    }
+
+    @Test
+    public void test_Bombe_effetExplosionDetruitMurFriable() throws InterruptedException {
+        int xHero = jeu.getHero().getX();
+        int yHero = jeu.getHero().getY();
+
+        // Place un mur friable à côté (xHero + 1, yHero)
+        int targetX = xHero + 1;
+        int targetY = yHero;
+        MurFriable mur = new MurFriable(targetX, targetY);
+        jeu.getCases().add(mur);
+
+        assertEquals(mur, jeu.getCase(targetX, targetY));
+
+        // Place une bombe sur la case du héros
+        jeu.addBombe(xHero, yHero);
+        Case bombe = jeu.getCase(xHero, yHero);
+        assertNotNull(bombe);
+        ((Bombe) bombe).setJeu(jeu);
+
+        // Déclenche l'explosion
+        bombe.effet(jeu.getHero());
+
+        // Attend l'explosion
+        Thread.sleep(1100);
+
+        // Le mur friable doit avoir été détruit et retiré des cases
+        assertNull(jeu.getCase(targetX, targetY));
+    }
+
+    @Test
+    public void test_Piege_getTypeEtGetCoord() {
+        Piege piege = new Piege(4, 5);
+        assertEquals("Piege", piege.getType());
+        assertArrayEquals(new int[]{4, 5}, piege.getCoord());
+        assertFalse(piege.getIsRevele());
+    }
+
+    @Test
+    public void test_Piege_effetDegatsHero() {
+        Piege piege = new Piege(jeu.getHero().getX(), jeu.getHero().getY());
+        int vieAvant = jeu.getHero().getVie();
+        piege.effet(jeu.getHero());
+
+        assertEquals(vieAvant - 1, jeu.getHero().getVie());
+        assertTrue(piege.getIsRevele());
+    }
+
+    @Test
+    public void test_Jeu_heroMarcheSurPiege() throws ActionInconnueException, IOException {
+        // Charge un labyrinthe vide
+        jeu.chargerJeu("laby/laby_simple.txt"); // hero at (2, 4)
+        int xHero = jeu.getHero().getX();
+        int yHero = jeu.getHero().getY();
+
+        // Place un piège juste au-dessus du héros (2, 3)
+        Piege piege = new Piege(xHero, yHero - 1);
+        jeu.getCases().add(piege);
+
+        int vieAvant = jeu.getHero().getVie();
+
+        // Déplace le héros vers le haut (sur le piège)
+        jeu.evoluer(Jeu.HAUT);
+
+        // Vérifie que le héros a bougé
+        assertEquals(xHero, jeu.getHero().getX());
+        assertEquals(yHero - 1, jeu.getHero().getY());
+
+        // Vérifie que les PV du héros ont diminué de 1
+        assertEquals(vieAvant - 1, jeu.getHero().getVie());
+        assertTrue(piege.getIsRevele());
+    }
+
+    @Test
+    public void test_MurFriable_getTypeEtGetCoord() {
+        MurFriable mur = new MurFriable(3, 3);
+        assertEquals("MurFriable", mur.getType());
+        assertArrayEquals(new int[]{3, 3}, mur.getCoord());
+    }
+
+    @Test
+    public void test_Jeu_heroBloqueParMurFriable() throws ActionInconnueException, IOException {
+        jeu.chargerJeu("laby/laby_simple.txt"); // hero at (2, 4)
+        int xHero = jeu.getHero().getX();
+        int yHero = jeu.getHero().getY();
+
+        // Place un mur friable au-dessus du héros (2, 3)
+        MurFriable mur = new MurFriable(xHero, yHero - 1);
+        jeu.getCases().add(mur);
+
+        // Essaie de se déplacer vers le haut (sur le mur friable)
+        jeu.evoluer(Jeu.HAUT);
+
+        // Vérifie que le héros n'a pas bougé
+        assertEquals(xHero, jeu.getHero().getX());
+        assertEquals(yHero, jeu.getHero().getY());
+    }
+
+    @Test
+    public void test_Monstre_attaquerHero() {
+        Monstre monstre = new Monstre(1, 1, 3);
+        int vieHeroAvant = jeu.getHero().getVie();
+        monstre.attaquer(jeu.getHero());
+
+        // Attaque de base inflige 2 dégâts
+        assertEquals(vieHeroAvant - 2, jeu.getHero().getVie());
+    }
+
+    @Test
+    public void test_Jeu_monstreAttaqueHeroQuandProche() {
+        int xHero = jeu.getHero().getX();
+        int yHero = jeu.getHero().getY();
+
+        // Place un monstre sur une case adjacente (xHero + 1, yHero)
+        Monstre monstre = new Monstre(xHero + 1, yHero, 3);
+        jeu.getMonstres().add(monstre);
+
+        int vieHeroAvant = jeu.getHero().getVie();
+
+        // Déclenche l'attaque automatique des monstres
+        jeu.monstreAttaque(xHero, yHero);
+
+        // Le héros doit avoir subi des dégâts
+        assertEquals(vieHeroAvant - 2, jeu.getHero().getVie());
+    }
+
+    @Test
+    public void test_Jeu_evoluerMonster() {
+        // Place un monstre à une position libre (1, 1)
+        Monstre monstre = new Monstre(1, 1, 3);
+        jeu.getMonstres().add(monstre);
+
+        moteurJeu.Commande commande = new moteurJeu.Commande();
+        commande.droite = true; // Déplacement à droite
+
+        // Déplace les monstres
+        jeu.evoluerMonster(commande);
+
+        // Vérifie que le monstre s'est déplacé à droite (2, 1)
+        assertEquals(2, monstre.getX());
+        assertEquals(1, monstre.getY());
+    }
+
+    @Test
+    public void test_Jeu_monstrePrendDegatsBombeEtMeurt() throws InterruptedException {
+        int xHero = jeu.getHero().getX();
+        int yHero = jeu.getHero().getY();
+
+        // Place un monstre à côté du héros (xHero + 1, yHero) avec 3 PV
+        Monstre monstre = new Monstre(xHero + 1, yHero, 3);
+        jeu.getMonstres().add(monstre);
+
+        assertTrue(jeu.getMonstres().contains(monstre));
+
+        // Place et déclenche une bombe
+        jeu.addBombe(xHero, yHero);
+        Case bombe = jeu.getCase(xHero, yHero);
+        assertNotNull(bombe);
+        ((Bombe) bombe).setJeu(jeu);
+        bombe.effet(jeu.getHero());
+
+        // Attend l'explosion
+        Thread.sleep(1100);
+
+        // Une bombe inflige -5 PV. Le monstre ayant 3 PV doit être mort et retiré de la liste
+        assertFalse(jeu.getMonstres().contains(monstre));
+    }
+
+    @Test
+    public void test_Aventurier_attaquerPoseBombe() {
+        int xHero = jeu.getHero().getX();
+        int yHero = jeu.getHero().getY();
+
+        // Vérifie qu'il n'y a pas de bombe à la position du héros
+        Case caseHero = jeu.getCase(xHero, yHero);
+        assertNull(caseHero);
+
+        // Le héros attaque (pose une bombe)
+        jeu.getHero().attaquer(jeu);
+
+        // Vérifie qu'une bombe a été ajoutée à la position du héros
+        Case bombe = jeu.getCase(xHero, yHero);
+        assertNotNull(bombe);
+        assertTrue(bombe instanceof Bombe);
+    }
+>>>>>>> 19c7d9a1673c903e390a00a6644e754e41e74425
 }

@@ -1,5 +1,10 @@
 package zeldiablo;
 
+import zeldiablo.environnement.Case;
+import zeldiablo.entite.Personnage;
+import zeldiablo.environnement.Labyrinthe;
+import zeldiablo.environnement.Piege;
+
 import moteurJeu.DessinJeu;
 
 import java.awt.*;
@@ -18,7 +23,6 @@ public class DessinLaby implements DessinJeu {
         if (jeu != null) this.jeu = jeu;
         else this.jeu = new Jeu();
     }
-
 
     /**
      * Dessin tous les éléments du jeu
