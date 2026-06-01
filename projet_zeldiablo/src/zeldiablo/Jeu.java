@@ -21,6 +21,7 @@ public class Jeu implements moteurJeu.Jeu {
     private int[] fin;
     private int sense = 0;
     private ArrayList<Case> cases = new ArrayList<>();
+    private ArrayList<int[]> casesExplosion = new ArrayList<>();
     /**
      * Constantes pour se déplacer en haut
      */
@@ -87,6 +88,10 @@ public class Jeu implements moteurJeu.Jeu {
 
     public ArrayList<Personnage> getMonstres() {
         return monstres;
+    }
+
+    public ArrayList<int[]> getCasesExplosion() {
+        return new ArrayList<>(casesExplosion);
     }
 
     public Case getCase(int x, int y) {
@@ -160,6 +165,18 @@ public class Jeu implements moteurJeu.Jeu {
                 if (c instanceof MurFriable) break;
             }
         }
+
+        ArrayList<int[]> explosionVisuel = new ArrayList<>(casesTouchees);
+        this.casesExplosion = explosionVisuel;
+
+        new Timer().schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                if (casesExplosion == explosionVisuel) {
+                    casesExplosion.clear();
+                }
+            }
+        }, 250);
 
         // Appliquer l'explosion et les dégâts sur les cases touchées
         for (int[] coord : casesTouchees) {
