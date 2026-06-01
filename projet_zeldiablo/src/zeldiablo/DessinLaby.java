@@ -90,7 +90,7 @@ public class DessinLaby implements DessinJeu {
 
         for (int i = 0; i < jeu.getHero().getVie(); i++) {
             g.setColor(Color.RED);
-            g.fillOval(coordonnee[0] * TAILLE - (i + 1) * 15, coordonnee[1] - 5, 10, 10);
+            g.fillOval(coordonnee[0] * TAILLE - (i + 1) * 15, 5, 10, 10);
         }
 
         // Mettre le héros après les monstres pour qu'il soit dessiné par-dessus

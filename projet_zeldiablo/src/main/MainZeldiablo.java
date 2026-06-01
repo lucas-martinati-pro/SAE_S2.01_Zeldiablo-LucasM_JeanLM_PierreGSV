@@ -72,44 +72,42 @@ public class MainZeldiablo {
 
         jeu.dessiner(new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB));
 
-        boolean enCours = true; // Renommer la variable rend la logique plus facile à lire
-        // lancer le niveau suivant
+        boolean enCours = true;
+
         while (enCours) {
+            if (lvl < 12) {
+                if (j.etreFini() && !(j.getHero().etreMort())) {
+                    System.out.println("next level");
+                    lvl++;
 
-            // on regarde si le niveau est terminer
-            // si il ne l'est pas j.etreFini() renvoie false donc ça ne lance pas tous les autres niveau
-            if (j.etreFini() && !(j.getHero().etreMort())) {
-                // Le joueur a fini le niveau et est vivant : ON NE MET PAS "enCours" à false ici
-                System.out.println("next level");
-                lvl++;
+                    String path = "laby/niveaux/lvl" + lvl + ".txt";
 
-                String path = "laby/niveaux/lvl" + lvl + ".txt";
+                    try {
+                        j.chargerJeu(path);
+                    } catch (IOException e) {
+                        System.err.println("Une erreur s'est produite lors de la lecture du fichier : " + e.getMessage());
+                        enCours = false; // On arrête si on ne trouve plus de niveau (fin du jeu)
+                    } catch (FichierIncorrectException e) {
+                        System.err.println("Le fichier n'est pas valide : " + e.getMessage());
+                        enCours = false;
+                    }
 
-                try {
-                    j.chargerJeu(path);
-                } catch (IOException e) {
-                    System.err.println("Une erreur s'est produite lors de la lecture du fichier : " + e.getMessage());
-                    enCours = false; // On arrête si on ne trouve plus de niveau (fin du jeu)
-                } catch (FichierIncorrectException e) {
-                    System.err.println("Le fichier n'est pas valide : " + e.getMessage());
-                    enCours = false;
+                    if (enCours) { // Si le fichier a bien chargé
+                        j.getHero().addVie(5);
+                        jeu = new DessinLaby(j);
+                        size = j.getLaby().returnSize();
+                        moteur = new MoteurGraphique(j, jeu);
+                        moteur.lancerJeu(TAILLE * size[0], TAILLE * size[1]);
+                    }
+
+                } else if (j.getHero().etreMort()) {
+                    System.out.println("Game Over");
+                    enCours = false; // Le héros est mort, on sort de la boucle
                 }
-
-                if (enCours) { // Si le fichier a bien chargé
-                    j.getHero().addVie(5);
-                    jeu = new DessinLaby(j);
-                    size = j.getLaby().returnSize();
-                    moteur = new MoteurGraphique(j, jeu);
-                    moteur.lancerJeu(TAILLE * size[0], TAILLE * size[1]);
-                }
-
-            } else if (j.getHero().etreMort()) {
-                System.out.println("Game Over");
-                enCours = false; // Le héros est mort, on sort de la boucle
+            } else {
+                System.out.println("Félicitations, vous avez terminé tous les niveaux !");
+                enCours = false; // Tous les niveaux sont terminés, on sort de la boucle
             }
-
-            // (Optionnel) Il faudrait un petit Thread.sleep(100) ici si moteur.lancerJeu() n'est pas bloquant,
-            // sinon ta boucle while consomme 100% du processeur à vérifier en continu.
         }
     }
 }
