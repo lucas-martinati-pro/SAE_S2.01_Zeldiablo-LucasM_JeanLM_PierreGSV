@@ -31,6 +31,7 @@ public class Jeu implements moteurJeu.Jeu {
     private ArrayList<Personnage> monstres = new ArrayList<>();
     private int[] fin;
     private ArrayList<Case> cases = new ArrayList<>();
+    private ArrayList<int[]> explosionAffichage = new ArrayList<>();
     /**
      * Constantes pour se déplacer en haut
      */
@@ -95,9 +96,14 @@ public class Jeu implements moteurJeu.Jeu {
         return cases;
     }
 
+    public ArrayList<int[]> getExplosionAffichage() {
+        return explosionAffichage;
+    }
+
     public ArrayList<Personnage> getMonstres() {
         return monstres;
     }
+
 
     public Case getCase(int x, int y) {
         for (Case c : cases) {

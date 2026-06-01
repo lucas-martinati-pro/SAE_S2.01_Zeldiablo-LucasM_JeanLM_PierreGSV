@@ -81,6 +81,15 @@ public class Bombe implements Case {
                         break; // Un même monstre ne prend les dégâts qu'une fois
                     }
                 }
+                // Montrer l'explosion pendant 300ms
+                jeu.getExplosionAffichage().addAll(casesTouchees);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                    }
+                    jeu.getExplosionAffichage().clear();
+                }).start();
 
                 // Détruire la case si destructible (Mur friable, autre bombe...)
                 Case c = jeu.getCase(cx, cy);

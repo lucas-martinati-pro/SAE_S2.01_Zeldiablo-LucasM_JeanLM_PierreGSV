@@ -77,6 +77,12 @@ public class DessinLaby implements DessinJeu {
             }
         }
 
+        // Dessiner les flammes d'explosion
+        for (int[] coord : jeu.getExplosionAffichage()) {
+            g.setColor(Color.ORANGE);
+            g.fillRect(coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE);
+        }
+
         for (Personnage m : jeu.getMonstres()) {
             g.setColor(Color.RED);
             g.fillOval(m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE);
