@@ -118,7 +118,6 @@ public class Jeu implements moteurJeu.Jeu {
             }
         }
 
-
         if (hero == null) throw new FichierIncorrectException("hero inconnu"); // Si il y as 2 personnages, ça prend le dernière
         else if (this.fin == null) throw new FichierIncorrectException("case de fin inconnue");
         this.laby = lab;
