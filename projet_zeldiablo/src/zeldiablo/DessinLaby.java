@@ -67,7 +67,7 @@ public class DessinLaby implements DessinJeu {
                     }
                 }
                 case "MurFriable" -> {
-                    g.setColor(Color.LIGHT_GRAY);
+                    g.setColor(Color.GRAY);
                     g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
                 }
                 case "Bombe" -> {
@@ -88,11 +88,16 @@ public class DessinLaby implements DessinJeu {
             g.fillOval(m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE);
         }
 
+        for (int i = 0; i < jeu.getHero().getVie(); i++) {
+            g.setColor(Color.RED);
+            g.fillOval(coordonnee[0] * TAILLE - (i + 1) * 15, coordonnee[1] - 5, 10, 10);
+        }
+
         // Mettre le héros après les monstres pour qu'il soit dessiné par-dessus
         Personnage hero = jeu.getHero();
         if (hero != null) {
             g.setColor(Color.BLUE);
-            g.fillOval(hero.getX() * TAILLE, hero.getY() * TAILLE, TAILLE, TAILLE);
+            g.fillOval(hero.getX() * TAILLE + 2, hero.getY() * TAILLE + 2, TAILLE - 3, TAILLE - 3);
         }
     }
 }

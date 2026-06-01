@@ -81,4 +81,16 @@
     - critère 5 : L'interface graphique se met à jour en fonction des déplacements des Monstres.
   - responsables : MARTINATI Lucas
 
+- fonctionnalité 10 : Gestion d'un labyrinthe multi-étages
+  - descriptif texte : Le labyrinthe est constitué de plusieurs étages. Chaque étage correspond à un niveau particulier. Des escaliers permettent de passer d'un étage à un autre.
+  - critères de validation :
+    - critère 1 : Les escaliers sont des cases traversables par le héros et les monstres.
+    - critère 1 : Lorsque le héros se trouve sur un escalier, il peut l'activer et il change alors de niveau.
+    - critère 1 : Les monstres du niveau où le héros se trouvait avant l'escalier n'apparaissent pas dans l'étage supérieur/inférieur. Ils restent à leur position et conservent leur points de vie.
+    - critère 1 : De nouveaux monstres peuvent être présents à l'étage supérieur en fonction du descriptif du niveau.
+    - critère 1 : Le Héros arrive aux mêmes coordonnées dans l'étage supérieur/inférieur après avoir emprunté les escaliers.
+    - critère 1 : Les escaliers peuvent être de deux types : un escalier qui monte ou un escalier qui descend.
+    - critère 1 : Les escaliers sont empruntables dans les deux sens : un escalier qui monte vers un étage possède un escalier qui descend à la même position dans l'étage supérieur (et inversement).
+  - responsables : LE MADEC Jean
+
 # Bilan

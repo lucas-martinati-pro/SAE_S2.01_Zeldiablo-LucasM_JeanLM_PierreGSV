@@ -34,7 +34,7 @@ public class Bombe implements Case {
     public void effet(Personnage perso) {
         new Thread(() -> {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
