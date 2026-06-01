@@ -61,4 +61,24 @@
     - critère 3 : Lorsqu'une explosion de bombe rencontre un mur friable, le mur friable empêche la propagation de l'explosion dans cette direction. Il est considéré comme détruit et peut ensuite être traversé.
   - responsables : LE MADEC Jean
 
+- fonctionnalité 8 : Génération de monstres immobiles
+  - descriptif texte : Au lancement du jeu, le jeu ajoute différents monstres dans l'environnement. Les monstres restent immobiles.
+  - critères de validation :
+    - critère 1 : Il est possible de construire un labyrinthe par défaut contenant quelques monstres (le labyrinthe par défaut est à définir).
+    - critère 2 : Les monstres sont créés sur des cases vides.
+    - critère 3 : Il n'est pas possible de générer des monstres sur des cases non vides (position du joueur, d'autres monstres ou de murs)
+    - critère 4 : Les monstres doivent apparaitre dans l'interface graphique sous la forme d'un cercle rouge.
+    - critère 5 : Les monstres ne se déplacent pas (mais attaquent éventuellement le héros s'il passe à proximité.
+  - responsables : MARTINATI Lucas
+
+- fonctionnalité 9 : Déplacement aléatoire des monstres
+  - descriptif texte : Régulièrement, le jeu demande aux monstres de se déplacer dans une direction aléatoire.
+  - critères de validation :
+    - critère 1 : A chaque évolution du jeu, que le joueur se déplace ou non, les monstres se déplacent.
+    - critère 2 : Les monstres sont bloqués par les obstacles. S'ils ont choisi de se diriger vers un obstacle (mur, joueur, ...), leur mouvement est alors annulé (sauf s'il s'agit de fantômes).
+    - critère 3 : Deux monstres ou un monstre et un joueur ne peuvent pas se trouver sur la même case (Si la tache Collision entre monstre est fonctionnelle).
+    - critère 4 : A chaque évolution, tous les monstres tentent de se déplacer.
+    - critère 5 : L'interface graphique se met à jour en fonction des déplacements des Monstres.
+  - responsables : MARTINATI Lucas
+
 # Bilan

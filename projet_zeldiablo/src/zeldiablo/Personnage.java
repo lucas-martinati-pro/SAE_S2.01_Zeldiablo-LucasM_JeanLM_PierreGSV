@@ -13,6 +13,12 @@ public abstract class Personnage {
         return y;
     }
 
+    public Personnage(int x, int y, int vie) {
+        setPos(x, y);
+        if (vie > 0) this.vie = vie;
+        else this.vie = vie;
+    }
+
     public void setPos(int x, int y) {
         if (x > 0) this.x = x;
         else this.x = 0;

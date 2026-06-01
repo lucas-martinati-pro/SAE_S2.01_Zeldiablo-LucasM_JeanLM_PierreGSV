@@ -15,6 +15,7 @@ public class Jeu implements moteurJeu.Jeu {
     // ########## Variables ##########
     private Labyrinthe laby;
     private Aventurier hero;
+    private ArrayList<Personnage> monstres = new ArrayList<>();
     private int[] fin;
     private int sense = 0;
     private ArrayList<Case> cases = new ArrayList<>();
@@ -82,6 +83,10 @@ public class Jeu implements moteurJeu.Jeu {
         return cases;
     }
 
+    public ArrayList<Personnage> getMonstres() {
+        return monstres;
+    }
+
     // ########## Méthodes ##########
 
     public Case getCase(int x, int y) {
@@ -117,6 +122,7 @@ public class Jeu implements moteurJeu.Jeu {
                     case Labyrinthe.VIDE -> {}
                     case Labyrinthe.PIEGE -> cases.add(new Piege(j, i));
                     case Labyrinthe.MurFriable -> cases.add(new MurFriable(j,i));
+                    case Labyrinthe.MONSTRE -> monstres.add(new Monstre(j, i, 3));
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
                 }
             }
@@ -170,19 +176,17 @@ public class Jeu implements moteurJeu.Jeu {
     public char getChar(int x, int y) {
         if (this.laby.getCase(x, y)) return Labyrinthe.MUR;
         else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
-        else if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
         else {
-            Case c = this.getCase(x, y);
-            if (c != null) {
-                switch (c.getType()) {
-                    case "MurFriable" -> {
-                        return Labyrinthe.MurFriable;
-                    }
-                    case "Piege" -> {
-                        return Labyrinthe.PIEGE;
-                    }
+            for (Case c : this.cases) {
+                if (c.getCoord()[0] == x && c.getCoord()[1] == y) {
+                    if (c instanceof Piege) return Labyrinthe.PIEGE;
+                    if (c instanceof MurFriable) return Labyrinthe.MurFriable;
                 }
             }
+            for (Personnage m : this.monstres) {
+                if (m.getX() == x && m.getY() == y) return Labyrinthe.MONSTRE;
+            }
+            if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
             return Labyrinthe.VIDE;
         }
     }
@@ -263,7 +267,7 @@ public class Jeu implements moteurJeu.Jeu {
                 case Labyrinthe.VIDE, Labyrinthe.FIN -> this.hero.setPos(coord[0], coord[1]);
             }
         } catch (ActionInconnueException e) {
-            // Ignorer le déplacement si c'est un mur ou un mur friable
+            // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
         }
     }
 

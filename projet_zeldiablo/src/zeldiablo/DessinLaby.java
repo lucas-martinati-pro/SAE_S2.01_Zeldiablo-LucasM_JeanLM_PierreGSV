@@ -21,6 +21,25 @@ public class DessinLaby implements DessinJeu {
 
         int[] coordonnee = jeu.getLaby().returnSize();
 
+        for (int y = 0; y < coordonnee[1]; y++) {
+            for (int x = 0; x < coordonnee[0]; x++) {
+                switch (jeu.getChar(x, y)) {
+                    case Labyrinthe.FIN -> {
+                        g.setColor(Color.GREEN);
+                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    }
+                    case Labyrinthe.MUR -> {
+                        g.setColor(Color.BLACK);
+                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    }
+                    case Labyrinthe.VIDE -> {
+                        g.setColor(Color.WHITE);
+                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+                    }
+                }
+            }
+        }
+
         for (Case c : jeu.getCases()) {
             int x = c.getCoord()[0];
             int y = c.getCoord()[1];
@@ -41,27 +60,16 @@ public class DessinLaby implements DessinJeu {
             }
         }
 
-        for (int y = 0; y < coordonnee[1]; y++) {
-            for (int x = 0; x < coordonnee[0]; x++) {
-                switch (jeu.getChar(x, y)) {
-                    case Labyrinthe.FIN -> {
-                        g.setColor(Color.GREEN);
-                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-                    }
-                    case Labyrinthe.MUR -> {
-                        g.setColor(Color.BLACK);
-                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-                    }
-                    case Labyrinthe.VIDE -> {
-                        g.setColor(Color.WHITE);
-                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-                    }
-                    case Labyrinthe.HERO -> {
-                        g.setColor(Color.BLUE);
-                        g.fillOval(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-                    }
-                }
-            }
+        for (Personnage m : jeu.getMonstres()) {
+            g.setColor(Color.RED);
+            g.fillOval(m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE);
+        }
+
+        // Mettre le héros après les monstres pour qu'il soit dessiné par-dessus
+        Personnage hero = jeu.getHero();
+        if (hero != null) {
+            g.setColor(Color.BLUE);
+            g.fillOval(hero.getX() * TAILLE, hero.getY() * TAILLE, TAILLE, TAILLE);
         }
     }
 }

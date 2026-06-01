@@ -15,6 +15,10 @@ public class Labyrinthe {
      */
     public static final char HERO = '@';
     /**
+     * Constante pour les monstres dans un fichier de labyrinthe
+     */
+    public static final char MONSTRE = '£';
+    /**
      * Constante pour le vide dans un fichier de labyrinthe
      */
     public static final char FIN = '&';
