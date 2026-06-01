@@ -16,6 +16,7 @@ public class Jeu implements moteurJeu.Jeu {
     private Labyrinthe laby;
     private Aventurier hero;
     private int[] fin;
+    private int sense = 0;
     private ArrayList<Case> cases = new ArrayList<>();
     /**
      * Constantes pour se déplacer en haut
@@ -37,7 +38,6 @@ public class Jeu implements moteurJeu.Jeu {
     /**
     * Constantes pour attaquer
     */
-
     public static final String SPACE = "Space";
 
     // ########## Getters/Setters ##########
@@ -195,12 +195,26 @@ public class Jeu implements moteurJeu.Jeu {
      * @param commandeUser la direction du deplacement
      * @return un tableau {nouvelleColonne, nouvelleLigne} apres deplacement
      */
-    public static int[] getSuivant(int x, int y, Commande commandeUser) {
-        if (commandeUser.haut) y--;
-        if (commandeUser.bas) y++;
-        if (commandeUser.gauche) x--;
-        if (commandeUser.droite) x++;
-        if (commandeUser.space) x++; // pour attaquer (x++ temporaire pour bien voir sont fonctionnement)
+    public int[] getSuivant(int x, int y, Commande commandeUser) {
+        if (commandeUser.haut) {
+            y--;
+            this.sense = 0;
+        }
+        if (commandeUser.bas) {
+            y++;
+            this.sense = 1;
+        }
+        if (commandeUser.gauche) {
+            x--;
+            this.sense = 2;
+        }
+        if (commandeUser.droite) {
+            x++;
+            this.sense = 3;
+        }
+        if (commandeUser.space) {
+            this.hero.attaquer();
+        }
         return new int[] {x, y};
     }
 
@@ -282,7 +296,6 @@ public class Jeu implements moteurJeu.Jeu {
             case BAS -> commandeUser.bas = true;
             case GAUCHE -> commandeUser.gauche = true;
             case DROITE -> commandeUser.droite = true;
-            case SPACE -> commandeUser.space = true;
             default -> throw new ActionInconnueException("L'action " + action + " n'est pas reconnue.");
         }
         evoluer(commandeUser);
