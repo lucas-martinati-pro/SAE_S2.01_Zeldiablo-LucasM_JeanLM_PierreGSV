@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import static arkanoidJeu.ArkanoidDessin.TAILLE;
 
 public class DessinPerso implements DessinJeu {
+
     private JeuPerso jeuPerso;
 
     public DessinPerso(JeuPerso jeuPerso) {
@@ -31,4 +32,5 @@ public class DessinPerso implements DessinJeu {
         // rend le graphics
         g.dispose();
     }
+
 }

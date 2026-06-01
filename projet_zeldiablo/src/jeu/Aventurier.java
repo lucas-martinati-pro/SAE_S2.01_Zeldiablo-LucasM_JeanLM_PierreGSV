@@ -1,7 +1,7 @@
 package jeu;
 
 public class Aventurier extends Personnage {
-    // ########## Variables ##########
+
 
     public Aventurier(int x, int y, int vie) {
         if (x > 0) this.x = x;
@@ -11,19 +11,18 @@ public class Aventurier extends Personnage {
         if (vie > 0) this.vie = vie;
         else this.vie = 0;
     }
-
+    
     public void DepotBombe(){
-
     }
-     // ########## Méthodes ##########
 
-     /**
-      * Affiche les informations sur l'aventurier.
-      */
-     public String toString() {
-         StringBuilder res = new StringBuilder();
-         res.append("Position : (" + x + ", " + y + ")\n");
-         res.append("Vie : " + vie);
-         return res.toString();
-     }
+    // ########## Méthodes ##########
+    /**
+     * Affiche les informations sur l'aventurier.
+     */
+    public String toString() {
+        StringBuilder res = new StringBuilder();
+        res.append("Position : (" + x + ", " + y + ")\n");
+        res.append("Vie : " + vie);
+        return res.toString();
+    }
 }

@@ -23,4 +23,9 @@ public abstract class Personnage {
     public void addVie(int i) {
         this.vie += i;
     };
+
+    public boolean etreMort () {
+        return this.vie <= 0;
+    }
+
 }
