@@ -10,11 +10,20 @@ import static arkanoidJeu.ArkanoidDessin.TAILLE;
 public class DessinLaby implements DessinJeu {
     private Jeu jeu;
 
+    /**
+     * Constructeur de DessinLaby
+     * @param jeu un objet de Type jeu
+     */
     public DessinLaby(Jeu jeu) {
         if (jeu != null) this.jeu = jeu;
         else this.jeu = new Jeu();
     }
 
+
+    /**
+     * Dessin tous les éléments du jeu
+     * @param image image sur laquelle dessiner
+     */
     @Override
     public void dessiner(BufferedImage image) {
         Graphics2D g = (Graphics2D) image.getGraphics();
