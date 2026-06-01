@@ -52,6 +52,8 @@ public class MainZeldiablo {
             main(args);
         }
 
+        j.startMonsters();
+
         Commande c = new Commande();
 
         int nbDéplacements = 0;

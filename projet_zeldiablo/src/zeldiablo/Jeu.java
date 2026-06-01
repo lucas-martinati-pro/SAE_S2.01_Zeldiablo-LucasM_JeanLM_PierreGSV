@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Timer;
 
 /**
  * Classe principale gerant la logique du jeu.
@@ -132,6 +134,24 @@ public class Jeu implements moteurJeu.Jeu {
         else if (this.fin == null) throw new FichierIncorrectException("case de fin inconnue");
         this.laby = lab;
         this.hero = hero;
+    }
+
+    public void startMonsters() {
+        Timer t = new Timer();
+        t.schedule(new java.util.TimerTask() {
+                       @Override
+                       public void run() {
+                           int random = (int) (Math.random() * 4);
+                           Commande commandeUser = new Commande();
+                           switch (random) {
+                               case 0 -> commandeUser.haut = true;
+                               case 1 -> commandeUser.bas = true;
+                               case 2 -> commandeUser.gauche = true;
+                               case 3 -> commandeUser.droite = true;
+                           }
+                           evoluerMonster(commandeUser);
+                       }
+                   }, Duration.ofSeconds(1).toMillis(), Duration.ofSeconds(1).toMillis());
     }
 
     /**
@@ -268,6 +288,30 @@ public class Jeu implements moteurJeu.Jeu {
             }
         } catch (ActionInconnueException e) {
             // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
+        }
+    }
+
+    public void evoluerMonster(Commande commandeUser) {
+        for (Personnage m : this.monstres) {
+            int[] coord = getSuivant(m.getX(), m.getY(), commandeUser);
+            try {
+                verifierDeplacement(coord[0], coord[1], commandeUser);
+                switch (this.getChar(coord[0], coord[1])) {
+                    case Labyrinthe.PIEGE -> {
+                        for (Case c : cases) {
+                            int[] coordCase = c.getCoord();
+                            if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
+                                c.effet(m);
+                                break;
+                            }
+                        }
+                        m.setPos(coord[0], coord[1]);
+                    }
+                    case Labyrinthe.VIDE, Labyrinthe.FIN -> m.setPos(coord[0], coord[1]);
+                }
+            } catch (ActionInconnueException e) {
+                // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
+            }
         }
     }
 
