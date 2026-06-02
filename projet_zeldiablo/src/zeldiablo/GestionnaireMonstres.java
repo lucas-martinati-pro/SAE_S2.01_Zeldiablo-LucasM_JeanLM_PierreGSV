@@ -38,18 +38,18 @@ public class GestionnaireMonstres {
                     timer.cancel();
                     return;
                 }
-                int random = (int) (Math.random() * 4);
+                int random = (int) (Math.random() * 5); // 5 actions possibles : haut, bas, gauche, droite, attaque
                 Commande commandeUser = new Commande();
                 switch (random) {
                     case 0 -> commandeUser.haut = true;
                     case 1 -> commandeUser.bas = true;
                     case 2 -> commandeUser.gauche = true;
                     case 3 -> commandeUser.droite = true;
+                    case 4 -> monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
                 }
-                monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
                 evoluerMonster(commandeUser);
             }
-        }, 100L, 100L);
+        }, 100L, 100L); // Exécute toutes les 100 ms (100 long)
     }
 
     /**
