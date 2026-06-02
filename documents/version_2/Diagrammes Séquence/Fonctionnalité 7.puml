@@ -1,5 +1,5 @@
 @startuml
-title Fonctionnalité 7 - Murs friables (destruction par bombe)
+title Fonctionnalité 7 - Murs friables (destruction par une bombe)
 
 participant "bombe:Bombe" as Bombe
 participant "j:Jeu" as Jeu
