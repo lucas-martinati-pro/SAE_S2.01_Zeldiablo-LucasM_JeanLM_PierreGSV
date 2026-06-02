@@ -78,7 +78,7 @@ public class MainZeldiablo {
         jeu.dessiner(new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB));
 
         boolean enCours = true;
-        int vie = j.getHero().getVie();
+        int vie;
 
         // On passe au niveau suivant automatiquement si le niveau est fini et que le héros n'est pas mort
         while (enCours) {
