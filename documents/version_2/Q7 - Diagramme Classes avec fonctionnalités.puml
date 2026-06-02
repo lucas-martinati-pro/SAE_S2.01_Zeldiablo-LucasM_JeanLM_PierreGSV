@@ -133,6 +133,14 @@ package "environnement" {
         + effet(perso : Personnage) : void
     }
 
+    class PiegeDetruit {
+            + Piege(x : int, y : int)
+
+            + getType() : String
+
+            + effet(perso : Personnage) : void
+        }
+
     class MurFriable {
         + MurFriable(x : int, y : int)
 
@@ -167,6 +175,7 @@ package "exception" {
 ' Relations
 ' ========================
 Case <|-- Piege
+Case <|-- PiegeDetruit
 Case <|-- MurFriable
 Case <|-- Bombe
 

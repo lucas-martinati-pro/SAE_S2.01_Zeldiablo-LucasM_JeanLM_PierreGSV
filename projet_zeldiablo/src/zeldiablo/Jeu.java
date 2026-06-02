@@ -1,13 +1,9 @@
 package zeldiablo;
 
-import zeldiablo.environnement.Case;
-import zeldiablo.environnement.Bombe;
+import zeldiablo.environnement.*;
 import zeldiablo.entite.Personnage;
-import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.exception.ActionInconnueException;
-import zeldiablo.environnement.Piege;
-import zeldiablo.environnement.MurFriable;
 
 import moteurJeu.Commande;
 
@@ -120,6 +116,11 @@ public class Jeu implements moteurJeu.Jeu {
      * @param y la ligne de la case a detruire
      */
     public void detruire(int x, int y) {
+        Case c = getCase(x, y);
+        if (c instanceof Piege) {
+            this.cases.remove(c);
+            this.cases.add(new PiegeDetruit(x, y));
+        }
         this.cases.remove(getCase(x, y));
     }
 
@@ -146,7 +147,10 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public Case getCase(int x, int y) {
         for (Case c : cases) {
-            if (c.getX() == x && c.getY() == y) return c;
+            if (c.getX() == x && c.getY() == y) {
+                // Si c'est un piège détruit, on le considère comme une case vide
+                if (!(c instanceof PiegeDetruit)) return c;
+            }
         }
         return null;
     }
@@ -166,7 +170,7 @@ public class Jeu implements moteurJeu.Jeu {
             for (Case c : this.cases) {
                 if (c.getX() == x && c.getY() == y) {
                     if (c instanceof Piege) {
-                        if (!((Piege) c).getIsDetruit()) return Labyrinthe.PIEGE;
+                        return Labyrinthe.PIEGE;
                     }
                     if (c instanceof MurFriable) return Labyrinthe.MurFriable;
                     if (c instanceof Bombe) return Labyrinthe.BOMBE;
@@ -220,7 +224,8 @@ public class Jeu implements moteurJeu.Jeu {
     @Override
     public void evoluer(Commande commandeUser) {
         if (commandeUser.space) {
-            if (recharger && this.getCase(this.hero.getX(), this.hero.getY()) == null) { // temps de recharge de la bombe pour éviter les spams
+            Case c = this.getCase(this.hero.getX(), this.hero.getY());
+            if (recharger && (c == null || !(c instanceof PiegeDetruit))) { // temps de recharge de la bombe pour éviter les spams
                 recharger = false;
                 this.hero.attaquer(this);
                 new Thread(() -> { // Obliger de créer un nouveau Thread car sinon ça bloque le jeu pendant 2 secondes, et c'est pas très drôle
