@@ -1,5 +1,5 @@
 @startuml
-title Q10 - Diagramme de classe mis à jour
+title Q10 - Diagramme Classes avec fonctionnalités
 
 class Jeu {
     -laby : Labyrinthe

@@ -1,5 +1,5 @@
 @startuml
-title Q5
+title Q5 - Diagramme de Classe
 
 '''classes
 class Jeu

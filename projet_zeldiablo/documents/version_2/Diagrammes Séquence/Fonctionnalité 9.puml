@@ -1,0 +1,49 @@
+@startuml
+title Fonctionnalité 8 & 9 — Déplacement et attaque des monstres
+
+participant "timer:Timer" as Timer
+participant "gm:GestionnaireMonstres" as GM
+participant "j:Jeu" as Jeu
+participant "m:Monstre" as Monstre
+participant "hero:Aventurier" as Hero
+
+Timer -> GM : run()
+activate GM
+
+GM -> GM : monstreAttaque(heroX, heroY)
+activate GM
+loop pour chaque case adjacente au héros
+    loop pour chaque monstre m
+        alt m sur la case
+            GM -> Monstre : attaquer(hero)
+            activate Monstre
+            Monstre -> Hero : addVie(-2)
+            Monstre --> GM
+            deactivate Monstre
+        end
+    end
+end
+GM --> GM
+deactivate GM
+
+GM -> GM : evoluerMonster(commandeUser)
+activate GM
+GM -> Jeu : getSuivant(m.x, m.y, commandeUser)
+Jeu --> GM : [x, y]
+
+GM -> Jeu : verifierDeplacement(x, y, commandeUser)
+Jeu --> GM
+
+GM -> Jeu : getChar(x, y)
+Jeu --> GM : VIDE
+
+GM -> Monstre : setPos(x, y)
+Monstre --> GM
+
+GM --> GM
+deactivate GM
+
+GM --> Timer
+deactivate GM
+
+@enduml
