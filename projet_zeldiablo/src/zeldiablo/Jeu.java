@@ -49,10 +49,6 @@ public class Jeu implements moteurJeu.Jeu {
      * Constantes pour se déplacer à droite
      */
     public static final String DROITE = "Droite";
-    /**
-    * Constantes pour attaquer
-    */
-    public static final String SPACE = "Space";
 
     // ########## Getters/Setters ##########
 
@@ -210,7 +206,9 @@ public class Jeu implements moteurJeu.Jeu {
         cases.add(new Bombe(x, y));
     }
 
-    // ==================== Joueurs & Monstres ====================
+    // =========================================================
+    // SECTION : Joueurs & Monstres
+    // =========================================================
 
     /**
      * Demarre un timer pour gerer le deplacement et les attaques automatiques des monstres.
@@ -270,7 +268,9 @@ public class Jeu implements moteurJeu.Jeu {
         }
     }
 
-    // ==================== Déplacements ====================
+    // =========================================================
+    // SECTION : Déplacements
+    // =========================================================
 
     /**
      * Cherche et retourne la case speciale a la position specifiee.
@@ -439,7 +439,10 @@ public class Jeu implements moteurJeu.Jeu {
         }
     }
 
-    // ==================== Compatibilités Testes ====================
+    // =========================================================
+    // SECTION : Compatibilités Testes
+    // =========================================================
+
     /**
      * Deplace le hero dans la direction indiquee.
      *
