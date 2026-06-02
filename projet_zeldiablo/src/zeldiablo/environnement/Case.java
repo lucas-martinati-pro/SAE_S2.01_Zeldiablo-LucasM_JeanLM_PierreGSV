@@ -21,15 +21,6 @@ public abstract class Case {
     }
 
     /**
-     * Retourne les coordonnees de la case.
-     *
-     * @return les coordonnees de la case
-     */
-    public int[] getCoord() {
-        return new int[]{x, y};
-    }
-
-    /**
      * Retourne la coordonnee x de la case.
      *
      * @return la coordonnee x

@@ -62,7 +62,8 @@ public class TestEnvironnement {
     public void test_Piege_creation() {
         Piege p = new Piege(3, 4);
         assertEquals("Piege", p.getType());
-        assertArrayEquals(new int[]{3, 4}, p.getCoord());
+        assertEquals(3, p.getX());
+        assertEquals(4, p.getY());
         assertFalse(p.getIsRevele());
     }
 
@@ -87,7 +88,7 @@ public class TestEnvironnement {
     @Test
     public void test_Piege_coordNegatives() {
         Piege p = new Piege(-1, -2);
-        assertEquals(0, p.getCoord()[0]);
+        assertEquals(0, p.getX());
     }
 
     // ########## Tests MurFriable ##########
@@ -96,7 +97,8 @@ public class TestEnvironnement {
     public void test_MurFriable_creation() {
         MurFriable mf = new MurFriable(2, 3);
         assertEquals("MurFriable", mf.getType());
-        assertArrayEquals(new int[]{2, 3}, mf.getCoord());
+        assertEquals(2, mf.getX());
+        assertEquals(3, mf.getY());
     }
 
     @Test
@@ -110,7 +112,7 @@ public class TestEnvironnement {
     @Test
     public void test_MurFriable_coordNegatives() {
         MurFriable mf = new MurFriable(-5, -3);
-        assertEquals(0, mf.getCoord()[0]);
+        assertEquals(0, mf.getX());
     }
 
     // ########## Tests Bombe ##########
@@ -119,14 +121,15 @@ public class TestEnvironnement {
     public void test_Bombe_creation() {
         Bombe b = new Bombe(4, 5);
         assertEquals("Bombe", b.getType());
-        assertArrayEquals(new int[]{4, 5}, b.getCoord());
+        assertEquals(4, b.getX());
+        assertEquals(5, b.getY());
     }
 
     @Test
     public void test_Bombe_coordNegatives() {
         Bombe b = new Bombe(-1, -2);
-        assertEquals(0, b.getCoord()[0]);
-        assertEquals(0, b.getCoord()[1]);
+        assertEquals(0, b.getX());
+        assertEquals(0, b.getY());
     }
 
     @Test
