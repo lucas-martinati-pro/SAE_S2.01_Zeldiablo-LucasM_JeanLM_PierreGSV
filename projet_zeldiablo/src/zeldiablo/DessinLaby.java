@@ -13,12 +13,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static arkanoidJeu.ArkanoidDessin.TAILLE;
-
 /**
  * Gere le dessin du labyrinthe et des entites du jeu.
  */
 public class DessinLaby implements DessinJeu {
+    public static final int TAILLE = 20;
     private Jeu jeu;
 
     /**

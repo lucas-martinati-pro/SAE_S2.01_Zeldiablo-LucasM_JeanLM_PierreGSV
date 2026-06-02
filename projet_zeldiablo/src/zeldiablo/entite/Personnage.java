@@ -50,8 +50,7 @@ public abstract class Personnage {
      */
     public Personnage(int x, int y, int vie) {
         setPos(x, y);
-        if (vie > 0) this.vie = vie;
-        else this.vie = vie;
+        this.vie = vie;
     }
 
     /**

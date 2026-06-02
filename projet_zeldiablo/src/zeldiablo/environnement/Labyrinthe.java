@@ -49,9 +49,6 @@ public class Labyrinthe {
      */
     public Labyrinthe(int x, int y) {
         this.murs = new boolean[y][x];
-        for (int i = 0; i < y; i++) {
-            for (int j = 0; j < x; j++) this.murs[i][j] = false;
-        }
     }
 
     // ########## Méthodes ##########

@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static arkanoidJeu.ArkanoidDessin.TAILLE;
+import static zeldiablo.DessinLaby.TAILLE;
 
 /**
  * Classe principale permettant de lancer le jeu

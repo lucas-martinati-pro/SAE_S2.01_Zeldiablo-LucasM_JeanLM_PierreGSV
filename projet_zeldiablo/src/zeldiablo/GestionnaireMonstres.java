@@ -92,13 +92,12 @@ public class GestionnaireMonstres {
      * Supprime les monstres morts.
      */
     public void verifMort() {
-        for (int i = 0; i < jeu.getMonstres().size(); i++) {
-            Personnage m = jeu.getMonstres().get(i);
+        jeu.getMonstres().removeIf(m -> {
             if (m.etreMort()) {
                 System.out.println("Vous avez tué un monstre ! \uD83D\uDC7E");
-                jeu.getMonstres().remove(m);
-                i--;
+                return true;
             }
-        }
+            return false;
+        });
     }
 }
