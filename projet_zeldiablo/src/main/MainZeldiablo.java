@@ -29,8 +29,12 @@ public class MainZeldiablo {
         String choix = "";
         if (args.length > 0) choix = args[0];
         if (choix.isEmpty()) {
-            System.out.println("Veuillez Choisir le niveau :" +
-                    "\n 1, 2, 3, 4, 5, 6, 7, 8, 9, 10");
+            System.out.print("=== SÉLECTION DE NIVEAU ===" +
+                    "\n [ 01 ]  [ 02 ]  [ 03 ]" +
+                    "\n [ 04 ]  [ 05 ]  [ 06 ]" +
+                    "\n [ 07 ]  [ 08 ]  [ 09 ]" +
+                    "\n         [ 10 ]        " +
+                    "\n Entrez votre choix : ");
 
             choix = sc.nextLine();
         }
