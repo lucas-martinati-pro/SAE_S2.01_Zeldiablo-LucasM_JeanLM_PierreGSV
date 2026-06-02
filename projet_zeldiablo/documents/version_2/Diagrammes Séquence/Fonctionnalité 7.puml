@@ -1,0 +1,26 @@
+@startuml
+title Fonctionnalité 7 — Murs friables (destruction par bombe)
+
+participant "bombe:Bombe" as Bombe
+participant "j:Jeu" as Jeu
+participant "laby:Labyrinthe" as Laby
+participant "mur:MurFriable" as Mur
+
+activate Bombe
+
+loop Pour chaque case (jusqu'à 3 cases de distance dans une direction)
+    Bombe -> Laby : getCase(cx, cy)
+    activate Laby
+    Laby --> Bombe : false (pas de mur)
+    deactivate Laby
+
+    Bombe -> Jeu : getCase(cx, cy)
+    activate Jeu
+    Jeu --> Bombe : mur : Case
+    deactivate Jeu
+
+    Bombe -> Jeu : detruire(cx, cy)
+end
+
+deactivate Bombe
+@enduml

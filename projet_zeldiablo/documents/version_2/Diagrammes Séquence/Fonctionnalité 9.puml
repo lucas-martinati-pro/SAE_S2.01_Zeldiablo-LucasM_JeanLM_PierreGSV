@@ -1,47 +1,81 @@
 @startuml
-title Fonctionnalité 8 & 9 — Déplacement et attaque des monstres
+title Fonctionnalité 9 — Déplacement aléatoire des monstres
 
-participant "timer:Timer" as Timer
-participant "gm:GestionnaireMonstres" as GM
-participant "j:Jeu" as Jeu
-participant "m:Monstre" as Monstre
-participant "hero:Aventurier" as Hero
+actor Timer
+participant "gestionnaireMonstres:gestionnaireMonstres" as GM
+participant "jeu:Jeu" as Jeu
+participant "c:Case" as C
 
-Timer -> GM : run()
+Timer -> GM : evoluerMonster(commandeUser)
 activate GM
 
-GM -> GM : monstreAttaque(heroX, heroY)
-activate GM
-loop pour chaque case adjacente au héros
-    loop pour chaque monstre m
-        alt m sur la case
-            GM -> Monstre : attaquer(hero)
-            activate Monstre
-            Monstre -> Hero : addVie(-2)
-            Monstre --> GM
-            deactivate Monstre
-        end
-    end
+GM -> Jeu : getMonstres()
+activate Jeu
+Jeu --> GM : listeMonstres
+deactivate Jeu
+
+alt listeMonstres non vide
+	GM -> Jeu : getMonstres().size()
+	activate Jeu
+	Jeu --> GM : taille
+	deactivate Jeu
+
+	create "m:Personnage" as M
+	GM -> M : listeMonstres.get(index)
+
+	GM -> M : getX()
+	activate M
+	M --> GM : x
+	deactivate M
+
+	GM -> M : getY()
+	activate M
+	M --> GM : y
+	deactivate M
+
+	GM -> Jeu : getSuivant(x, y, commandeUser)
+	activate Jeu
+	Jeu --> GM : coord[]
+	deactivate Jeu
+
+	GM -> Jeu : verifierDeplacement(coord[0], coord[1], commandeUser)
+
+	GM -> Jeu : getChar(coord[0], coord[1])
+	activate Jeu
+	Jeu --> GM : typeCase
+	deactivate Jeu
+
+	alt case piege
+		GM -> Jeu : getCases()
+		activate Jeu
+		Jeu --> GM : listeCases
+		deactivate Jeu
+
+		loop pour chaque case
+			GM -> C : getCoord()
+			activate C
+			C --> GM : coordCase[]
+			deactivate C
+
+			alt coordCase[0] == coord[0] && coordCase[1] == coord[1]
+                GM -> C : effet(M)
+                activate C
+                C --> GM
+                deactivate C
+                GM -> GM : verifMort()
+            end
+		end
+		GM -> M : setPos(coord[0], coord[1])
+		activate M
+		M --> GM
+		deactivate M
+	else case vide ou fin
+		GM -> M : setPos(coord[0], coord[1])
+		activate M
+		M --> GM
+		deactivate M
+	end
 end
-GM --> GM
-deactivate GM
-
-GM -> GM : evoluerMonster(commandeUser)
-activate GM
-GM -> Jeu : getSuivant(m.x, m.y, commandeUser)
-Jeu --> GM : [x, y]
-
-GM -> Jeu : verifierDeplacement(x, y, commandeUser)
-Jeu --> GM
-
-GM -> Jeu : getChar(x, y)
-Jeu --> GM : VIDE
-
-GM -> Monstre : setPos(x, y)
-Monstre --> GM
-
-GM --> GM
-deactivate GM
 
 GM --> Timer
 deactivate GM
