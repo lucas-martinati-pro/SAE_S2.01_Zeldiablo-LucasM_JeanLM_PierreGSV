@@ -15,6 +15,9 @@ import java.io.IOException;
 
 import static arkanoidJeu.ArkanoidDessin.TAILLE;
 
+/**
+ * Gere le dessin du labyrinthe et des entites du jeu.
+ */
 public class DessinLaby implements DessinJeu {
     private Jeu jeu;
 

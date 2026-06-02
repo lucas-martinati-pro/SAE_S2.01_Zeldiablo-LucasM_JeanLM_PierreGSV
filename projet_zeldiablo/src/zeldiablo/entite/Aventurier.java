@@ -4,9 +4,10 @@ import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Bombe;
 import zeldiablo.Jeu;
 
+/**
+ * Represente un aventurier, le hero du jeu.
+ */
 public class Aventurier extends Personnage {
-    private Jeu jeu;
-
     /**
      * Créer un avanturier
      * @param x coordonné x de l'avanturier
@@ -17,6 +18,11 @@ public class Aventurier extends Personnage {
         super(x, y, vie);
     }
 
+    /**
+     * Fait attaquer l'aventurier en posant une bombe.
+     *
+     * @param jeu l'instance du jeu en cours
+     */
     public void attaquer(Jeu jeu) {
         jeu.addBombe(x, y);
         Case bombe = jeu.getCase(x, y);

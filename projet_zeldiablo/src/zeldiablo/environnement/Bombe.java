@@ -3,16 +3,30 @@ package zeldiablo.environnement;
 import zeldiablo.entite.Personnage;
 import zeldiablo.Jeu;
 
+/**
+ * Represente une bombe dans le jeu, capable d'exploser et de detruire des elements ou blesser des personnages.
+ */
 public class Bombe implements Case {
     private int x;
     private int y;
     private Jeu jeu;
 
+    /**
+     * Assigne l'instance du jeu a la bombe.
+     *
+     * @param jeu l'instance du jeu
+     */
     public void setJeu(Jeu jeu) {
         if (jeu != null) this.jeu = jeu;
         else this.jeu = new Jeu();
     }
 
+    /**
+     * Cree une nouvelle bombe aux coordonnees (x, y).
+     *
+     * @param x la coordonnee x
+     * @param y la coordonnee y
+     */
     public Bombe(int x, int y) {
         if (x > 0) this.x = x;
         else this.x = 0;
