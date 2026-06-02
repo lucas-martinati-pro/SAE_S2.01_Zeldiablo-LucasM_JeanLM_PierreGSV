@@ -99,9 +99,7 @@ public class MainZeldiablo {
 
                     if (enCours) { // Si le fichier a bien chargé
                         j.getHero().addVie(3); // +3 pv à chaque niveaux réussi
-                        jeu = new DessinLaby(j);
                         size = j.getLaby().returnSize();
-                        moteur = new MoteurGraphique(j, jeu);
                         moteur.lancerJeu(TAILLE * size[0], TAILLE * size[1]);
                     }
 
