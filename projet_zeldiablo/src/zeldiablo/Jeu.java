@@ -1,20 +1,16 @@
 package zeldiablo;
 
 import zeldiablo.environnement.Case;
-import zeldiablo.entite.Monstre;
 import zeldiablo.environnement.Bombe;
 import zeldiablo.entite.Personnage;
 import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.exception.ActionInconnueException;
-import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.environnement.Piege;
 import zeldiablo.environnement.MurFriable;
 
 import moteurJeu.Commande;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
