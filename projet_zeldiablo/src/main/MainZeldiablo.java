@@ -35,7 +35,6 @@ public class MainZeldiablo {
                     "\n [ 07 ]  [ 08 ]  [ 09 ]" +
                     "\n         [ 10 ]        " +
                     "\n Entrez votre choix : ");
-
             choix = sc.nextLine();
         }
 
@@ -64,12 +63,10 @@ public class MainZeldiablo {
 
         j.getGestionnaireMonstres().startMonsters();
 
-        System.out.println("Voici les actions disponibles :" +
-                "\n Haut (Z)" +
-                "\n Bas (S)" +
-                "\n Gauche (Q)" +
-                "\n Droite (D)\n" +
-                " Space (Espace) : pour poser une bombe !");
+        System.out.println("   [Z]    " +
+                "\n[Q][S][D]" +
+                "\n[ESPACE] : BOMBE " +
+                "\nDéplacez-vous avec ZQSD et posez vos bombes avec Espace !");
 
         DessinLaby jeu = new DessinLaby(j);
 
