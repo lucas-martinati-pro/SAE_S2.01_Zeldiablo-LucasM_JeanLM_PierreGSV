@@ -250,27 +250,7 @@ public class Jeu implements moteurJeu.Jeu {
             }
         }
 
-        int[] coord = getSuivant(hero.getX(), hero.getY(), commandeUser);
-        try {
-            verifierDeplacement(coord[0], coord[1], commandeUser);
-            switch (this.getChar(coord[0], coord[1])) {
-                case Labyrinthe.PIEGE -> {
-                    for (Case c : cases) {
-                        int[] coordCase = c.getCoord();
-                        if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
-                            if (this.hero.getX() != coord[0] || this.hero.getY() != coord[1]) {
-                                c.effet(this.hero);
-                            }
-                            break;
-                        }
-                    }
-                    this.hero.setPos(coord[0], coord[1]);
-                }
-                case Labyrinthe.VIDE, Labyrinthe.FIN -> this.hero.setPos(coord[0], coord[1]);
-            }
-        } catch (ActionInconnueException e) {
-            // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
-        }
+        this.hero.deplacer(this, commandeUser);
     }
 
     /**

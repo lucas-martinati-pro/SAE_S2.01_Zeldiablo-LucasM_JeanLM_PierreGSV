@@ -4,6 +4,7 @@ title Fonctionnalité 9 - Déplacement aléatoire des monstres
 actor Timer
 participant "gestionnaireMonstres:gestionnaireMonstres" as GM
 participant "jeu:Jeu" as Jeu
+participant "m:Personnage" as M
 participant "c:Case" as C
 
 Timer -> GM : evoluerMonster(commandeUser)
@@ -15,69 +16,51 @@ Jeu --> GM : listeMonstres
 deactivate Jeu
 
 alt listeMonstres non vide
-	GM -> Jeu : getMonstres().size()
+	GM -> M : deplacer(jeu, commandeUser)
+	activate M
+
+	M -> Jeu : getSuivant(x, y, commandeUser)
 	activate Jeu
-	Jeu --> GM : taille
+	Jeu --> M : coord[]
 	deactivate Jeu
 
-	create "m:Personnage" as M
-	GM -> M : listeMonstres.get(index)
+	M -> Jeu : verifierDeplacement(coord[0], coord[1], commandeUser)
 
-	GM -> M : getX()
-	activate M
-	M --> GM : x
-	deactivate M
-
-	GM -> M : getY()
-	activate M
-	M --> GM : y
-	deactivate M
-
-	GM -> Jeu : getSuivant(x, y, commandeUser)
+	M -> Jeu : getChar(coord[0], coord[1])
 	activate Jeu
-	Jeu --> GM : coord[]
-	deactivate Jeu
-
-	GM -> Jeu : verifierDeplacement(coord[0], coord[1], commandeUser)
-
-	GM -> Jeu : getChar(coord[0], coord[1])
-	activate Jeu
-	Jeu --> GM : typeCase
+	Jeu --> M : typeCase
 	deactivate Jeu
 
 	alt case piege
-		GM -> Jeu : getCases()
+		M -> Jeu : getCases()
 		activate Jeu
-		Jeu --> GM : listeCases
+		Jeu --> M : listeCases
 		deactivate Jeu
 
 		loop pour chaque case
-			GM -> C : getCoord()
+			M -> C : getCoord()
 			activate C
-			C --> GM : coordCase[]
+			C --> M : coordCase[]
 			deactivate C
 
 			alt coordCase[0] == coord[0] && coordCase[1] == coord[1]
-                GM -> C : effet(M)
+                M -> C : effet(M)
                 activate C
-                C --> GM
+                C --> M
                 deactivate C
-                GM -> GM : verifMort()
             end
 		end
-		GM -> M : setPos(coord[0], coord[1])
-		activate M
-		M --> GM
-		deactivate M
+		M -> M : setPos(coord[0], coord[1])
 	else case vide ou fin
-		GM -> M : setPos(coord[0], coord[1])
-		activate M
-		M --> GM
-		deactivate M
+		M -> M : setPos(coord[0], coord[1])
 	end
+	
+	M --> GM
+	deactivate M
+	
+	GM -> GM : verifMort()
 end
 
 GM --> Timer
 deactivate GM
-
 @enduml

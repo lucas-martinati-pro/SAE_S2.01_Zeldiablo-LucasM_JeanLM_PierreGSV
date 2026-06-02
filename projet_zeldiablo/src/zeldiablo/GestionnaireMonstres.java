@@ -83,29 +83,8 @@ public class GestionnaireMonstres {
             int index = (int) Math.floor(Math.random() * jeu.getMonstres().size());
             Personnage m = jeu.getMonstres().get(index);
 
-            int[] coord = jeu.getSuivant(m.getX(), m.getY(), commandeUser);
-
-            try {
-                jeu.verifierDeplacement(coord[0], coord[1], commandeUser);
-                switch (jeu.getChar(coord[0], coord[1])) {
-                    case Labyrinthe.PIEGE -> {
-                        for (Case c : jeu.getCases()) {
-                            int[] coordCase = c.getCoord();
-                            if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
-                                if (m.getX() != coord[0] || m.getY() != coord[1]) {
-                                    c.effet(m);
-                                    verifMort();
-                                }
-                                break;
-                            }
-                        }
-                        m.setPos(coord[0], coord[1]);
-                    }
-                    case Labyrinthe.VIDE, Labyrinthe.FIN -> m.setPos(coord[0], coord[1]);
-                }
-            } catch (ActionInconnueException e) {
-                // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
-            }
+            m.deplacer(jeu, commandeUser);
+            verifMort();
         }
     }
 

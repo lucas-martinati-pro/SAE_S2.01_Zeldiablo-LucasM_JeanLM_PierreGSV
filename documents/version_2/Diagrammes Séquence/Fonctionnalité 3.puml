@@ -1,41 +1,50 @@
 @startuml
-title Fonctionnalité 6 - Cases piégées
+title Fonctionnalité 3 - Cases piégées
 
 actor Joueur
 participant "j:Jeu" as Jeu
-participant "piege:Piege" as Piege
 participant "hero:Aventurier" as Hero
+participant "piege:Piege" as Piege
 
 Joueur -> Jeu : evoluer(commandeUser)
 activate Jeu
 
-Jeu -> Jeu : getSuivant(x, y, commandeUser)
-activate Jeu
-Jeu --> Jeu : [x, y]
-deactivate Jeu
-
-Jeu -> Jeu : verifierDeplacement(x, y, commandeUser)
-
-Jeu -> Jeu : getChar(x, y)
-activate Jeu
-Jeu --> Jeu : PIEGE
-deactivate Jeu
-
-Jeu -> Jeu : getCase(x, y)
-activate Jeu
-Jeu --> Jeu : piege
-deactivate Jeu
-
-Jeu -> Piege : effet(hero)
-activate Piege
-
-Piege -> Hero : addVie(-1)
-
-Piege --> Jeu
-deactivate Piege
-
-Jeu -> Hero : setPos(x, y)
+Jeu -> Hero : deplacer(j, commandeUser)
 activate Hero
+
+Hero -> Jeu : getSuivant(x, y, commandeUser)
+activate Jeu
+Jeu --> Hero : [x, y]
+deactivate Jeu
+
+Hero -> Jeu : verifierDeplacement(x, y, commandeUser)
+
+Hero -> Jeu : getChar(x, y)
+activate Jeu
+Jeu --> Hero : PIEGE
+deactivate Jeu
+
+Hero -> Jeu : getCases()
+activate Jeu
+Jeu --> Hero : cases
+deactivate Jeu
+
+loop pour chaque case
+    Hero -> Piege : getCoord()
+    activate Piege
+    Piege --> Hero : coordCase[]
+    deactivate Piege
+    alt coordCase[0] == coord[0] && coordCase[1] == coord[1]
+        Hero -> Piege : effet(hero)
+        activate Piege
+        Piege -> Hero : addVie(-1)
+        Piege --> Hero
+        deactivate Piege
+    end
+end
+
+Hero -> Hero : setPos(x, y)
+
 Hero --> Jeu
 deactivate Hero
 

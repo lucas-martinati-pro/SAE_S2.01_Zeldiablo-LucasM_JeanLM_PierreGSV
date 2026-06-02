@@ -38,32 +38,16 @@ public class DessinLaby implements DessinJeu {
     public void dessiner(BufferedImage image) {
         Graphics2D g = (Graphics2D) image.getGraphics();
 
+        Color vide = new Color(144, 238, 144); // Vert clair pour les cases vides
+
         int[] coordonnee = jeu.getLaby().returnSize();
 
         for (int y = 0; y < coordonnee[1]; y++) {
             for (int x = 0; x < coordonnee[0]; x++) {
                 switch (jeu.getChar(x, y)) {
-                    case Labyrinthe.FIN -> {
-                        try {
-                            BufferedImage finImage = ImageIO.read(new File("sprite/fin.png"));
-                            g.drawImage(finImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                        } catch (IOException e) {
-                            g.setColor(Color.GREEN);
-                            g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-                            System.err.println("Erreur lors du chargement de l'image de fin : " + e.getMessage());
-                        }
-                    }
-                    case Labyrinthe.MUR -> {
-                        try {
-                            BufferedImage murImage = ImageIO.read(new File("sprite/mur.png"));
-                            g.drawImage(murImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                        } catch (IOException e) {
-                            g.setColor(Color.BLACK);
-                            g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-                            System.err.println("Erreur lors du chargement de l'image de mur : " + e.getMessage());
-                        }
-                    }
-                    case Labyrinthe.VIDE -> {}
+                    case Labyrinthe.FIN -> addImageCube("sprite/fin.png", x, y, g, Color.GREEN);
+                    case Labyrinthe.MUR -> addImageCube("sprite/mur.png", x, y, g, Color.BLACK);
+                    case Labyrinthe.VIDE -> addImageCube("sprite/vide.png", x, y, g, vide);
                 }
             }
         }
@@ -74,27 +58,17 @@ public class DessinLaby implements DessinJeu {
             switch (c.getType()) {
                 case "Piege" -> {
                     if (((Piege) c).getIsRevele()) {
-                        try {
-                            BufferedImage piegeImage = ImageIO.read(new File("sprite/piege.png"));
-                            g.drawImage(piegeImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                        } catch (IOException e) {
-                            g.setColor(Color.ORANGE);
-                            g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-                            System.err.println("Erreur lors du chargement de l'image de piège : " + e.getMessage());
-                        }
+                        addImageCube("sprite/vide.png", x, y, g, vide);
+                        addImageCube("sprite/piege.png", x, y, g, Color.ORANGE);
+                    } else {
+                        addImageCube("sprite/vide.png", x, y, g, vide);
                     }
                 }
                 case "MurFriable" -> {
-                    try {
-                        BufferedImage murFriableImage = ImageIO.read(new File("sprite/murFriable.png"));
-                        g.drawImage(murFriableImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                    } catch (IOException e) {
-                        g.setColor(Color.GRAY);
-                        g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-                        System.err.println("Erreur lors du chargement de l'image de mur friable : " + e.getMessage());
-                    }
+                    addImageCube("sprite/murFriable.png", x, y, g, Color.GRAY);
                 }
                 case "Bombe" -> {
+                    addImageCube("sprite/vide.png", x, y, g, vide);
                     try {
                         BufferedImage bombeImage = ImageIO.read(new File("sprite/bombe.png"));
                         g.drawImage(bombeImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
@@ -109,36 +83,31 @@ public class DessinLaby implements DessinJeu {
 
         // Dessiner les flammes d'explosion
         for (int[] coord : jeu.getExplosionAffichage()) {
-            try {
-                BufferedImage coeurImage = ImageIO.read(new File("sprite/flamme.png"));
-                g.drawImage(coeurImage, coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE, null);
-            } catch (IOException e) {
-                g.setColor(Color.ORANGE);
-                g.fillRect(coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE);
-                System.err.println("Erreur lors du chargement de l'image des flammes : " + e.getMessage());
-            }
-
+            addImageCube("sprite/flamme.png", coord[0], coord[1], g, Color.RED);
         }
 
         for (Personnage m : jeu.getMonstres()) {
+            int x = m.getX(), y = m.getY();
+            addImageCube("sprite/vide.png", x, y, g, vide);
             try {
                 BufferedImage monstreImage = ImageIO.read(new File("sprite/monstre.png"));
-                g.drawImage(monstreImage, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+                g.drawImage(monstreImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
             } catch (IOException e) {
                 g.setColor(Color.RED);
-                g.fillOval(m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE);
+                g.fillOval(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
                 System.err.println("Erreur lors du chargement de l'image de monstre : " + e.getMessage());
             }
         }
 
         // Coeurs de vie du héros
         for (int i = 0; i < jeu.getHero().getVie(); i++) {
+            int x = coordonnee[0] * TAILLE - (i + 1) * 17, y = 3;
             try {
                 BufferedImage coeurImage = ImageIO.read(new File("sprite/coeur.png"));
-                g.drawImage(coeurImage, coordonnee[0] * TAILLE - (i + 1) * 17, 3, 15, 15, null);
+                g.drawImage(coeurImage, x, y, 15, 15, null);
             } catch (IOException e) {
                 g.setColor(Color.RED);
-                g.fillOval(coordonnee[0] * TAILLE - (i + 1) * 17, 3, 10, 10);
+                g.fillOval(x, y, 10, 10);
                 System.err.println("Erreur lors du chargement de l'image de coeur : " + e.getMessage());
             }
         }
@@ -146,12 +115,14 @@ public class DessinLaby implements DessinJeu {
         // Mettre le héros après les monstres pour qu'il soit dessiné par-dessus
         Personnage hero = jeu.getHero();
         if (hero != null) {
+            int x = hero.getX(), y = hero.getY();
+            addImageCube("sprite/vide.png", x, y, g, vide);
             try {
                 BufferedImage heroImage = ImageIO.read(new File("sprite/hero.png"));
-                g.drawImage(heroImage, hero.getX() * TAILLE, hero.getY() * TAILLE, TAILLE, TAILLE, null);
+                g.drawImage(heroImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
             } catch (IOException e) {
                 g.setColor(Color.BLUE);
-                g.fillOval(hero.getX() * TAILLE + 2, hero.getY() * TAILLE + 2, TAILLE - 3, TAILLE - 3);
+                g.fillOval(x * TAILLE + 2, y * TAILLE + 2, TAILLE - 3, TAILLE - 3);
                 System.err.println("Erreur lors du chargement de l'image du héros : " + e.getMessage());
             }
         }
@@ -170,6 +141,17 @@ public class DessinLaby implements DessinJeu {
             } catch (IOException e) {
                 System.err.println("Erreur lors du chargement de l'image de victoire : " + e.getMessage());
             }
+        }
+    }
+
+    private void addImageCube(String image, int x, int y, Graphics2D g, Color fallbackColor) {
+        try {
+            BufferedImage img = ImageIO.read(new File(image));
+            g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+        } catch (IOException e) {
+            g.setColor(fallbackColor);
+            g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
         }
     }
 }

@@ -1,5 +1,11 @@
 package zeldiablo.entite;
 
+import zeldiablo.Jeu;
+import moteurJeu.Commande;
+import zeldiablo.environnement.Case;
+import zeldiablo.environnement.Labyrinthe;
+import zeldiablo.exception.ActionInconnueException;
+
 /**
  * Represente un personnage abstrait dans le jeu.
  */
@@ -86,5 +92,35 @@ public abstract class Personnage {
      */
     public void attaquer(Personnage victime) {
         if (!etreMort()) victime.addVie(-2);
+    }
+
+    /**
+     * Deplace le personnage dans la direction indiquee par la commande.
+     *
+     * @param jeu          l'instance du jeu pour verifier les collisions et les cases
+     * @param commandeUser la commande contenant les directions de deplacement
+     */
+    public void deplacer(Jeu jeu, Commande commandeUser) {
+        int[] coord = jeu.getSuivant(this.x, this.y, commandeUser);
+        try {
+            jeu.verifierDeplacement(coord[0], coord[1], commandeUser);
+            switch (jeu.getChar(coord[0], coord[1])) {
+                case Labyrinthe.PIEGE -> {
+                    for (Case c : jeu.getCases()) {
+                        int[] coordCase = c.getCoord();
+                        if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
+                            if (this.x != coord[0] || this.y != coord[1]) {
+                                c.effet(this);
+                            }
+                            break;
+                        }
+                    }
+                    this.setPos(coord[0], coord[1]);
+                }
+                case Labyrinthe.VIDE, Labyrinthe.FIN -> this.setPos(coord[0], coord[1]);
+            }
+        } catch (ActionInconnueException e) {
+            // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
+        }
     }
 }

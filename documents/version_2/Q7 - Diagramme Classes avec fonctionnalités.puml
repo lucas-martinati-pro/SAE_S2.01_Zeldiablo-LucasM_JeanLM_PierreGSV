@@ -80,6 +80,7 @@ package "entite" {
         + addVie(i : int) : void
         + etreMort() : boolean
         + attaquer(victime : Personnage) : void
+        + deplacer(jeu : Jeu, commandeUser : Commande) : void
     }
 
     class Aventurier {
