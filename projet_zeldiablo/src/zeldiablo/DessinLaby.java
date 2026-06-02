@@ -63,8 +63,7 @@ public class DessinLaby implements DessinJeu {
                             System.err.println("Erreur lors du chargement de l'image de mur : " + e.getMessage());
                         }
                     }
-                    case Labyrinthe.VIDE -> {
-                    }
+                    case Labyrinthe.VIDE -> {}
                 }
             }
         }

@@ -279,9 +279,7 @@ public class Jeu implements moteurJeu.Jeu {
      * @return true si le hero est sur la case de fin, false sinon
      */
     public boolean etreFini() {
-        if (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1]) {
-            return true;
-        } else if (this.hero.etreMort()) {
+        if ((this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1]) || this.hero.etreMort()) {
             return true;
         } else {
             return false;
