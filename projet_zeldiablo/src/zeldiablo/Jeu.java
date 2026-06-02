@@ -280,10 +280,8 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public boolean etreFini() {
         if (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1]) {
-            System.out.println("Félicitation, vous avez gagné !!! \uD83C\uDFC6");
             return true;
         } else if (this.hero.etreMort()) {
-            System.out.println("Vous êtes mort ! Vous avez perdu ! \uD83D\uDC80");
             return true;
         } else {
             return false;
