@@ -1,44 +1,60 @@
 @startuml
 title Q7 - Diagramme Classes v2
 
-skinparam classAttributeIconSize 0
-skinparam packageStyle rectangle
-
-class "Jeu" as ZJeu {
+class "Jeu" {
     - laby : Labyrinthe
     - hero : Aventurier
     - monstres : ArrayList<Personnage>
-    - fin : int[]
+    - gestionnaireMonstres : GestionnaireMonstres
+
     - cases : ArrayList<Case>
+    - fin : int[]
+
+    - explosionAffichage : ArrayList<int[]>
+    - recharger : boolean
     + {static} HAUT : String = "Haut"
     + {static} BAS : String = "Bas"
     + {static} GAUCHE : String = "Gauche"
     + {static} DROITE : String = "Droite"
     + {static} SPACE : String = "Space"
 
-    + setHero(hero : Aventurier) : void
-    + setLaby(laby : Labyrinthe) : void
+    + getGestionnaireMonstres() : GestionnaireMonstres
     + getHero() : Aventurier
     + getLaby() : Labyrinthe
     + getCases() : ArrayList<Case>
+    + getExplosionAffichage() : ArrayList<int[]>
     + getMonstres() : ArrayList<Personnage>
     + getCase(x : int, y : int) : Case
-    + chargerJeu(nomFichier : String) : void
-    + {static} convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
     + getChar(x : int, y : int) : char
+    + setHero(hero : Aventurier) : void
+    + setLaby(laby : Labyrinthe) : void
+
     + detruire(x : int, y : int) : void
     + getSuivant(x : int, y : int, commandeUser : Commande) : int[]
     + addBombe(x : int, y : int) : void
-    + monstreAttaque(x : int, y : int) : void
     + verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
     + evoluer(commandeUser : Commande) : void
-    + evoluerMonster(commandeUser : Commande) : void
     + etreFini() : boolean
-    + verifMort() : void
-    + startMonsters() : void
+
     + evoluer(action : String) : void
     + verifierDeplacement(x : int, y : int, action : String) : void
     + jeuToString() : String
+}
+
+class GestionnaireMonstres {
+    - jeu : Jeu
+    - timer : Timer
+
+    + GestionnaireMonstres(jeu : Jeu)
+    + startMonsters() : void
+    + monstreAttaque(x : int, y : int) : void
+    + evoluerMonster(commandeUser : Commande) : void
+    + verifMort() : void
+}
+
+class Chargement {
+    + {static} chargerNiveau(jeu : Jeu, nomFichier : String) : void
+    + {static} convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
 }
 
 class DessinLaby {
@@ -48,29 +64,25 @@ class DessinLaby {
     + dessiner(image : BufferedImage) : void
 }
 
-' ========================
-' Package entite
-' ========================
 package "entite" {
-
     abstract class Personnage {
         # x : int
         # y : int
         # vie : int
 
         + Personnage(x : int, y : int, vie : int)
+
         + getX() : int
         + getY() : int
         + getVie() : int
         + setPos(x : int, y : int) : void
+
         + addVie(i : int) : void
         + etreMort() : boolean
         + attaquer(victime : Personnage) : void
     }
 
     class Aventurier {
-        - jeu : Jeu
-
         + Aventurier(x : int, y : int, vie : int)
         + attaquer(jeu : Jeu) : void
     }
@@ -78,19 +90,14 @@ package "entite" {
     class Monstre {
         + Monstre(x : int, y : int, vie : int)
     }
-
-    Personnage <|-- Aventurier
-    Personnage <|-- Monstre
 }
 
-' ========================
-' Package environnement
-' ========================
 package "environnement" {
 
     interface Case <<interface>> {
         + getType() : String
         + getCoord() : int[]
+
         + effet(perso : Personnage) : void
     }
 
@@ -106,9 +113,11 @@ package "environnement" {
         + {static} BOMBE : char = 'B'
 
         + Labyrinthe(x : int, y : int)
+
+        + getCase(x : int, y : int) : boolean
+
         + addMur(x : int, y : int) : void
         + returnSize() : int[]
-        + getCase(x : int, y : int) : boolean
     }
 
     class Piege {
@@ -117,9 +126,11 @@ package "environnement" {
         - isRevele : boolean
 
         + Piege(x : int, y : int)
+
         + getType() : String
         + getCoord() : int[]
         + getIsRevele() : boolean
+
         + effet(perso : Personnage) : void
     }
 
@@ -128,8 +139,10 @@ package "environnement" {
         - y : int
 
         + MurFriable(x : int, y : int)
+
         + getType() : String
         + getCoord() : int[]
+
         + effet(perso : Personnage) : void
     }
 
@@ -139,22 +152,20 @@ package "environnement" {
         - jeu : Jeu
 
         + Bombe(x : int, y : int)
+
         + setJeu(jeu : Jeu) : void
         + getType() : String
         + getCoord() : int[]
+
         + effet(perso : Personnage) : void
     }
-
-    Case <|.. Piege
-    Case <|.. MurFriable
-    Case <|.. Bombe
 }
 
-' ========================
-' Package exception
-' ========================
-package "exception" {
+Case <|.. Piege
+Case <|.. MurFriable
+Case <|.. Bombe
 
+package "exception" {
     class ActionInconnueException {
         + ActionInconnueException(message : String)
     }
@@ -162,39 +173,28 @@ package "exception" {
     class FichierIncorrectException {
         + FichierIncorrectException(message : String)
     }
-
-    ActionInconnueException --|> RuntimeException
-    FichierIncorrectException --|> RuntimeException
 }
 
 ' ========================
-' Relations inter-packages
+' Relations
 ' ========================
+Personnage <|-- Aventurier
+Personnage <|-- Monstre
 
-' Jeu implémente moteurJeu.Jeu
-Jeu <|.. ZJeu
+ActionInconnueException --|> RuntimeException
+FichierIncorrectException --|> RuntimeException
 
-' DessinLaby implémente DessinJeu
 DessinJeu <|.. DessinLaby
 
-' Jeu possède / utilise
-ZJeu --> Labyrinthe : laby
-ZJeu --> Aventurier : hero
-ZJeu "1" --> "*" Personnage : monstres
-ZJeu "1" --> "*" Case : cases
+Jeu "1" --> "1" Labyrinthe : laby
+Jeu "1" --> "1" Aventurier : hero
+Jeu "1" *-- "1" GestionnaireMonstres : gestionnaireMonstres
+Jeu "1" --> "*" Personnage : monstres
+Jeu "1" --> "*" Case : cases
 
-' DessinLaby affiche Jeu
-DessinLaby "1" --> "1" ZJeu : jeu
+GestionnaireMonstres "1" --> "1" Jeu : jeu
+Chargement --> Jeu : charge
 
-' Aventurier utilise Bombe via Jeu
-Aventurier ..> Bombe : pose
-Aventurier ..> ZJeu : utilise
-
-' Bombe a une référence vers Jeu pour l'explosion
-Bombe --> ZJeu : jeu
-
-' Jeu lève des exceptions
-ZJeu ..> ActionInconnueException : lève
-ZJeu ..> FichierIncorrectException : lève
+DessinLaby "1" --> "1" Jeu : jeu
 
 @enduml
