@@ -81,7 +81,7 @@ public class MainZeldiablo {
 
         // On passe au niveau suivant automatiquement si le niveau est fini et que le héros n'est pas mort
         while (enCours) {
-            if (lvl < 12) {
+            if (lvl < 11) {
                 if (j.etreFini() && !(j.getHero().etreMort())) {
                     System.out.println("next level");
                     lvl++;

@@ -17,7 +17,7 @@ import java.io.IOException;
  * Gere le dessin du labyrinthe et des entites du jeu.
  */
 public class DessinLaby implements DessinJeu {
-    public static final int TAILLE = 20;
+    public static final int TAILLE = 30;
     private Jeu jeu;
 
     /**
