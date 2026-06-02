@@ -38,12 +38,16 @@ alt listeMonstres non vide
 		deactivate Jeu
 
 		loop pour chaque case
-			M -> C : getCoord()
+			M -> C : getX()
 			activate C
-			C --> M : coordCase[]
+			C --> M : xCase
+			deactivate C
+			M -> C : getY()
+			activate C
+			C --> M : yCase
 			deactivate C
 
-			alt coordCase[0] == coord[0] && coordCase[1] == coord[1]
+			alt xCase == coord[0] && yCase == coord[1]
                 M -> C : effet(M)
                 activate C
                 C --> M

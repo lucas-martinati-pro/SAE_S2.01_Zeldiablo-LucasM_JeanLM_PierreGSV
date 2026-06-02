@@ -30,6 +30,24 @@ public abstract class Case {
     }
 
     /**
+     * Retourne la coordonnee x de la case.
+     *
+     * @return la coordonnee x
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Retourne la coordonnee y de la case.
+     *
+     * @return la coordonnee y
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
     * Retourne le type de la case.
     *
     * @return le type de la case

@@ -52,8 +52,8 @@ public class DessinLaby implements DessinJeu {
         }
 
         for (Case c : jeu.getCases()) {
-            int x = c.getCoord()[0];
-            int y = c.getCoord()[1];
+            int x = c.getX();
+            int y = c.getY();
             switch (c.getType()) {
                 case "Piege" -> {
                     if (((Piege) c).getIsRevele()) {

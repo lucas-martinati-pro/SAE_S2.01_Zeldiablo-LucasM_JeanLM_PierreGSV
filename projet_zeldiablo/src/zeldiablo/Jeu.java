@@ -146,7 +146,7 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public Case getCase(int x, int y) {
         for (Case c : cases) {
-            if (c.getCoord()[0] == x && c.getCoord()[1] == y) return c;
+            if (c.getX() == x && c.getY() == y) return c;
         }
         return null;
     }
@@ -164,7 +164,7 @@ public class Jeu implements moteurJeu.Jeu {
         else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
         else {
             for (Case c : this.cases) {
-                if (c.getCoord()[0] == x && c.getCoord()[1] == y) {
+                if (c.getX() == x && c.getY() == y) {
                     if (c instanceof Piege) return Labyrinthe.PIEGE;
                     if (c instanceof MurFriable) return Labyrinthe.MurFriable;
                     if (c instanceof Bombe) return Labyrinthe.BOMBE;
@@ -241,11 +241,7 @@ public class Jeu implements moteurJeu.Jeu {
      * @return true si le hero est sur la case de fin, false sinon
      */
     public boolean etreFini() {
-        if ((this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1]) || this.hero.etreMort()) {
-            return true;
-        } else {
-            return false;
-        }
+        return (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1]) || this.hero.etreMort();
     }
 
     // =========================================================

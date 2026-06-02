@@ -30,11 +30,15 @@ Jeu --> Hero : cases
 deactivate Jeu
 
 loop pour chaque case
-    Hero -> Piege : getCoord()
+    Hero -> Piege : getX()
     activate Piege
-    Piege --> Hero : coordCase[]
+    Piege --> Hero : xPiege
     deactivate Piege
-    alt coordCase[0] == coord[0] && coordCase[1] == coord[1]
+    Hero -> Piege : getY()
+    activate Piege
+    Piege --> Hero : yPiege
+    deactivate Piege
+    alt xPiege == coord[0] && yPiege == coord[1]
         Hero -> Piege : effet(hero)
         activate Piege
         Piege -> Hero : addVie(-1)

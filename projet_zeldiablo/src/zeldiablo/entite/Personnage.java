@@ -106,8 +106,7 @@ public abstract class Personnage {
             switch (jeu.getChar(coord[0], coord[1])) {
                 case Labyrinthe.PIEGE -> {
                     for (Case c : jeu.getCases()) {
-                        int[] coordCase = c.getCoord();
-                        if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
+                        if (c.getX() == coord[0] && c.getY() == coord[1]) {
                             if (this.x != coord[0] || this.y != coord[1]) {
                                 c.effet(this);
                             }

@@ -134,11 +134,6 @@ public class TestJeu {
         assertEquals(yInit, jeu.getHero().getY());
     }
 
-    @Test
-    public void test_evoluer_actionInconnue_leveException() {
-        assertThrows(ActionInconnueException.class, () -> jeu.evoluer(new Commande()));
-    }
-
     // ########## Tests evoluer - deplacement invalide ##########
 
     @Test

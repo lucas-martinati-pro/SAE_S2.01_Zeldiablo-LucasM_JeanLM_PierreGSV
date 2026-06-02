@@ -90,8 +90,13 @@ package "entite" {
 package "environnement" {
 
     abstract class Case {
+        # x : int
+        # y : int
+
+        + Case(x : int, y : int)
         + getType() : String
-        + getCoord() : int[]
+        + getX() : int
+        + getY() : int
 
         + effet(perso : Personnage) : void
     }
@@ -116,41 +121,31 @@ package "environnement" {
     }
 
     class Piege {
-        - x : int
-        - y : int
         - isRevele : boolean
 
         + Piege(x : int, y : int)
 
         + getType() : String
-        + getCoord() : int[]
         + getIsRevele() : boolean
 
         + effet(perso : Personnage) : void
     }
 
     class MurFriable {
-        - x : int
-        - y : int
-
         + MurFriable(x : int, y : int)
 
         + getType() : String
-        + getCoord() : int[]
 
         + effet(perso : Personnage) : void
     }
 
     class Bombe {
-        - x : int
-        - y : int
         - jeu : Jeu
 
         + Bombe(x : int, y : int)
 
         + setJeu(jeu : Jeu) : void
         + getType() : String
-        + getCoord() : int[]
 
         + effet(perso : Personnage) : void
     }
