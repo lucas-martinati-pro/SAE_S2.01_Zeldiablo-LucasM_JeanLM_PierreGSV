@@ -13,12 +13,9 @@ import zeldiablo.environnement.MurFriable;
 
 import moteurJeu.Commande;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
 
 /**
  * Classe principale gerant la logique du jeu.
@@ -28,9 +25,12 @@ public class Jeu implements moteurJeu.Jeu {
     private Labyrinthe laby;
     private Aventurier hero;
     private ArrayList<Personnage> monstres = new ArrayList<>();
-    private int[] fin;
+    private GestionnaireMonstres gestionnaireMonstres = new GestionnaireMonstres(this);
+
     private ArrayList<Case> cases = new ArrayList<>();
     private ArrayList<int[]> explosionAffichage = new ArrayList<>();
+
+    private int[] fin;
     private boolean recharger = true;
 
     /**
@@ -51,6 +51,24 @@ public class Jeu implements moteurJeu.Jeu {
     public static final String DROITE = "Droite";
 
     // ########## Getters/Setters ##########
+
+    /**
+     * Modifie la case de fin du jeu.
+     *
+     * @param fin la nouvelle coordonnee de fin
+     */
+    public void setFin(int[] fin) {
+        this.fin = fin;
+    }
+
+    /**
+     * Retourne le gestionnaire de monstres associe au jeu.
+     *
+     * @return le gestionnaire de monstres
+     */
+    public GestionnaireMonstres getGestionnaireMonstres() {
+        return this.gestionnaireMonstres;
+    }
 
     /**
      * Modifie le hero du jeu.
@@ -116,76 +134,6 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     // ########## Méthodes ##########
-
-    /**
-     * Charge un jeu a partir d'un fichier texte.
-     * Lit le fichier ligne par ligne pour construire le labyrinthe,
-     * positionner les murs, les caisses, les depots et le personnage.
-     *
-     * @param nomFichier le chemin vers le fichier de labyrinthe
-     * @return le jeu charge et pret a etre joue
-     * @throws FileNotFoundException si le fichier n'existe pas
-     * @throws IOException si une erreur de lecture survient
-     * @throws FichierIncorrectException si le fichier contient des caracteres invalides, si le personnage est absent, ou si le nombre de caisses ne correspond pas au nombre de depots
-     */
-    public void chargerJeu(String nomFichier) throws FileNotFoundException, IOException, FichierIncorrectException {
-        ArrayList<String> ligne = new ArrayList<>();
-        Labyrinthe lab = convertLab(nomFichier, ligne);
-        Aventurier hero = null;
-
-        for (int i = 0; i < ligne.size(); i++) {
-            String line = ligne.get(i);
-            for (int j = 0; j < line.length(); j++) {
-                switch (line.charAt(j)) {
-                    case Labyrinthe.MUR -> lab.addMur(j, i);
-                    case Labyrinthe.HERO -> hero = new Aventurier(j, i, 5);
-                    case Labyrinthe.FIN -> this.fin = new int[]{j, i};
-                    case Labyrinthe.VIDE -> {}
-                    case Labyrinthe.PIEGE -> cases.add(new Piege(j, i));
-                    case Labyrinthe.MurFriable -> cases.add(new MurFriable(j,i));
-                    case Labyrinthe.MONSTRE -> monstres.add(new Monstre(j, i, 3));
-                    default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
-                }
-            }
-        }
-
-        if (hero == null) throw new FichierIncorrectException("hero inconnu"); // Si il y as 2 personnages, ça prend le dernière
-        else if (this.fin == null) throw new FichierIncorrectException("case de fin inconnue");
-        this.laby = lab;
-        this.hero = hero;
-    }
-
-    /**
-     * Lit un fichier texte et construit un labyrinthe vide aux bonnes dimensions.
-     * Les lignes du fichier sont stockees dans la liste passee en parametre
-     * pour etre traitees ensuite par chargerJeu.
-     * Le labyrinthe retourne a les dimensions correspondant au nombre de lignes
-     * et a la largeur maximale des lignes du fichier.
-     *
-     * @param nomFichier le chemin vers le fichier de labyrinthe
-     * @param ligne la liste dans laquelle stocker les lignes lues
-     * @return un labyrinthe vide aux bonnes dimensions
-     * @throws FileNotFoundException si le fichier n'existe pas
-     * @throws IOException si une erreur de lecture survient
-     */
-    public static Labyrinthe convertLab(String nomFichier, ArrayList<String> ligne) throws FileNotFoundException, IOException {
-        BufferedReader file = new BufferedReader(new FileReader(nomFichier));
-
-        String currentLine;
-        while ((currentLine = file.readLine()) != null) {
-            ligne.add(currentLine);
-        }
-        // Fin du fichier
-        int max = 0;
-        for (String line : ligne) {
-            if (line.length() > max) max = line.length();
-        }
-        Labyrinthe lab = new Labyrinthe(max, ligne.size());
-
-        file.close();
-        return lab;
-    }
-
     /**
      * Detruit la case situee aux coordonnees (x, y) et la retire du jeu.
      *
@@ -204,68 +152,6 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public void addBombe(int x, int y) {
         cases.add(new Bombe(x, y));
-    }
-
-    // =========================================================
-    // SECTION : Joueurs & Monstres
-    // =========================================================
-
-    /**
-     * Demarre un timer pour gerer le deplacement et les attaques automatiques des monstres.
-     */
-    public void startMonsters() {
-
-        Timer t = new Timer();
-        t.schedule(new java.util.TimerTask() {
-            @Override
-            public void run() {
-                int random = (int) (Math.random() * 4);
-                Commande commandeUser = new Commande();
-                switch (random) {
-                    case 0 -> commandeUser.haut = true;
-                    case 1 -> commandeUser.bas = true;
-                    case 2 -> commandeUser.gauche = true;
-                    case 3 -> commandeUser.droite = true;
-                }
-                monstreAttaque(hero.getX(), hero.getY()); // il attaque dès qu'il peut
-                evoluerMonster(commandeUser);
-            }
-        }, new Long(100), new Long(100)); // 100ms d'attente entre chaque saut
-    }
-
-    /**
-     * Fait attaquer les monstres presents dans une zone adjacente a la position specifiee.
-     *
-     * @param x la colonne centrale
-     * @param y la ligne centrale
-     */
-    public void monstreAttaque(int x, int y) {
-        int[][] rayon = {{x - 1, y - 1}, {x, y - 1}, {x + 1, y - 1},
-                {x - 1, y}, {x + 1, y},
-                {x -1, y + 1}, {x, y + 1}, {x + 1, y + 1}};
-        for (int[] coord : rayon) {
-            int xRayon = coord[0];
-            int yRayon = coord[1];
-            for (Personnage m : this.monstres) {
-                if (m.getX() == xRayon && m.getY() == yRayon) {
-                    m.attaquer(this.hero);
-                }
-            }
-        }
-    }
-
-    /**
-     * Verifie l'etat de sante des monstres et retire ceux qui sont morts du jeu.
-     */
-    public void verifMort() {
-        for (int i = 0; i < this.monstres.size(); i++) {
-            Personnage m = this.monstres.get(i);
-            if (m.etreMort()) {
-                System.out.println("Vous avez tué un monstre ! \uD83D\uDC7E");
-                this.monstres.remove(m);
-                i--;
-            }
-        }
     }
 
     // =========================================================
@@ -384,38 +270,6 @@ public class Jeu implements moteurJeu.Jeu {
                     this.hero.setPos(coord[0], coord[1]);
                 }
                 case Labyrinthe.VIDE, Labyrinthe.FIN -> this.hero.setPos(coord[0], coord[1]);
-            }
-        } catch (ActionInconnueException e) {
-            // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
-        }
-    }
-
-    /**
-     * Gere le deplacement d'un monstre aleatoire selon une commande specifiee.
-     *
-     * @param commandeUser la commande indiquant la direction de deplacement
-     */
-    public void evoluerMonster(Commande commandeUser) {
-        int index = (int) Math.floor(Math.random() * this.monstres.size());
-        Personnage m = this.monstres.get(index);
-        int[] coord = getSuivant(m.getX(), m.getY(), commandeUser);
-        try {
-            verifierDeplacement(coord[0], coord[1], commandeUser);
-            switch (this.getChar(coord[0], coord[1])) {
-                case Labyrinthe.PIEGE -> {
-                    for (Case c : cases) {
-                        int[] coordCase = c.getCoord();
-                        if (coordCase[0] == coord[0] && coordCase[1] == coord[1]) {
-                            if (m.getX() != coord[0] || m.getY() != coord[1]) {
-                                c.effet(m);
-                                verifMort();
-                            }
-                            break;
-                        }
-                    }
-                    m.setPos(coord[0], coord[1]);
-                }
-                case Labyrinthe.VIDE, Labyrinthe.FIN -> m.setPos(coord[0], coord[1]);
             }
         } catch (ActionInconnueException e) {
             // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre

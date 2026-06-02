@@ -5,7 +5,6 @@ import zeldiablo.exception.ActionInconnueException;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.entite.Monstre;
-import zeldiablo.entite.Personnage;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ public class TestJeu {
     @BeforeEach
     public void beforeEach() throws FichierIncorrectException, IOException {
         jeu = new Jeu();
-        jeu.chargerJeu("laby/laby.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby.txt");
     }
 
     // ########## Tests getters/setters ##########
@@ -81,7 +80,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_gauche() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int xAvant = jeu.getHero().getX();
         jeu.evoluer(Jeu.GAUCHE);
         assertEquals(xAvant - 1, jeu.getHero().getX());
@@ -89,7 +88,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_droite() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int xAvant = jeu.getHero().getX();
         jeu.evoluer(Jeu.DROITE);
         assertEquals(xAvant + 1, jeu.getHero().getX());
@@ -97,7 +96,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_haut() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int yAvant = jeu.getHero().getY();
         jeu.evoluer(Jeu.HAUT);
         assertEquals(yAvant - 1, jeu.getHero().getY());
@@ -105,7 +104,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_bas() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int yAvant = jeu.getHero().getY();
         jeu.evoluer(Jeu.BAS);
         assertEquals(yAvant + 1, jeu.getHero().getY());
@@ -113,7 +112,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_allerRetour() throws ActionInconnueException, IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int xInit = jeu.getHero().getX();
         int yInit = jeu.getHero().getY();
         jeu.evoluer(Jeu.GAUCHE);
@@ -143,55 +142,55 @@ public class TestJeu {
 
     @Test
     public void test_chargerJeu_labySimple_ok() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         assertNotNull(jeu.getHero());
         assertNotNull(jeu.getLaby());
     }
 
     @Test
     public void test_chargerJeu_positionPerso() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         assertEquals(2, jeu.getHero().getX());
         assertEquals(4, jeu.getHero().getY());
     }
 
     @Test
     public void test_chargerJeu_caseVidePasMur() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         assertFalse(jeu.getLaby().getCase(2, 2));
     }
 
     @Test
     public void test_chargerJeu_fichierInexistant() {
-        assertThrows(FileNotFoundException.class, () -> jeu.chargerJeu("laby/inexistant.txt"));
+        assertThrows(FileNotFoundException.class, () -> Chargement.chargerNiveau(jeu, "laby/inexistant.txt"));
     }
 
     @Test
     public void test_chargerJeu_caractereInconnu() {
-        assertThrows(FichierIncorrectException.class, () -> jeu.chargerJeu("laby/laby_invalie_carac.txt"));
+        assertThrows(FichierIncorrectException.class, () -> Chargement.chargerNiveau(jeu, "laby/laby_invalie_carac.txt"));
     }
 
     @Test
     public void test_chargerJeu_sansPersonnage() {
-        assertThrows(FichierIncorrectException.class, () -> jeu.chargerJeu("laby/laby_sans_perso.txt"));
+        assertThrows(FichierIncorrectException.class, () -> Chargement.chargerNiveau(jeu, "laby/laby_sans_perso.txt"));
     }
 
     @Test
     public void test_chargerJeu_avecMonstres() throws IOException {
-        jeu.chargerJeu("laby/laby_test_monstre.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_test_monstre.txt");
         assertFalse(jeu.getMonstres().isEmpty());
     }
 
     @Test
     public void test_chargerJeu_avecPieges() throws IOException {
-        jeu.chargerJeu("laby/laby_test_monstre.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_test_monstre.txt");
         boolean hasPiege = jeu.getCases().stream().anyMatch(c -> c instanceof Piege);
         assertTrue(hasPiege);
     }
 
     @Test
     public void test_chargerJeu_avecMurFriable() throws IOException {
-        jeu.chargerJeu("laby/laby_test_monstre.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_test_monstre.txt");
         boolean hasMur = jeu.getCases().stream().anyMatch(c -> c instanceof MurFriable);
         assertTrue(hasMur);
     }
@@ -201,21 +200,21 @@ public class TestJeu {
     @Test
     public void test_convertLab_retourneLabyrinthe() throws IOException {
         ArrayList<String> lignes = new ArrayList<>();
-        Labyrinthe lab = Jeu.convertLab("laby/laby_simple.txt", lignes);
+        Labyrinthe lab = Chargement.convertLab("laby/laby_simple.txt", lignes);
         assertNotNull(lab);
     }
 
     @Test
     public void test_convertLab_nombreLignes() throws IOException {
         ArrayList<String> lignes = new ArrayList<>();
-        Jeu.convertLab("laby/laby_simple.txt", lignes);
+        Chargement.convertLab("laby/laby_simple.txt", lignes);
         assertEquals(7, lignes.size());
     }
 
     @Test
     public void test_convertLab_dimensions() throws IOException {
         ArrayList<String> lignes = new ArrayList<>();
-        Labyrinthe lab = Jeu.convertLab("laby/laby_simple.txt", lignes);
+        Labyrinthe lab = Chargement.convertLab("laby/laby_simple.txt", lignes);
         int[] taille = lab.returnSize();
         assertEquals(5, taille[0]);
         assertEquals(7, taille[1]);
@@ -223,7 +222,7 @@ public class TestJeu {
 
     @Test
     public void test_convertLab_fichierInexistant() {
-        assertThrows(FileNotFoundException.class, () -> Jeu.convertLab("laby/inexistant.txt", new ArrayList<>()));
+        assertThrows(FileNotFoundException.class, () -> Chargement.convertLab("laby/inexistant.txt", new ArrayList<>()));
     }
 
     // ########## Tests getChar ##########
@@ -240,34 +239,34 @@ public class TestJeu {
 
     @Test
     public void test_getChar_vide() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         assertEquals(Labyrinthe.VIDE, jeu.getChar(1, 1));
     }
 
     @Test
     public void test_getChar_piege() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.getCases().add(new Piege(1, 1));
         assertEquals(Labyrinthe.PIEGE, jeu.getChar(1, 1));
     }
 
     @Test
     public void test_getChar_murFriable() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.getCases().add(new MurFriable(1, 1));
         assertEquals(Labyrinthe.MurFriable, jeu.getChar(1, 1));
     }
 
     @Test
     public void test_getChar_bombe() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.addBombe(1, 1);
         assertEquals(Labyrinthe.BOMBE, jeu.getChar(1, 1));
     }
 
     @Test
     public void test_getChar_monstre() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.getMonstres().add(new Monstre(1, 1, 3));
         assertEquals(Labyrinthe.MONSTRE, jeu.getChar(1, 1));
     }
@@ -376,7 +375,7 @@ public class TestJeu {
 
     @Test
     public void test_etreFini_heroSurFin() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.evoluer(Jeu.HAUT);
         jeu.evoluer(Jeu.HAUT);
         assertTrue(jeu.etreFini());
@@ -399,14 +398,14 @@ public class TestJeu {
 
     @Test
     public void test_jeuToString_nonVide() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         assertNotNull(jeu.jeuToString());
         assertFalse(jeu.jeuToString().isEmpty());
     }
 
     @Test
     public void test_jeuToString_contientPerso() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         String s = jeu.jeuToString();
         assertEquals("#####\n#   #\n# & #\n#   #\n# @ #\n#   #\n#####\n", s);
     }
@@ -420,7 +419,7 @@ public class TestJeu {
         Monstre m = new Monstre(x + 1, y, 3);
         jeu.getMonstres().add(m);
         int vieAvant = jeu.getHero().getVie();
-        jeu.monstreAttaque(x, y);
+        jeu.getGestionnaireMonstres().monstreAttaque(x, y);
         assertEquals(vieAvant - 2, jeu.getHero().getVie());
     }
 
@@ -429,7 +428,7 @@ public class TestJeu {
         Monstre m = new Monstre(1, 1, 3);
         jeu.getMonstres().add(m);
         int vieAvant = jeu.getHero().getVie();
-        jeu.monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
+        jeu.getGestionnaireMonstres().monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
         assertEquals(vieAvant, jeu.getHero().getVie());
     }
 
@@ -439,7 +438,7 @@ public class TestJeu {
     public void test_verifMort_monstreMortRetire() {
         Monstre m = new Monstre(1, 1, 0);
         jeu.getMonstres().add(m);
-        jeu.verifMort();
+        jeu.getGestionnaireMonstres().verifMort();
         assertFalse(jeu.getMonstres().contains(m));
     }
 
@@ -447,7 +446,7 @@ public class TestJeu {
     public void test_verifMort_monstreVivantReste() {
         Monstre m = new Monstre(1, 1, 3);
         jeu.getMonstres().add(m);
-        jeu.verifMort();
+        jeu.getGestionnaireMonstres().verifMort();
         assertTrue(jeu.getMonstres().contains(m));
     }
 
@@ -459,7 +458,7 @@ public class TestJeu {
         jeu.getMonstres().add(m);
         moteurJeu.Commande c = new moteurJeu.Commande();
         c.droite = true;
-        jeu.evoluerMonster(c);
+        jeu.getGestionnaireMonstres().evoluerMonster(c);
         assertEquals(2, m.getX());
         assertEquals(1, m.getY());
     }
@@ -468,7 +467,7 @@ public class TestJeu {
 
     @Test
     public void test_heroMarcheSurPiege() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         Piege piege = new Piege(x, y - 1);
@@ -483,7 +482,7 @@ public class TestJeu {
 
     @Test
     public void test_heroBloqueParMurFriable() throws IOException {
-        jeu.chargerJeu("laby/laby_simple.txt");
+        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         jeu.getCases().add(new MurFriable(x, y - 1));
@@ -516,7 +515,7 @@ public class TestJeu {
         Case bombe = jeu.getCase(x, y);
         ((Bombe) bombe).setJeu(jeu);
         bombe.effet(jeu.getHero());
-        Thread.sleep(1200);
+        Thread.sleep(1600);
         assertEquals(vieAvant - 5, jeu.getHero().getVie());
     }
 
@@ -530,7 +529,7 @@ public class TestJeu {
         Case bombe = jeu.getCase(x, y);
         ((Bombe) bombe).setJeu(jeu);
         bombe.effet(jeu.getHero());
-        Thread.sleep(1200);
+        Thread.sleep(1600);
         assertNull(jeu.getCase(x + 1, y));
     }
 
@@ -544,7 +543,7 @@ public class TestJeu {
         Case bombe = jeu.getCase(x, y);
         ((Bombe) bombe).setJeu(jeu);
         bombe.effet(jeu.getHero());
-        Thread.sleep(1200);
+        Thread.sleep(1600);
         assertFalse(jeu.getMonstres().contains(m));
     }
 }

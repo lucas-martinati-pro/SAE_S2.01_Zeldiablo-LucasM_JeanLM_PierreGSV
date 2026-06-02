@@ -6,6 +6,8 @@
     - critère 1 : Un niveau décrit le labyrinthe et les monstres qui y sont contenus.
     - critère 2 : Il est possible de choisir le niveau à lancer au démarrage de l'application (en modifiant la chaîne de caractère passée dans le main).
     - critère 3 : Testez en ajoutant un second niveau à définir au préalable.
+    - critère 4 : L'interface graphique doit s'adapter au niveau choisi (taille du labyrinthe, nombre de monstres, ...).
+    - critère 5 : Lorsqu'on arrive à la fin d'un niveau, le niveau suivant est automatiquement lancé.
   - responsables : GALLOIS Pierre
 
 - fonctionnalité 2 : Fin du zeldiablo : mort du héros

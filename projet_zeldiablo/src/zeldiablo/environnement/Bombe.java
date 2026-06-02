@@ -91,7 +91,7 @@ public class Bombe implements Case {
                 for (Personnage m : jeu.getMonstres()) {
                     if (m.getX() == cx && m.getY() == cy) {
                         m.addVie(degâts);
-                        jeu.verifMort();
+                        jeu.getGestionnaireMonstres().verifMort();
                         break; // Un même monstre ne prend les dégâts qu'une fois
                     }
                 }

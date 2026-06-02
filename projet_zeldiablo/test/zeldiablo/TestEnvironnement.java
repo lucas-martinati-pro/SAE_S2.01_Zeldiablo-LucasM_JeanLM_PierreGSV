@@ -3,7 +3,6 @@ package zeldiablo;
 import zeldiablo.environnement.*;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.entite.Monstre;
-import zeldiablo.entite.Personnage;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,5 +1,6 @@
 package main;
 
+import zeldiablo.Chargement;
 import zeldiablo.DessinLaby;
 import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.Jeu;
@@ -47,7 +48,7 @@ public class MainZeldiablo {
         Jeu j = new Jeu();
 
         try {
-            j.chargerJeu(laby);
+            Chargement.chargerNiveau(j, laby);
         } catch (FichierIncorrectException e) {
             System.err.println("Le fichier n'est pas valide, veuillez réessayer : " + e.getMessage());
             main(args);
@@ -56,7 +57,7 @@ public class MainZeldiablo {
             main(args);
         }
 
-        j.startMonsters();
+        j.getGestionnaireMonstres().startMonsters();
 
         System.out.println("Voici les actions disponibles :" +
                 "\n Haut (Z)" +
@@ -76,6 +77,7 @@ public class MainZeldiablo {
 
         boolean enCours = true;
 
+        // On passe au niveau suivant automatiquement si le niveau est fini et que le héros n'est pas mort
         while (enCours) {
             if (lvl < 12) {
                 if (j.etreFini() && !(j.getHero().etreMort())) {
@@ -85,7 +87,7 @@ public class MainZeldiablo {
                     String path = "laby/niveaux/lvl" + lvl + ".txt";
 
                     try {
-                        j.chargerJeu(path);
+                        Chargement.chargerNiveau(j, path);
                     } catch (IOException e) {
                         System.err.println("Une erreur s'est produite lors de la lecture du fichier : " + e.getMessage());
                         enCours = false; // On arrête si on ne trouve plus de niveau (fin du jeu)
@@ -97,6 +99,7 @@ public class MainZeldiablo {
                     if (enCours) { // Si le fichier a bien chargé
                         j.getHero().addVie(3); // +3 pv à chaque niveaux réussi
                         size = j.getLaby().returnSize();
+                        j.getGestionnaireMonstres().startMonsters();
                         moteur.lancerJeu(TAILLE * size[0], TAILLE * size[1]);
                     }
 
