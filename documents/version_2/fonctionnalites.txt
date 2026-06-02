@@ -92,3 +92,36 @@
     - critère 4 : Il est possible de charger une image (de type BufferedImage en mémoire grâce à la classe ImageIO et la méthode statique read).
 
 # Bilan
+
+Toutes les fonctionnalités sont validées.
+
+* réalisation
+- classe Jeu (niveaux, cycles de jeu, mort du héros et bombes)
+- responsable: GALLOIS Pierre / LE MADEC Jean / MARTINATI Lucas
+
+- classe Chargement (chargement dynamique des niveaux et monstres)
+- responsable: LE MADEC Jean / MARTINATI Lucas
+
+- classe GestionnaireMonstres (déplacement, collisions et attaques des monstres)
+- responsable: MARTINATI Lucas
+
+- classe Aventurier (points de vie, mort et action d'attaquer avec pose de bombes)
+- responsable: LE MADEC Jean / GALLOIS Pierre / MARTINATI Lucas
+
+- classe Monstre (points de vie et dégâts infligés au héros)
+- responsable: MARTINATI Lucas / LE MADEC Jean
+
+- classe Piege (dégâts déclenchés à l'arrivée et réamorçage)
+- responsable: MARTINATI Lucas
+
+- classe Bombe (limitation à 3 bombes, compte à rebours, explosion et propagation)
+- responsable: MARTINATI Lucas
+
+- classe MurFriable (obstacle destructible par les explosions)
+- responsable: LE MADEC Jean
+
+- classe DessinLaby (affichage des sprites, des cœurs et des flammes)
+- responsable: GALLOIS Pierre
+
+- tests de Jeu, Personnage et Environnement
+- responsable: MARTINATI Lucas / GALLOIS Pierre / LE MADEC Jean
