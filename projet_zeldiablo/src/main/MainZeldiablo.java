@@ -3,7 +3,6 @@ package main;
 import zeldiablo.DessinLaby;
 import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.Jeu;
-import moteurJeu.Commande;
 import moteurJeu.MoteurGraphique;
 
 import java.awt.image.BufferedImage;
@@ -58,8 +57,6 @@ public class MainZeldiablo {
         }
 
         j.startMonsters();
-
-        Commande c = new Commande();
 
         System.out.println("Voici les actions disponibles :" +
                 "\n Haut (Z)" +

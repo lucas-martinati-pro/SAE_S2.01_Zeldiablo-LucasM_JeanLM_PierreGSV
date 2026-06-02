@@ -17,7 +17,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Timer;
 
@@ -93,18 +92,40 @@ public class Jeu implements moteurJeu.Jeu {
         return this.laby;
     }
 
+    /**
+     * Retourne la liste des cases (pieges, bombes, murs friables, etc.) presentes dans le jeu.
+     *
+     * @return la liste des cases
+     */
     public ArrayList<Case> getCases() {
         return cases;
     }
 
+    /**
+     * Retourne la liste des coordonnees des explosions a afficher.
+     *
+     * @return la liste des coordonnees d'explosions
+     */
     public ArrayList<int[]> getExplosionAffichage() {
         return explosionAffichage;
     }
 
+    /**
+     * Retourne la liste des monstres presents dans le jeu.
+     *
+     * @return la liste des monstres
+     */
     public ArrayList<Personnage> getMonstres() {
         return monstres;
     }
 
+    /**
+     * Cherche et retourne la case speciale a la position specifiee.
+     *
+     * @param x la colonne de la case
+     * @param y la ligne de la case
+     * @return la case correspondante ou null si aucune case n'est trouvee
+     */
     public Case getCase(int x, int y) {
         for (Case c : cases) {
             if (c.getCoord()[0] == x && c.getCoord()[1] == y) return c;
@@ -152,6 +173,9 @@ public class Jeu implements moteurJeu.Jeu {
         this.hero = hero;
     }
 
+    /**
+     * Demarre un timer pour gerer le deplacement et les attaques automatiques des monstres.
+     */
     public void startMonsters() {
 
         Timer t = new Timer();
@@ -230,6 +254,12 @@ public class Jeu implements moteurJeu.Jeu {
         }
     }
 
+    /**
+     * Detruit la case situee aux coordonnees (x, y) et la retire du jeu.
+     *
+     * @param x la colonne de la case a detruire
+     * @param y la ligne de la case a detruire
+     */
     public void detruire(int x, int y) {
         this.cases.remove(getCase(x, y));
     }
@@ -264,10 +294,22 @@ public class Jeu implements moteurJeu.Jeu {
         return new int[] {x, y};
     }
 
+    /**
+     * Ajoute une bombe dans le jeu aux coordonnees (x, y).
+     *
+     * @param x la colonne ou deposer la bombe
+     * @param y la ligne ou deposer la bombe
+     */
     public void addBombe(int x, int y) {
         cases.add(new Bombe(x, y));
     }
 
+    /**
+     * Fait attaquer les monstres presents dans une zone adjacente a la position specifiee.
+     *
+     * @param x la colonne centrale
+     * @param y la ligne centrale
+     */
     public void monstreAttaque(int x, int y) {
         int[][] rayon = {{x - 1, y - 1}, {x, y - 1}, {x + 1, y - 1},
                 {x - 1, y}, {x + 1, y},
@@ -330,6 +372,11 @@ public class Jeu implements moteurJeu.Jeu {
         }
     }
 
+    /**
+     * Gere le deplacement d'un monstre aleatoire selon une commande specifiee.
+     *
+     * @param commandeUser la commande indiquant la direction de deplacement
+     */
     public void evoluerMonster(Commande commandeUser) {
         int index = (int) Math.floor(Math.random() * this.monstres.size());
         Personnage m = this.monstres.get(index);
@@ -374,6 +421,9 @@ public class Jeu implements moteurJeu.Jeu {
         }
     }
 
+    /**
+     * Verifie l'etat de sante des monstres et retire ceux qui sont morts du jeu.
+     */
     public void verifMort() {
         for (int i = 0; i < this.monstres.size(); i++) {
             Personnage m = this.monstres.get(i);
