@@ -1,5 +1,5 @@
 @startuml
-title Q7 - Diagramme Classes v2
+title Q7 - Diagramme Classes avec fonctionnalités
 
 class "Jeu" {
     - laby : Labyrinthe

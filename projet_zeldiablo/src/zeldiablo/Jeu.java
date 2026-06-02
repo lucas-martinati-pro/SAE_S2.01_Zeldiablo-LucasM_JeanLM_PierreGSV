@@ -212,20 +212,6 @@ public class Jeu implements moteurJeu.Jeu {
         if (commandeUser.bas) y++;
         if (commandeUser.gauche) x--;
         if (commandeUser.droite) x++;
-        if (commandeUser.space) {
-            if (recharger && this.getCase(this.hero.getX(), this.hero.getY()) == null) { // temps de recharge de la bombe pour éviter les spams
-                recharger = false;
-                this.hero.attaquer(this);
-                new Thread (() -> { // Obliger de créer un nouveau Thread car sinon ça bloque le jeu pendant 2 secondes, et c'est pas très drôle
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    recharger = true;
-                }).start();
-            }
-        }
         return new int[] {x, y};
     }
 
@@ -253,6 +239,21 @@ public class Jeu implements moteurJeu.Jeu {
      */
     @Override
     public void evoluer(Commande commandeUser) {
+        if (commandeUser.space) {
+            if (recharger && this.getCase(this.hero.getX(), this.hero.getY()) == null) { // temps de recharge de la bombe pour éviter les spams
+                recharger = false;
+                this.hero.attaquer(this);
+                new Thread(() -> { // Obliger de créer un nouveau Thread car sinon ça bloque le jeu pendant 2 secondes, et c'est pas très drôle
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    recharger = true;
+                }).start();
+            }
+        }
+
         int[] coord = getSuivant(hero.getX(), hero.getY(), commandeUser);
         try {
             verifierDeplacement(coord[0], coord[1], commandeUser);
