@@ -56,6 +56,7 @@ class DessinLaby {
     + DessinLaby(jeu : Jeu)
     + dessiner(image : BufferedImage) : void
     - addImageCube(image : String, x : int, y : int, g : Graphics2D, fallbackColor : Color) : void
+    - addImageOval(image : String, x : int, y : int, g : Graphics2D, fallbackColor : Color) : void
 }
 
 package "entite" {
