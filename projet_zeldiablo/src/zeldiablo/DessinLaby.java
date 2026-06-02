@@ -56,7 +56,9 @@ public class DessinLaby implements DessinJeu {
             int y = c.getY();
             switch (c.getType()) {
                 case "Piege" -> {
-                    if (((Piege) c).getIsRevele()) addImageCube("sprite/piege.png", x, y, g, Color.ORANGE);
+                    Piege piege = (Piege) c;
+                    if (piege.getIsDetruit()) addImageCube("sprite/piegeDetruit.png", x, y, g, Color.DARK_GRAY);
+                    else if (piege.getIsRevele()) addImageCube("sprite/piege.png", x, y, g, Color.ORANGE);
                 }
                 case "MurFriable" -> addImageCube("sprite/murFriable.png", x, y, g, Color.GRAY);
                 case "Bombe" -> addImageOval("sprite/bombe.png", x, y, g, Color.MAGENTA);

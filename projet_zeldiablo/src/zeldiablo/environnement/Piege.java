@@ -7,6 +7,7 @@ import zeldiablo.entite.Personnage;
  */
 public class Piege extends Case {
     private boolean isRevele = false;
+    private boolean isDetruit = false;
 
     /**
      * Cree un nouveau piege aux coordonnees (x, y).
@@ -30,6 +31,24 @@ public class Piege extends Case {
      */
     public boolean getIsRevele() {
         return isRevele;
+    }
+
+    /**
+     * Indique si le piege a ete detruit.
+     *
+     * @return true si le piege est detruit, false sinon
+     */
+    public boolean getIsDetruit() {
+        return isDetruit;
+    }
+
+    /**
+     * Marque le piege comme detruit.
+     *
+     * @param detruit true pour marquer le piege comme detruit
+     */
+    public void setDetruit(boolean detruit) {
+        this.isDetruit = detruit;
     }
 
     @Override

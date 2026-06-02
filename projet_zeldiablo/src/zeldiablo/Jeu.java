@@ -165,7 +165,9 @@ public class Jeu implements moteurJeu.Jeu {
         else {
             for (Case c : this.cases) {
                 if (c.getX() == x && c.getY() == y) {
-                    if (c instanceof Piege) return Labyrinthe.PIEGE;
+                    if (c instanceof Piege) {
+                        if (!((Piege) c).getIsDetruit()) return Labyrinthe.PIEGE;
+                    }
                     if (c instanceof MurFriable) return Labyrinthe.MurFriable;
                     if (c instanceof Bombe) return Labyrinthe.BOMBE;
                 }

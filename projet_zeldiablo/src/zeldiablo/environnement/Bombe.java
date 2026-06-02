@@ -88,7 +88,9 @@ public class Bombe extends Case {
 
                 // Détruire la case si destructible (Mur friable, autre bombe...)
                 Case c = jeu.getCase(cx, cy);
-                if (c != null) {
+                if (c instanceof Piege piege) {
+                    piege.setDetruit(true);
+                } else if (c != null) {
                     jeu.detruire(cx, cy);
                 }
             }
