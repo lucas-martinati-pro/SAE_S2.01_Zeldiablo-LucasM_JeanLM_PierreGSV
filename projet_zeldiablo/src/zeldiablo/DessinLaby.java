@@ -75,10 +75,10 @@ public class DessinLaby implements DessinJeu {
             int x = coordonnee[0] * TAILLE - (i + 1) * 17, y = 3;
             try {
                 BufferedImage coeurImage = ImageIO.read(new File("sprite/coeur.png"));
-                g.drawImage(coeurImage, x, y, 15, 15, null);
+                g.drawImage(coeurImage, x, y, 15, 15, null); // Pas la même taille, donc pas de addImageOval()
             } catch (IOException e) {
                 g.setColor(Color.RED);
-                g.fillOval(x, y, 10, 10); // Pas la même taille, donc pas de addImageOval()
+                g.fillOval(x, y, 10, 10);
                 System.err.println("Erreur lors du chargement de l'image de coeur : " + e.getMessage());
             }
         }
@@ -86,15 +86,7 @@ public class DessinLaby implements DessinJeu {
         // Mettre le héros après les monstres pour qu'il soit dessiné par-dessus
         Personnage hero = jeu.getHero();
         if (hero != null) {
-            int x = hero.getX(), y = hero.getY();
-            try {
-                BufferedImage heroImage = ImageIO.read(new File("sprite/hero.png"));
-                g.drawImage(heroImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-            } catch (IOException e) {
-                g.setColor(Color.BLUE);
-                g.fillOval(x * TAILLE + 2, y * TAILLE + 2, TAILLE - 3, TAILLE - 3); // Pas la même taille, donc pas de addImageOval()
-                System.err.println("Erreur lors du chargement de l'image du héros : " + e.getMessage());
-            }
+            addImageOval("sprite/hero.png", hero.getX(), hero.getY(), g, Color.BLUE);
         }
 
         if (hero.etreMort()) {

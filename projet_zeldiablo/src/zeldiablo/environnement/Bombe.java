@@ -94,7 +94,7 @@ public class Bombe extends Case {
             }
 
             // Montrer l'explosion pendant 300ms (une seule fois en dehors de la boucle)
-            jeu.getExplosionAffichage().addAll(casesTouchees);
+            jeu.getExplosionAffichage().addAll(casesTouchees); // Ajoute toutes les cases touchées à l'affichage de l'explosion
             new Thread(() -> {
                 try {
                     Thread.sleep(300);
