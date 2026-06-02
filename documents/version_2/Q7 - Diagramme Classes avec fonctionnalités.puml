@@ -12,11 +12,6 @@ class "Jeu" {
 
     - explosionAffichage : ArrayList<int[]>
     - recharger : boolean
-    + {static} HAUT : String = "Haut"
-    + {static} BAS : String = "Bas"
-    + {static} GAUCHE : String = "Gauche"
-    + {static} DROITE : String = "Droite"
-    + {static} SPACE : String = "Space"
 
     + getGestionnaireMonstres() : GestionnaireMonstres
     + getHero() : Aventurier
@@ -36,8 +31,6 @@ class "Jeu" {
     + evoluer(commandeUser : Commande) : void
     + etreFini() : boolean
 
-    + evoluer(action : String) : void
-    + verifierDeplacement(x : int, y : int, action : String) : void
     + jeuToString() : String
 }
 
@@ -95,7 +88,7 @@ package "entite" {
 
 package "environnement" {
 
-    interface Case <<interface>> {
+    abstract class Case {
         + getType() : String
         + getCoord() : int[]
 
@@ -162,10 +155,6 @@ package "environnement" {
     }
 }
 
-Case <|.. Piege
-Case <|.. MurFriable
-Case <|.. Bombe
-
 package "exception" {
     class ActionInconnueException {
         + ActionInconnueException(message : String)
@@ -179,6 +168,10 @@ package "exception" {
 ' ========================
 ' Relations
 ' ========================
+Case <|-- Piege
+Case <|-- MurFriable
+Case <|-- Bombe
+
 Personnage <|-- Aventurier
 Personnage <|-- Monstre
 

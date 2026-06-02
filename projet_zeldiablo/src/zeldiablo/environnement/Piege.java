@@ -5,9 +5,7 @@ import zeldiablo.entite.Personnage;
 /**
  * Represente un piege cache qui blesse le personnage s'il marche dessus.
  */
-public class Piege implements Case {
-    private int x;
-    private int y;
+public class Piege extends Case {
     private boolean isRevele = false;
 
     /**
@@ -17,20 +15,12 @@ public class Piege implements Case {
      * @param y la coordonnee y
      */
     public Piege(int x, int y) {
-        if (x > 0) this.x = x;
-        else this.x = 0;
-        if (y > 0) this.y = y;
-        else this.y = y;
+        super(x, y);
     }
 
     @Override
     public String getType() {
         return "Piege";
-    }
-
-    @Override
-    public int[] getCoord() {
-        return new int[]{x, y};
     }
 
     /**

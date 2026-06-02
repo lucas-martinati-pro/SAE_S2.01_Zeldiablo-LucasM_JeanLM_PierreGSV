@@ -6,9 +6,7 @@ import zeldiablo.Jeu;
 /**
  * Represente une bombe dans le jeu, capable d'exploser et de detruire des elements ou blesser des personnages.
  */
-public class Bombe implements Case {
-    private int x;
-    private int y;
+public class Bombe extends Case {
     private Jeu jeu;
 
     /**
@@ -28,20 +26,12 @@ public class Bombe implements Case {
      * @param y la coordonnee y
      */
     public Bombe(int x, int y) {
-        if (x > 0) this.x = x;
-        else this.x = 0;
-        if (y > 0) this.y = y;
-        else this.y = 0;
+        super(x, y);
     }
 
     @Override
     public String getType() {
         return "Bombe";
-    }
-
-    @Override
-    public int[] getCoord() {
-        return new int[]{x, y};
     }
 
     @Override

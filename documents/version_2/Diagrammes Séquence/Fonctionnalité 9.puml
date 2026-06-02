@@ -3,8 +3,8 @@ title Fonctionnalité 9 - Déplacement aléatoire des monstres
 
 actor Timer
 participant "gestionnaireMonstres:gestionnaireMonstres" as GM
-participant "jeu:Jeu" as Jeu
 participant "m:Personnage" as M
+participant "jeu:Jeu" as Jeu
 participant "c:Case" as C
 
 Timer -> GM : evoluerMonster(commandeUser)

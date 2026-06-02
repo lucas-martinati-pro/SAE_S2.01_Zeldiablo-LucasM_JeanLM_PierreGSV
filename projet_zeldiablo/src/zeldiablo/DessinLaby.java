@@ -47,7 +47,7 @@ public class DessinLaby implements DessinJeu {
                 switch (jeu.getChar(x, y)) {
                     case Labyrinthe.FIN -> addImageCube("sprite/fin.png", x, y, g, Color.GREEN);
                     case Labyrinthe.MUR -> addImageCube("sprite/mur.png", x, y, g, Color.BLACK);
-                    case Labyrinthe.VIDE -> addImageCube("sprite/vide.png", x, y, g, vide);
+                    default -> addImageCube("sprite/vide.png", x, y, g, vide);
                 }
             }
         }
@@ -58,17 +58,13 @@ public class DessinLaby implements DessinJeu {
             switch (c.getType()) {
                 case "Piege" -> {
                     if (((Piege) c).getIsRevele()) {
-                        addImageCube("sprite/vide.png", x, y, g, vide);
                         addImageCube("sprite/piege.png", x, y, g, Color.ORANGE);
-                    } else {
-                        addImageCube("sprite/vide.png", x, y, g, vide);
                     }
                 }
                 case "MurFriable" -> {
                     addImageCube("sprite/murFriable.png", x, y, g, Color.GRAY);
                 }
                 case "Bombe" -> {
-                    addImageCube("sprite/vide.png", x, y, g, vide);
                     try {
                         BufferedImage bombeImage = ImageIO.read(new File("sprite/bombe.png"));
                         g.drawImage(bombeImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
@@ -88,7 +84,6 @@ public class DessinLaby implements DessinJeu {
 
         for (Personnage m : jeu.getMonstres()) {
             int x = m.getX(), y = m.getY();
-            addImageCube("sprite/vide.png", x, y, g, vide);
             try {
                 BufferedImage monstreImage = ImageIO.read(new File("sprite/monstre.png"));
                 g.drawImage(monstreImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
@@ -116,7 +111,6 @@ public class DessinLaby implements DessinJeu {
         Personnage hero = jeu.getHero();
         if (hero != null) {
             int x = hero.getX(), y = hero.getY();
-            addImageCube("sprite/vide.png", x, y, g, vide);
             try {
                 BufferedImage heroImage = ImageIO.read(new File("sprite/hero.png"));
                 g.drawImage(heroImage, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);

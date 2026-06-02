@@ -1,5 +1,6 @@
 package zeldiablo;
 
+import moteurJeu.Commande;
 import zeldiablo.environnement.*;
 import zeldiablo.exception.ActionInconnueException;
 import zeldiablo.entite.Aventurier;
@@ -82,7 +83,9 @@ public class TestJeu {
     public void test_evoluer_gauche() throws ActionInconnueException, IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int xAvant = jeu.getHero().getX();
-        jeu.evoluer(Jeu.GAUCHE);
+        Commande c = new Commande();
+        c.gauche = true;
+        jeu.evoluer(c);
         assertEquals(xAvant - 1, jeu.getHero().getX());
     }
 
@@ -90,7 +93,9 @@ public class TestJeu {
     public void test_evoluer_droite() throws ActionInconnueException, IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int xAvant = jeu.getHero().getX();
-        jeu.evoluer(Jeu.DROITE);
+        Commande c = new Commande();
+        c.droite = true;
+        jeu.evoluer(c);
         assertEquals(xAvant + 1, jeu.getHero().getX());
     }
 
@@ -98,7 +103,9 @@ public class TestJeu {
     public void test_evoluer_haut() throws ActionInconnueException, IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int yAvant = jeu.getHero().getY();
-        jeu.evoluer(Jeu.HAUT);
+        Commande c = new Commande();
+        c.haut = true;
+        jeu.evoluer(c);
         assertEquals(yAvant - 1, jeu.getHero().getY());
     }
 
@@ -106,7 +113,9 @@ public class TestJeu {
     public void test_evoluer_bas() throws ActionInconnueException, IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int yAvant = jeu.getHero().getY();
-        jeu.evoluer(Jeu.BAS);
+        Commande c = new Commande();
+        c.bas = true;
+        jeu.evoluer(c);
         assertEquals(yAvant + 1, jeu.getHero().getY());
     }
 
@@ -115,15 +124,19 @@ public class TestJeu {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         int xInit = jeu.getHero().getX();
         int yInit = jeu.getHero().getY();
-        jeu.evoluer(Jeu.GAUCHE);
-        jeu.evoluer(Jeu.DROITE);
+        Commande c = new Commande();
+        c.gauche = true;
+        jeu.evoluer(c);
+        c.gauche = false;
+        c.droite = true;
+        jeu.evoluer(c);
         assertEquals(xInit, jeu.getHero().getX());
         assertEquals(yInit, jeu.getHero().getY());
     }
 
     @Test
     public void test_evoluer_actionInconnue_leveException() {
-        assertThrows(ActionInconnueException.class, () -> jeu.evoluer("ActionBidon"));
+        assertThrows(ActionInconnueException.class, () -> jeu.evoluer(new Commande()));
     }
 
     // ########## Tests evoluer - deplacement invalide ##########
@@ -132,8 +145,10 @@ public class TestJeu {
     public void test_evoluer_dansMur_positionInchangee() {
         int xAvant = jeu.getHero().getX();
         int yAvant = jeu.getHero().getY();
-        jeu.evoluer(Jeu.DROITE);
-        jeu.evoluer(Jeu.DROITE); // mur
+        Commande c = new Commande();
+        c.droite = true;
+        jeu.evoluer(c);
+        jeu.evoluer(c); // mur
         assertEquals(xAvant + 1, jeu.getHero().getX());
         assertEquals(yAvant, jeu.getHero().getY());
     }
@@ -296,35 +311,43 @@ public class TestJeu {
 
     @Test
     public void test_verifierDeplacement_caseLibre() {
-        assertDoesNotThrow(() -> jeu.verifierDeplacement(1, 1, Jeu.DROITE));
+        Commande c = new Commande();
+        c.droite = true;
+        assertDoesNotThrow(() -> jeu.verifierDeplacement(1, 1, c));
     }
 
     @Test
     public void test_verifierDeplacement_mur() {
-        assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(0, 0, Jeu.HAUT));
+        Commande c = new Commande();
+        c.droite = true;
+        assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(0, 0, c));
     }
 
     @Test
     public void test_verifierDeplacement_horsLimites() {
-        assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(-1, -1, Jeu.HAUT));
+        Commande c = new Commande();
+        c.droite = true;
+        assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(-1, -1, c));
     }
 
     @Test
     public void test_verifierDeplacement_horsLimitesGrandes() {
-        assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(100, 100, Jeu.HAUT));
+        Commande c = new Commande();
+        c.droite = true;
+        assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(100, 100, c));
     }
 
     @Test
     public void test_verifierDeplacement_commande_caseLibre() {
-        moteurJeu.Commande c = new moteurJeu.Commande();
+        Commande c = new Commande();
         c.droite = true;
         assertDoesNotThrow(() -> jeu.verifierDeplacement(1, 1, c));
     }
 
     @Test
     public void test_verifierDeplacement_commande_mur() {
-        moteurJeu.Commande c = new moteurJeu.Commande();
-        c.haut = true;
+        Commande c = new Commande();
+        c.droite = true;
         assertThrows(ActionInconnueException.class, () -> jeu.verifierDeplacement(0, 0, c));
     }
 
@@ -376,8 +399,10 @@ public class TestJeu {
     @Test
     public void test_etreFini_heroSurFin() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
-        jeu.evoluer(Jeu.HAUT);
-        jeu.evoluer(Jeu.HAUT);
+        Commande c = new Commande();
+        c.haut = true;
+        jeu.evoluer(c);
+        jeu.evoluer(c);
         assertTrue(jeu.etreFini());
     }
 
@@ -390,7 +415,9 @@ public class TestJeu {
 
     @Test
     public void test_etreFini_heroVivant_pasSurFin() {
-        jeu.evoluer(Jeu.DROITE);
+        Commande c = new Commande();
+        c.droite = true;
+        jeu.evoluer(c);
         assertFalse(jeu.etreFini());
     }
 
@@ -473,7 +500,9 @@ public class TestJeu {
         Piege piege = new Piege(x, y - 1);
         jeu.getCases().add(piege);
         int vieAvant = jeu.getHero().getVie();
-        jeu.evoluer(Jeu.HAUT);
+        Commande c = new Commande();
+        c.haut = true;
+        jeu.evoluer(c);
         assertEquals(vieAvant - 1, jeu.getHero().getVie());
         assertTrue(piege.getIsRevele());
     }
@@ -486,7 +515,9 @@ public class TestJeu {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         jeu.getCases().add(new MurFriable(x, y - 1));
-        jeu.evoluer(Jeu.HAUT);
+        Commande c = new Commande();
+        c.haut = true;
+        jeu.evoluer(c);
         assertEquals(x, jeu.getHero().getX());
         assertEquals(y, jeu.getHero().getY());
     }

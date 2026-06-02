@@ -5,23 +5,39 @@ import zeldiablo.entite.Personnage;
 /**
  * Interface représentant une case dans le jeu.
  */
-public interface Case {
+public abstract class Case {
+    protected int x;
+    protected int y;
+
+    /**
+     * Construit une case en garantissant que les coordonnees ne sont pas negatives.
+     *
+     * @param x coordonnee x
+     * @param y coordonnee y
+     */
+    public Case(int x, int y) {
+        this.x = Math.max(0, x);
+        this.y = Math.max(0, y);
+    }
+
+    /**
+     * Retourne les coordonnees de la case.
+     *
+     * @return les coordonnees de la case
+     */
+    public int[] getCoord() {
+        return new int[]{x, y};
+    }
+
     /**
     * Retourne le type de la case.
     *
     * @return le type de la case
     */
-    public String getType();
-
-    /**
-    * Retourne les coordonnées de la case.
-    *
-    * @return les coordonnées de la case
-    */
-    public int[] getCoord();
+    public abstract String getType();
 
     /**
      * Applique l'effet de la case sur le héros.
      */
-    public void effet(Personnage perso);
+    public abstract void effet(Personnage perso);
 }

@@ -29,23 +29,6 @@ public class Jeu implements moteurJeu.Jeu {
     private int[] fin;
     private boolean recharger = true;
 
-    /**
-     * Constantes pour se déplacer en haut
-     */
-    public static final String HAUT = "Haut";
-    /**
-     * Constantes pour se déplacer en bas
-     */
-    public static final String BAS = "Bas";
-    /**
-     * Constantes pour se déplacer à gauche
-     */
-    public static final String GAUCHE = "Gauche";
-    /**
-     * Constantes pour se déplacer à droite
-     */
-    public static final String DROITE = "Droite";
-
     // ########## Getters/Setters ##########
 
     /**
@@ -217,7 +200,6 @@ public class Jeu implements moteurJeu.Jeu {
      *
      * @param x la colonne de destination
      * @param y la ligne de destination
-     * @param commandeUser la direction du deplacement (pour le message d'erreur)
      * @throws ActionInconnueException si la case est un mur ou hors limites
      */
     public void verifierDeplacement(int x, int y, Commande commandeUser) throws ActionInconnueException {
@@ -269,41 +251,6 @@ public class Jeu implements moteurJeu.Jeu {
     // =========================================================
     // SECTION : Compatibilités Testes
     // =========================================================
-
-    /**
-     * Deplace le hero dans la direction indiquee.
-     *
-     * @param action la direction du deplacement
-     * @throws ActionInconnueException si le deplacement est impossible
-     */
-    public void evoluer(String action) throws ActionInconnueException {
-        Commande commandeUser = new Commande();
-        switch (action) {
-            case HAUT -> commandeUser.haut = true;
-            case BAS -> commandeUser.bas = true;
-            case GAUCHE -> commandeUser.gauche = true;
-            case DROITE -> commandeUser.droite = true;
-            default -> throw new ActionInconnueException("L'action " + action + " n'est pas reconnue.");
-        }
-        evoluer(commandeUser);
-    }
-
-    /**
-     * Verifie si un deplacement vers la position (x, y) est possible.
-     * Lance une exception si la case est un mur ou hors limites.
-     *
-     * @param x la colonne de destination
-     * @param y la ligne de destination
-     * @param action la direction du deplacement (pour le message d'erreur)
-     * @throws ActionInconnueException si la case est un mur ou hors limites
-     */
-    public void verifierDeplacement(int x, int y, String action) throws ActionInconnueException {
-        try {
-            if (this.laby.getCase(x, y)) throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + action);
-        }
-    }
 
     /**
      * Genere une representation textuelle du jeu sous forme de chaine de caracteres.
