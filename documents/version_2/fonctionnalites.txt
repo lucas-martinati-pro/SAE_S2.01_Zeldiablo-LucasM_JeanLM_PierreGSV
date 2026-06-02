@@ -34,18 +34,8 @@
     - critère 3 : TOUS les monstres éloignés du joueur ne subissent pas de dégâts.
     - critère 4 : S'il n'y a aucun monstre autour du joueur, l'attaque à quand même lieu et empêche le déplacement du joueur, mais les monstres ne prennent pas de dégâts.
   - responsables : GALLOIS Pierre
-
-- fonctionnalité 5 : Dégâts d'une bombe
-  - descriptif texte : Lorsqu'une bombe explose, des langues de feu jaillissent horizontalement et verticalement et font des dégâts sur les cases atteintes.
-  - critères de validation :
-    - critère 1 : La bombe n'est déclenchée que quand son timer arrive à 0.
-    - critère 2 : Les langues de feu ne se propagent que horizontalement et verticalement.
-    - critère 3 : Les langues de feu ont une taille donnée (par exemple elles ne se propagent que de 3 cases dans chaque direction).
-    - critère 4 : Les murs et les obstacles bloquent la propagation des langues de feu.
-    - critère 5 : Tous les personnages traversés par les langues de feu subissent des dégâts.
-  - responsables : MARTINATI Lucas
-
-- fonctionnalité 6 : Dépôt d'une bombe
+  
+  - fonctionnalité 5 : Dépôt d'une bombe
   - descriptif texte : Un héros attaque désormais en posant des bombes sur sa case. Les bombes déposées sont en nombre limité, leur timer est initialisé lorsqu'elles sont posées.
   - critères de validation :
     - critère 1 : Lorsqu'un héros décide d'attaquer, il pose une bombe sur sa case.
@@ -53,6 +43,16 @@
     - critère 3 : Lorsque le timer de la bombe arrive à 0, la bombe explose et effectue des dégâts.
     - critère 4 : Un héros dispose d'un nombre maximal de bombes posées simultanément : il ne peut pas poser plus de 3 bombes simultanément sur le labyrinthe.
     - critère 5 : Une fois qu'une bombe a explosé, le héros peut à nouveau poser une bombe en remplacement sur le labyrinthe.
+  - responsables : MARTINATI Lucas
+
+- fonctionnalité 6 : Dégâts d'une bombe
+  - descriptif texte : Lorsqu'une bombe explose, des langues de feu jaillissent horizontalement et verticalement et font des dégâts sur les cases atteintes.
+  - critères de validation :
+    - critère 1 : La bombe n'est déclenchée que quand son timer arrive à 0.
+    - critère 2 : Les langues de feu ne se propagent que horizontalement et verticalement.
+    - critère 3 : Les langues de feu ont une taille donnée (par exemple elles ne se propagent que de 3 cases dans chaque direction).
+    - critère 4 : Les murs et les obstacles bloquent la propagation des langues de feu.
+    - critère 5 : Tous les personnages traversés par les langues de feu subissent des dégâts.
   - responsables : MARTINATI Lucas
 
 - fonctionnalité 7 : Murs friables
