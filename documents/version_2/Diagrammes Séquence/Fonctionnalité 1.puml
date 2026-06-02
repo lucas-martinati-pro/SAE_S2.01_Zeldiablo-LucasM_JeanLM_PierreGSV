@@ -2,12 +2,12 @@
 title Fonctionnalité 1 - Gestion des niveaux
 
 participant "MainZeldiablo" as Main
+participant "Chargement" as Chargement
+participant "moteur:MoteurGraphique" as Moteur
 participant "j:Jeu" as Jeu
 participant "hero:Aventurier" as Hero
 participant "laby:Labyrinthe" as Laby
 participant "gestionnaireMonstres:GestionnaireMonstres" as GM
-participant "Chargement" as Chargement
-participant "moteur:MoteurGraphique" as Moteur
 
 activate Main
 
