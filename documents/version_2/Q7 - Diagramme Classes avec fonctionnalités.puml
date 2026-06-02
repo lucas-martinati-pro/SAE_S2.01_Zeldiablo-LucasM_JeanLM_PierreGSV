@@ -71,6 +71,7 @@ package "entite" {
         + getY() : int
         + getVie() : int
         + setPos(x : int, y : int) : void
+        + setVie(vie : int) : void
 
         + addVie(i : int) : void
         + etreMort() : boolean

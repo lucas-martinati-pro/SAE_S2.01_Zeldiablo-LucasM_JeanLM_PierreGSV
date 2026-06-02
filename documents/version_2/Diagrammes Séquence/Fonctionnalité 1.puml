@@ -32,6 +32,16 @@ loop Tant que le jeu est en cours (enCours == true)
     Hero --> Main : mort
     deactivate Hero
 
+    Main -> Jeu : gethero()
+    activate Jeu
+    Jeu --> Main : hero
+    deactivate Jeu
+
+    Main -> Hero : getVie()
+    activate Hero
+    Hero --> Main : vie
+    deactivate Hero
+
     alt fini == true et mort == false (Passage au niveau suivant)
         Main -> Main : Incrémenter lvl
         Main -> Chargement : chargerNiveau(j, path)
@@ -39,7 +49,7 @@ loop Tant que le jeu est en cours (enCours == true)
         Chargement --> Main
         deactivate Chargement
 
-        Main -> Hero : addVie(3)
+        Main -> Hero : setVie(vie + 3)
         activate Hero
         Hero --> Main
         deactivate Hero

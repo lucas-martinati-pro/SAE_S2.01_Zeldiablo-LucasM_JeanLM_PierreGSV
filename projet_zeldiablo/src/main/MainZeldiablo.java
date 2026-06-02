@@ -78,10 +78,12 @@ public class MainZeldiablo {
         jeu.dessiner(new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB));
 
         boolean enCours = true;
+        int vie = j.getHero().getVie();
 
         // On passe au niveau suivant automatiquement si le niveau est fini et que le héros n'est pas mort
         while (enCours) {
             if (lvl < 11) {
+                vie = j.getHero().getVie();
                 if (j.etreFini() && !(j.getHero().etreMort())) {
                     System.out.println("next level");
                     lvl++;
@@ -99,7 +101,8 @@ public class MainZeldiablo {
                     }
 
                     if (enCours) { // Si le fichier a bien chargé
-                        j.getHero().addVie(3); // +3 pv à chaque niveaux réussi
+                        vie += 3; // +3 pv à chaque niveaux réussi
+                        j.getHero().setVie(vie);
                         size = j.getLaby().returnSize();
                         j.getGestionnaireMonstres().startMonsters();
                         moteur.lancerJeu(TAILLE * size[0], TAILLE * size[1]);

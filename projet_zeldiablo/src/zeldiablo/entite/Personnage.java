@@ -42,6 +42,15 @@ public abstract class Personnage {
     }
 
     /**
+     * Definit les points de vie du personnage.
+     *
+     * @param vie les points de vie a definir
+     */
+    public void setVie(int vie) {
+        this.vie = vie;
+    }
+
+    /**
      * Cree un nouveau personnage.
      *
      * @param x la coordonnee x
