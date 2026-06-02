@@ -1,5 +1,5 @@
 @startuml
-title Fonctionnalité 6 — Cases piégées
+title Fonctionnalité 6 - Cases piégées
 
 actor Joueur
 participant "j:Jeu" as Jeu

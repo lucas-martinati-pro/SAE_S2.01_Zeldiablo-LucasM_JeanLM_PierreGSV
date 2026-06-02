@@ -1,5 +1,5 @@
 @startuml
-title Fonctionnalité 8 — Chargement de niveau (Monstres, cases, ...) depuis un fichier
+title Fonctionnalité 8 - Chargement de niveau (Monstres, cases, ...) depuis un fichier
 
 participant "MainZeldiablo" as Main
 participant "Chargement" as Chargement

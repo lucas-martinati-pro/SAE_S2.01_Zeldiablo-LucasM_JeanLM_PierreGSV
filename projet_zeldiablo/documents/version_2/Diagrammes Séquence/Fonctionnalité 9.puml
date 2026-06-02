@@ -1,5 +1,5 @@
 @startuml
-title Fonctionnalité 9 — Déplacement aléatoire des monstres
+title Fonctionnalité 9 - Déplacement aléatoire des monstres
 
 actor Timer
 participant "gestionnaireMonstres:gestionnaireMonstres" as GM

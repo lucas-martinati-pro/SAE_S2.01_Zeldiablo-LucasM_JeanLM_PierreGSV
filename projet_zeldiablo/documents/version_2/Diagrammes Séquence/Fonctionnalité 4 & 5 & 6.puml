@@ -1,5 +1,5 @@
 @startuml
-title Fonctionnalité 4 & 6 — Attaque de l'aventurier (Pose de bombe)
+title Fonctionnalité 4 & 6 - Attaque de l'aventurier (Pose et dégât de bombe)
 
 actor Joueur
 participant "j:Jeu" as Jeu
