@@ -25,10 +25,15 @@ public class MainZeldiablo {
         String laby;
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Veuillez Choisir le niveau :" +
-                "\n 1, 2, 3, 4, 5, 6, 7, 8, 9, 10");
+        String choix = "";
+        if (args.length > 0) choix = args[0];
+        if (choix.isEmpty()) {
+            System.out.println("Veuillez Choisir le niveau :" +
+                    "\n 1, 2, 3, 4, 5, 6, 7, 8, 9, 10");
 
-        String choix = sc.nextLine();
+            choix = sc.nextLine();
+        }
+
         int lvl = 1;
         if (!choix.isEmpty()) {
             try {
