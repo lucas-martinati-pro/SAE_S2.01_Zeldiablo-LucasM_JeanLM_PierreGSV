@@ -19,7 +19,8 @@ public class MainZeldiablo {
     /**
      * main
      *
-     * @param args arguments du main
+     * @param args arguments du
+     *
      */
     public static void main(String[] args) throws InterruptedException {
         String laby;
