@@ -2,7 +2,6 @@ package zeldiablo.entite;
 
 import zeldiablo.Jeu;
 import zeldiablo.environnement.Bombe;
-import zeldiablo.environnement.Case;
 
 
 public class Artificier extends Personnage {
