@@ -19,7 +19,7 @@
 - fonctionnalité 3 : Fin du jeu : victoire du héros
   - descriptif texte : Une fois que le héros a pris l'amulette, il peut retourner à l'entrée du labyrinthe et remporter le jeu.
   - critères de validation :
-    - critère 1 : Lorsque le héros possède l'amulette et qu'il retourne à l'entrée du labyrinthe, le jeu s'arrête et un message est aché dans la console.
+    - critère 1 : Lorsque le héros possède l'amulette et qu'il retourne à l'entrée du labyrinthe, le jeu s'arrête et un message est affiché dans la console.
     - critère 2 : Lorsque le héros ne possède pas l'amulette, le jeu ne s'arrête pas même si le héros retourne à l'entrée.
   - responsables : LE MADEC Jean
 
