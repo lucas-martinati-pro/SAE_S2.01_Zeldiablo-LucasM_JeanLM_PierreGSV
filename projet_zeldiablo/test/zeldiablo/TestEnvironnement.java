@@ -8,52 +8,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestEnvironnement {
 
-    // ########## Tests Labyrinthe ##########
+    // ########## Tests Jeu Constantes ##########
 
     @Test
-    public void test_Labyrinthe_creation() {
-        Labyrinthe lab = new Labyrinthe(5, 5);
-        assertNotNull(lab);
-    }
-
-    @Test
-    public void test_Labyrinthe_returnSize() {
-        Labyrinthe lab = new Labyrinthe(10, 7);
-        int[] size = lab.returnSize();
-        assertEquals(10, size[0]);
-        assertEquals(7, size[1]);
-    }
-
-    @Test
-    public void test_Labyrinthe_addMurEtGetCase() {
-        Labyrinthe lab = new Labyrinthe(5, 5);
-        assertFalse(lab.getCase(2, 2));
-        lab.addMur(2, 2);
-        assertTrue(lab.getCase(2, 2));
-    }
-
-    @Test
-    public void test_Labyrinthe_caseVideParDefaut() {
-        Labyrinthe lab = new Labyrinthe(5, 5);
-        assertFalse(lab.getCase(1, 1));
-        assertFalse(lab.getCase(3, 3));
-    }
-
-    @Test
-    public void test_Labyrinthe_horsLimites_leveException() {
-        Labyrinthe lab = new Labyrinthe(5, 5);
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> lab.getCase(10, 10));
-    }
-
-    @Test
-    public void test_Labyrinthe_constantes() {
-        assertEquals('#', Labyrinthe.MUR);
-        assertEquals('@', Labyrinthe.HERO);
-        assertEquals(' ', Labyrinthe.VIDE);
-        assertEquals('&', Labyrinthe.FIN);
-        assertEquals('$', Labyrinthe.PIEGE);
-        assertEquals('*', Labyrinthe.MurFriable);
-        assertEquals('B', Labyrinthe.BOMBE);
+    public void test_Jeu_constantes() {
+        assertEquals('#', Jeu.MUR);
+        assertEquals('@', Jeu.HERO);
+        assertEquals(' ', Jeu.VIDE);
+        assertEquals('&', Jeu.FIN);
+        assertEquals('$', Jeu.PIEGE);
+        assertEquals('*', Jeu.MUR_FRIABLE);
+        assertEquals('B', Jeu.BOMBE);
     }
 
     // ########## Tests Piege ##########

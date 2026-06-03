@@ -2,8 +2,6 @@ package zeldiablo.entite;
 
 import moteurJeu.Commande;
 import zeldiablo.Jeu;
-import zeldiablo.environnement.Labyrinthe;
-import zeldiablo.exception.ActionInconnueException;
 
 public class Ghost extends Personnage {
     // ########## Constructeurs ##########

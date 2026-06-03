@@ -6,7 +6,6 @@ import zeldiablo.entite.Spider;
 import zeldiablo.entite.Troll;
 import zeldiablo.environnement.Case;
 import zeldiablo.entite.Personnage;
-import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.environnement.Piege;
 
 import moteurJeu.DessinJeu;
@@ -25,6 +24,24 @@ public class DessinLaby implements DessinJeu {
     public static final int TAILLE = 30;
     private Jeu jeu;
 
+    private BufferedImage flamme;
+    private BufferedImage gameOver;
+    private BufferedImage win;
+    private BufferedImage porte;
+    private BufferedImage porteOuverte;
+    private BufferedImage mur;
+    private BufferedImage vide;
+    private BufferedImage piege;
+    private BufferedImage murFriable;
+    private BufferedImage bombe;
+    private BufferedImage piegeDetruit;
+    private BufferedImage amulette;
+    private BufferedImage spider;
+    private BufferedImage troll;
+    private BufferedImage ghost;
+    private BufferedImage hero;
+    private BufferedImage coeur;
+
     /**
      * Constructeur de DessinLaby
      * @param jeu un objet de Type jeu
@@ -32,6 +49,28 @@ public class DessinLaby implements DessinJeu {
     public DessinLaby(Jeu jeu) {
         if (jeu != null) this.jeu = jeu;
         else this.jeu = new Jeu();
+
+        try {
+            flamme = ImageIO.read(new File("sprite/flamme.png"));
+            gameOver = ImageIO.read(new File("sprite/gameOver.jpg"));
+            win = ImageIO.read(new File("sprite/win.png"));
+            porte = ImageIO.read(new File("sprite/porte.png"));
+            porteOuverte = ImageIO.read(new File("sprite/porteOuverte.png"));
+            mur = ImageIO.read(new File("sprite/mur.png"));
+            vide = ImageIO.read(new File("sprite/vide.png"));
+            piege = ImageIO.read(new File("sprite/piege.png"));
+            murFriable = ImageIO.read(new File("sprite/murFriable.png"));
+            bombe = ImageIO.read(new File("sprite/bombe.png"));
+            piegeDetruit = ImageIO.read(new File("sprite/piegeDetruit.png"));
+            amulette = ImageIO.read(new File("sprite/amulette.png"));
+            spider = ImageIO.read(new File("sprite/spider.png"));
+            troll = ImageIO.read(new File("sprite/troll.png"));
+            ghost = ImageIO.read(new File("sprite/ghost.png"));
+            hero = ImageIO.read(new File("sprite/hero.png"));
+            coeur = ImageIO.read(new File("sprite/coeur.png"));
+        } catch (IOException e) {
+            System.err.println("Erreur lors du chargement des images : " + e.getMessage());
+        }
     }
 
     /**
@@ -42,19 +81,17 @@ public class DessinLaby implements DessinJeu {
     public void dessiner(BufferedImage image) {
         Graphics2D g = (Graphics2D) image.getGraphics();
 
-        Color vide = new Color(144, 238, 144); // Vert clair pour les cases vides
-
-        int[] coordonnee = jeu.getLaby().returnSize();
+        int[] coordonnee = jeu.getSize();
 
         for (int y = 0; y < coordonnee[1]; y++) {
             for (int x = 0; x < coordonnee[0]; x++) {
                 switch (jeu.getChar(x, y)) {
-                    case Labyrinthe.MUR -> addImageCube("sprite/mur.png", x, y, g, Color.BLACK);
-                    case Labyrinthe.FIN -> {
-                        if (jeu.getHero().haveItem("Amulette")) addImageCube("sprite/porteOuverte.png", x, y, g, Color.GREEN);
-                        else addImageCube("sprite/porte.png", x, y, g, Color.GREEN);
+                    case Jeu.MUR -> g.drawImage(mur, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                    case Jeu.FIN -> {
+                        if (jeu.getHero().haveItem("Amulette")) g.drawImage(porteOuverte, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                        else g.drawImage(porte, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                     }
-                    default -> addImageCube("sprite/vide.png", x, y, g, vide);
+                    default -> g.drawImage(vide, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 }
             }
         }
@@ -65,59 +102,42 @@ public class DessinLaby implements DessinJeu {
             int y = c.getY();
             switch (c.getType()) {
                 case "Piege" -> {
-                    if (((Piege) c).getIsRevele()) addImageCube("sprite/piege.png", x, y, g, Color.ORANGE);
+                    if (((Piege) c).getIsRevele()) g.drawImage(piege, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 }
-                case "MurFriable" -> addImageCube("sprite/murFriable.png", x, y, g, Color.GRAY);
-                case "Bombe" -> addImageOval("sprite/bombe.png", x, y, g, Color.MAGENTA);
-                case "PiegeDetruit" -> addImageCube("sprite/piegeDetruit.png", x, y, g, Color.DARK_GRAY);
-                case "Amulette" -> addImageOval("sprite/amulette.png", x, y, g, Color.YELLOW);
+                case "MurFriable" -> g.drawImage(murFriable, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                case "Bombe" -> g.drawImage(bombe, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                case "PiegeDetruit" -> g.drawImage(piegeDetruit, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                case "Amulette" -> g.drawImage(amulette, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
             }
         }
 
         // Dessiner les flammes d'explosion
         for (int[] coord : jeu.getExplosionAffichage()) {
-            addImageCube("sprite/flamme.png", coord[0], coord[1], g, Color.RED);
+            g.drawImage(flamme, coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE, null);
         }
 
         for (Personnage m : jeu.getMonstres()) {
-            if (m instanceof Spider) addImageOval("sprite/spider.png", m.getX(), m.getY(), g, Color.RED);
-            if (m instanceof Troll) addImageOval("sprite/troll.png", m.getX(), m.getY(), g, Color.DARK_GRAY);
-            if (m instanceof Ghost) addImageOval("sprite/ghost.png", m.getX(), m.getY(), g, Color.LIGHT_GRAY);
+            if (m instanceof Spider) g.drawImage(spider, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+            if (m instanceof Troll) g.drawImage(troll, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+            if (m instanceof Ghost) g.drawImage(ghost, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
         }
 
         // Coeurs de vie du héros
         for (int i = 0; i < jeu.getHero().getVie(); i++) {
             int x = coordonnee[0] * TAILLE - (i + 1) * (TAILLE - 7), y = 7;
-            try {
-                BufferedImage coeurImage = ImageIO.read(new File("sprite/coeur.png"));
-                g.drawImage(coeurImage, x, y, 15, 15, null); // Pas la même taille, donc pas de addImageOval()
-            } catch (IOException e) {
-                g.setColor(Color.RED);
-                g.fillOval(x, y, 10, 10);
-                System.err.println("Erreur lors du chargement de l'image de coeur : " + e.getMessage());
-            }
+            g.drawImage(coeur, x, y, TAILLE - 10, TAILLE - 10, null);
         }
 
         // Mettre le héros après les monstres pour qu'il soit dessiné par-dessus
         Personnage hero = jeu.getHero();
         if (hero != null) {
-            addImageOval("sprite/hero.png", hero.getX(), hero.getY(), g, Color.BLUE);
+            g.drawImage(this.hero, hero.getX() * TAILLE, hero.getY() * TAILLE, TAILLE, TAILLE, null);
         }
 
         if (hero.etreMort()) {
-            try {
-                BufferedImage gameOverImage = ImageIO.read(new File("sprite/gameOver.jpg"));
-                g.drawImage(gameOverImage, 0, 0, image.getWidth(), image.getHeight(), null);
-            } catch (IOException e) {
-                System.err.println("Erreur lors du chargement de l'image de Game Over : " + e.getMessage());
-            }
+            g.drawImage(gameOver, 0, 0, image.getWidth(), image.getHeight(), null);
         } else if (jeu.etreFini()) {
-            try {
-                BufferedImage winImage = ImageIO.read(new File("sprite/win.png"));
-                g.drawImage(winImage, 0, 0, image.getWidth(), image.getHeight(), null);
-            } catch (IOException e) {
-                System.err.println("Erreur lors du chargement de l'image de victoire : " + e.getMessage());
-            }
+            g.drawImage(win, 0, 0, image.getWidth(), image.getHeight(), null);
         }
 
         ArrayList<Item> inventaire = jeu.getHero().getInventaire();
@@ -125,41 +145,8 @@ public class DessinLaby implements DessinJeu {
             Item o = inventaire.get(i);
             g.setColor(Color.LIGHT_GRAY);
             switch (o.getType()) {
-                case "Amulette" -> addImageInventaire("sprite/amulette.png", i, g, Color.YELLOW);
+                case "Amulette" -> g.drawImage(amulette, TAILLE/6 + (i) * 20, TAILLE/6, TAILLE - 10, TAILLE - 10, null);
             }
-        }
-    }
-
-    private void addImageCube(String image, int x, int y, Graphics2D g, Color fallbackColor) {
-        try {
-            BufferedImage img = ImageIO.read(new File(image));
-            g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-        } catch (IOException e) {
-            g.setColor(fallbackColor);
-            g.fillRect(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
-        }
-    }
-
-    private void addImageOval(String image, int x, int y, Graphics2D g, Color fallbackColor) {
-        try {
-            BufferedImage img = ImageIO.read(new File(image));
-            g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-        } catch (IOException e) {
-            g.setColor(fallbackColor);
-            g.fillOval(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
-            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
-        }
-    }
-
-    private void addImageInventaire(String image, int i, Graphics2D g, Color fallbackColor) {
-        try {
-            BufferedImage img = ImageIO.read(new File(image));
-            g.drawImage(img, TAILLE/6 + (i) * 20, TAILLE/6, TAILLE - 10, TAILLE - 10, null);
-        } catch (IOException e) {
-            g.setColor(fallbackColor);
-            g.fillOval((i + 1) * 20, TAILLE/6, TAILLE - 10, TAILLE - 10);
-            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
         }
     }
 }

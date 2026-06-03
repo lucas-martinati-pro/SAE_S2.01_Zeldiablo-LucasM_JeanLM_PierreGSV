@@ -70,7 +70,7 @@ public class MainZeldiablo {
 
         DessinLaby jeu = new DessinLaby(j);
 
-        int[] size = j.getLaby().returnSize();
+        int[] size = j.getSize();
 
         MoteurGraphique moteur = new MoteurGraphique(j, jeu);
         moteur.lancerJeu(TAILLE * size[0], TAILLE * size[1]);
@@ -103,7 +103,7 @@ public class MainZeldiablo {
                     if (enCours) { // Si le fichier a bien chargé
                         vie += 3; // +3 pv à chaque niveaux réussi
                         j.getHero().setVie(vie);
-                        size = j.getLaby().returnSize();
+                        size = j.getSize();
                         j.getGestionnaireMonstres().startMonsters();
                         moteur.lancerJeu(TAILLE * size[0], TAILLE * size[1]);
                     }

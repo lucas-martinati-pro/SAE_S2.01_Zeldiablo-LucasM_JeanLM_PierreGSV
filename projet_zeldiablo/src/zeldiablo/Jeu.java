@@ -1,7 +1,6 @@
 package zeldiablo;
 
 import zeldiablo.Item.Amulette;
-import zeldiablo.Item.Item;
 import zeldiablo.entite.Spider;
 import zeldiablo.environnement.*;
 import zeldiablo.entite.Personnage;
@@ -16,8 +15,20 @@ import java.util.ArrayList;
  * Classe principale gerant la logique du jeu.
  */
 public class Jeu implements moteurJeu.Jeu {
+    public static final char MUR = '#';
+    public static final char HERO = '@';
+    public static final char SPIDER = '£';
+    public static final char TROLL = 'T';
+    public static final char GHOST = '+';
+    public static final char FIN = '&';
+    public static final char VIDE = ' ';
+    public static final char PIEGE = '$';
+    public static final char MUR_FRIABLE = '*';
+    public static final char BOMBE = 'B';
+    public static final char AMULETTE = 'A';
+
     // ########## Variables ##########
-    private Labyrinthe laby;
+    private int[] size;
     private Aventurier hero;
     private ArrayList<Personnage> monstres = new ArrayList<>();
     private GestionnaireMonstres gestionnaireMonstres = new GestionnaireMonstres(this);
@@ -58,12 +69,12 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     /**
-     * Modifie le labyrinthe du jeu.
+     * Modifie la taille du jeu.
      *
-     * @param laby le nouveau labyrinthe
+     * @param size la nouvelle taille
      */
-    public void setLaby(Labyrinthe laby) {
-        this.laby = laby;
+    public void setSize(int[] size) {
+        this.size = size;
     }
 
     /**
@@ -76,12 +87,12 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     /**
-     * Retourne le labyrinthe du jeu.
+     * Retourne la taille du jeu.
      *
-     * @return le labyrinthe du jeu
+     * @return la taille du jeu
      */
-    public Labyrinthe getLaby() {
-        return this.laby;
+    public int[] getSize() {
+        return this.size;
     }
 
     /**
@@ -167,27 +178,27 @@ public class Jeu implements moteurJeu.Jeu {
      * @return le caractere correspondant a l'element a cette position
      */
     public char getChar(int x, int y) {
-        if (this.laby.getCase(x, y)) return Labyrinthe.MUR;
-        else if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
-        else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
+        Case c = getCase(x, y);
+        if (c instanceof Mur) return Jeu.MUR;
+        else if (this.hero.getX() == x && this.hero.getY() == y) return Jeu.HERO;
+        else if (this.fin[0] == x && this.fin[1] == y) return Jeu.FIN;
         else {
             for (Personnage m : this.monstres) {
                 if (m.getX() == x && m.getY() == y) {
-                    if (m instanceof zeldiablo.entite.Troll) return Labyrinthe.TROLL;
-                    if (m instanceof zeldiablo.entite.Ghost) return Labyrinthe.GHOST;
-                    return Labyrinthe.SPIDER;
+                    if (m instanceof zeldiablo.entite.Troll) return Jeu.TROLL;
+                    if (m instanceof zeldiablo.entite.Ghost) return Jeu.GHOST;
+                    return Jeu.SPIDER;
                 }
             }
-            Case c = getCase(x, y);
             if (c != null) {
                 switch (c.getType()) {
-                    case "Piege": return Labyrinthe.PIEGE;
-                    case "MurFriable": return Labyrinthe.MurFriable;
-                    case "Bombe": return Labyrinthe.BOMBE;
-                    case "Amulette": return Labyrinthe.AMULETTE;
+                    case "Piege": return Jeu.PIEGE;
+                    case "MurFriable": return Jeu.MUR_FRIABLE;
+                    case "Bombe": return Jeu.BOMBE;
+                    case "Amulette": return Jeu.AMULETTE;
                 }
             }
-            return Labyrinthe.VIDE;
+            return Jeu.VIDE;
         }
     }
 
@@ -216,9 +227,11 @@ public class Jeu implements moteurJeu.Jeu {
      * @throws ActionInconnueException si la case est un mur ou hors limites
      */
     public void verifierDeplacement(int x, int y, Commande commandeUser) throws ActionInconnueException {
-        try {
-            if (this.laby.getCase(x, y)) throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + commandeUser);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        if (size == null || x < 0 || y < 0 || x >= size[0] || y >= size[1]) {
+            throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + commandeUser);
+        }
+        Case c = getCase(x, y);
+        if (c instanceof Mur) {
             throw new ActionInconnueException("Vous ne pouvez pas vous déplacer dans cette direction : " + commandeUser);
         }
     }
@@ -279,7 +292,8 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public String jeuToString() {
         String res = "";
-        int[] coordonnee = this.laby.returnSize();
+        int[] coordonnee = this.getSize();
+        if (coordonnee == null) return res;
 
         for (int y = 0; y < coordonnee[1]; y++) {
             for (int x = 0; x < coordonnee[0]; x++) res += this.getChar(x, y);

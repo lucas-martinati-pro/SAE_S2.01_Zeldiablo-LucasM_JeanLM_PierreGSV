@@ -54,10 +54,9 @@ public class Bombe extends Case {
                     int cx = x + dir[0] * i;
                     int cy = y + dir[1] * i;
 
-                    try {
-                        // Si on touche un mur incassable, la flamme s'arrête
-                        if (jeu.getLaby().getCase(cx, cy)) break;
-                    } catch (Exception e) { break; } // Hors des limites
+                    int[] size = jeu.getSize();
+                    if (size != null && (cx < 0 || cy < 0 || cx >= size[0] || cy >= size[1])) break;
+                    if (jeu.getCase(cx, cy) instanceof Mur) break;
 
                     casesTouchees.add(new int[]{cx, cy});
 

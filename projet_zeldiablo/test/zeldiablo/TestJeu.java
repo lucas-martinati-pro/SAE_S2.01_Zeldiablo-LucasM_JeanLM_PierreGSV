@@ -37,8 +37,8 @@ public class TestJeu {
     }
 
     @Test
-    public void test_getLaby_retourneLabyrinthe() {
-        assertNotNull(jeu.getLaby());
+    public void test_getSize_retourneTaille() {
+        assertNotNull(jeu.getSize());
     }
 
     @Test
@@ -49,10 +49,10 @@ public class TestJeu {
     }
 
     @Test
-    public void test_setLaby_modifieLabyrinthe() {
-        Labyrinthe lab = new Labyrinthe(5, 5);
-        jeu.setLaby(lab);
-        assertEquals(lab, jeu.getLaby());
+    public void test_setSize_modifieTaille() {
+        int[] size = new int[]{5, 5};
+        jeu.setSize(size);
+        assertEquals(size, jeu.getSize());
     }
 
     @Test
@@ -154,7 +154,7 @@ public class TestJeu {
     public void test_chargerJeu_labySimple_ok() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         assertNotNull(jeu.getHero());
-        assertNotNull(jeu.getLaby());
+        assertNotNull(jeu.getSize());
     }
 
     @Test
@@ -167,7 +167,7 @@ public class TestJeu {
     @Test
     public void test_chargerJeu_caseVidePasMur() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
-        assertFalse(jeu.getLaby().getCase(2, 2));
+        assertFalse(jeu.getCase(2, 2) instanceof Mur);
     }
 
     @Test
@@ -208,26 +208,10 @@ public class TestJeu {
     // ########## Tests convertLab ##########
 
     @Test
-    public void test_convertLab_retourneLabyrinthe() throws IOException {
-        ArrayList<String> lignes = new ArrayList<>();
-        Labyrinthe lab = Chargement.convertLab("laby/laby_simple.txt", lignes);
-        assertNotNull(lab);
-    }
-
-    @Test
     public void test_convertLab_nombreLignes() throws IOException {
         ArrayList<String> lignes = new ArrayList<>();
         Chargement.convertLab("laby/laby_simple.txt", lignes);
         assertEquals(7, lignes.size());
-    }
-
-    @Test
-    public void test_convertLab_dimensions() throws IOException {
-        ArrayList<String> lignes = new ArrayList<>();
-        Labyrinthe lab = Chargement.convertLab("laby/laby_simple.txt", lignes);
-        int[] taille = lab.returnSize();
-        assertEquals(5, taille[0]);
-        assertEquals(7, taille[1]);
     }
 
     @Test
@@ -239,46 +223,46 @@ public class TestJeu {
 
     @Test
     public void test_getChar_mur() {
-        assertEquals(Labyrinthe.MUR, jeu.getChar(0, 0));
+        assertEquals(Jeu.MUR, jeu.getChar(0, 0));
     }
 
     @Test
     public void test_getChar_hero() {
-        assertEquals(Labyrinthe.HERO, jeu.getChar(jeu.getHero().getX(), jeu.getHero().getY()));
+        assertEquals(Jeu.HERO, jeu.getChar(jeu.getHero().getX(), jeu.getHero().getY()));
     }
 
     @Test
     public void test_getChar_vide() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
-        assertEquals(Labyrinthe.VIDE, jeu.getChar(1, 1));
+        assertEquals(Jeu.VIDE, jeu.getChar(1, 1));
     }
 
     @Test
     public void test_getChar_piege() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.getCases().add(new Piege(1, 1));
-        assertEquals(Labyrinthe.PIEGE, jeu.getChar(1, 1));
+        assertEquals(Jeu.PIEGE, jeu.getChar(1, 1));
     }
 
     @Test
     public void test_getChar_murFriable() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.getCases().add(new MurFriable(1, 1));
-        assertEquals(Labyrinthe.MurFriable, jeu.getChar(1, 1));
+        assertEquals(Jeu.MUR_FRIABLE, jeu.getChar(1, 1));
     }
 
     @Test
     public void test_getChar_bombe() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.addBombe(1, 1);
-        assertEquals(Labyrinthe.BOMBE, jeu.getChar(1, 1));
+        assertEquals(Jeu.BOMBE, jeu.getChar(1, 1));
     }
 
     @Test
     public void test_getChar_monstre() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.getMonstres().add(new Spider(1, 1, 3));
-        assertEquals(Labyrinthe.SPIDER, jeu.getChar(1, 1));
+        assertEquals(Jeu.SPIDER, jeu.getChar(1, 1));
     }
 
     // ########## Tests detruire ##########
@@ -480,7 +464,7 @@ public class TestJeu {
         jeu.getMonstres().add(m);
         moteurJeu.Commande c = new moteurJeu.Commande();
         c.droite = true;
-        jeu.getGestionnaireMonstres().evoluerMonster(c);
+        m.deplacer(jeu, c);
         assertEquals(2, m.getX());
         assertEquals(1, m.getY());
     }

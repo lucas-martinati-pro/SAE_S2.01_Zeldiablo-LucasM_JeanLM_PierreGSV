@@ -1,11 +1,5 @@
 package zeldiablo.entite;
 
-import moteurJeu.Commande;
-import zeldiablo.Jeu;
-import zeldiablo.environnement.Case;
-import zeldiablo.environnement.Labyrinthe;
-import zeldiablo.exception.ActionInconnueException;
-
 public class Troll extends Personnage {
     // ########## Constructeurs ##########
     /**
