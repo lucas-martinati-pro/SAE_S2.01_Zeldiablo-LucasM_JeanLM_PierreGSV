@@ -1,4 +1,4 @@
-package zeldiablo.Item;
+package zeldiablo.item;
 
 import zeldiablo.entite.Personnage;
 

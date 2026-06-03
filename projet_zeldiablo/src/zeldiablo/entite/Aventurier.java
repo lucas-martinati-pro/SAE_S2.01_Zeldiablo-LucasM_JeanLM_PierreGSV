@@ -1,6 +1,6 @@
 package zeldiablo.entite;
 
-import zeldiablo.Item.Item;
+import zeldiablo.item.Item;
 import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Bombe;
 import zeldiablo.Jeu;

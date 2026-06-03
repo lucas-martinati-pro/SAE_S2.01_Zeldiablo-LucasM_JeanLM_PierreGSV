@@ -1,6 +1,6 @@
 package zeldiablo;
 
-import zeldiablo.Item.Item;
+import zeldiablo.item.Item;
 import zeldiablo.entite.Ghost;
 import zeldiablo.entite.Spider;
 import zeldiablo.entite.Troll;

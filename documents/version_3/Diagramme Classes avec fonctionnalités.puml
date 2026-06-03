@@ -170,7 +170,7 @@ package "environnement" {
     }
 }
 
-package "Item" {
+package "item" {
     interface Item {
         + getType() : String
         + use(personnage : Personnage) : void
@@ -211,8 +211,8 @@ CaseUtils <|-- Piege
 CaseUtils <|-- Bombe
 CaseUtils <|-- ItemPlacable
 
-Item <|.. ItemPlacable
 ItemPlacable <|-- Amulette
+Item <|.. ItemPlacable
 
 Personnage <|-- Aventurier
 Personnage <|-- Spider

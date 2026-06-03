@@ -1,6 +1,6 @@
 package zeldiablo;
 
-import zeldiablo.Item.Amulette;
+import zeldiablo.item.Amulette;
 import zeldiablo.entite.*;
 import zeldiablo.environnement.*;
 import zeldiablo.exception.ActionInconnueException;

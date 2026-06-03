@@ -1,6 +1,5 @@
-package zeldiablo.Item;
+package zeldiablo.item;
 
-import zeldiablo.Jeu;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.entite.Personnage;
 

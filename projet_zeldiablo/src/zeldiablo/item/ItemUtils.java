@@ -1,4 +1,4 @@
-package zeldiablo.Item;
+package zeldiablo.item;
 
 public abstract class ItemUtils implements Item {
 }

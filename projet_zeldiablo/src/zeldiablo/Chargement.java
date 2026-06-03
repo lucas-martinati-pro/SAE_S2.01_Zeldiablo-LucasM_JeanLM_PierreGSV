@@ -1,7 +1,7 @@
 package zeldiablo;
 
 import zeldiablo.entite.Ghost;
-import zeldiablo.Item.Amulette;
+import zeldiablo.item.Amulette;
 import zeldiablo.entite.Spider;
 import zeldiablo.entite.Troll;
 import zeldiablo.environnement.Mur;
