@@ -1,6 +1,7 @@
 package zeldiablo;
 
 import moteurJeu.Commande;
+import zeldiablo.entite.Artificier;
 import zeldiablo.entite.Personnage;
 import zeldiablo.entite.Troll;
 import zeldiablo.environnement.Case;
@@ -37,6 +38,7 @@ public class GestionnaireMonstres {
                     timer.cancel();
                     return;
                 }
+
                 int random = (int) (Math.random() * 5); // 5 actions possibles : haut, bas, gauche, droite, attaque
                 Commande commandeUser = new Commande();
                 switch (random) {

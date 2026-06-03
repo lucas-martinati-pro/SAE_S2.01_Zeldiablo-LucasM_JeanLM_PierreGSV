@@ -1,11 +1,8 @@
 package zeldiablo;
 
+import zeldiablo.entite.*;
 import zeldiablo.item.Item;
-import zeldiablo.entite.Ghost;
-import zeldiablo.entite.Spider;
-import zeldiablo.entite.Troll;
 import zeldiablo.environnement.Case;
-import zeldiablo.entite.Personnage;
 import zeldiablo.environnement.Piege;
 
 import moteurJeu.DessinJeu;
@@ -41,6 +38,7 @@ public class DessinLaby implements DessinJeu {
     private BufferedImage ghost;
     private BufferedImage hero;
     private BufferedImage coeur;
+    private BufferedImage artificier;
 
     /**
      * Constructeur de DessinLaby
@@ -68,6 +66,7 @@ public class DessinLaby implements DessinJeu {
             ghost = ImageIO.read(new File("sprite/ghost.png"));
             hero = ImageIO.read(new File("sprite/hero.png"));
             coeur = ImageIO.read(new File("sprite/coeur.png"));
+            artificier = ImageIO.read(new File("sprite/coeur.png"));
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement des images : " + e.getMessage());
         }
@@ -120,6 +119,7 @@ public class DessinLaby implements DessinJeu {
             if (m instanceof Spider) g.drawImage(spider, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
             else if (m instanceof Troll) g.drawImage(troll, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
             else if (m instanceof Ghost) g.drawImage(ghost, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+            else if (m instanceof Artificier) g.drawImage(artificier, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
         }
 
         // Ajout des flammes d'explosion

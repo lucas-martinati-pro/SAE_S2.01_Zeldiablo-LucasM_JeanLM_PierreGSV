@@ -15,10 +15,11 @@ public class Aventurier extends Personnage {
     private Jeu jeu;
 
     /**
-     * Créer un avanturier
-     * @param x coordonné x de l'avanturier
-     * @param y coordonné y de l'avanturier
-     * @param vie point de vie de l'avanturier
+     * Créer un aventurier
+     * 
+     * @param x coordonné x de l'aventurier
+     * @param y coordonné y de l'aventurier
+     * @param vie point de vie de l'aventurier
      */
     public Aventurier(int x, int y, int vie) {
         super(x, y, vie);
@@ -34,16 +35,10 @@ public class Aventurier extends Personnage {
 
     @Override
     public void attaquer(Personnage victime) {
-        if (jeu != null) {
-            jeu.addBombe(x, y);
-            Case bombe = jeu.getCase(x, y);
-            if (bombe instanceof Bombe b) {
-                b.setJeu(jeu);
-                b.exploser();
-            }
-        } else {
-            victime.addVie(-2);
-        }
+        Bombe bombe = new Bombe(x, y);
+        bombe.setJeu(jeu);
+        jeu.getCases().add(bombe);
+        bombe.exploser();
     }
 
     /**
@@ -53,13 +48,15 @@ public class Aventurier extends Personnage {
      */
     public boolean haveItem(String nom) {
         for (Item o : this.inventaire) {
-            if (o.getType().equals(nom)) return true;
+            if (o.getType().equals(nom))
+                return true;
         }
         return false;
     }
 
     /**
-     * Ajoute un item de la case situee aux coordonnees (x, y) dans l'inventaire du hero et retire la case du jeu.
+     * Ajoute un item de la case situee aux coordonnees (x, y) dans l'inventaire du
+     * hero et retire la case du jeu.
      *
      * @param x la colonne de la case contenant l'item a ajouter
      * @param y la ligne de la case contenant l'item a ajouter

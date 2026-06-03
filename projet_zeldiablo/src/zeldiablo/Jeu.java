@@ -29,6 +29,7 @@ public class Jeu implements moteurJeu.Jeu {
     public static final char SPIDER = 'S';
     public static final char TROLL = 'T';
     public static final char GHOST = 'G';
+    public static final char ARTIFICIER = 'R';
 
     // ########## Variables ##########
     private int[] size;
@@ -173,6 +174,11 @@ public class Jeu implements moteurJeu.Jeu {
                     case Jeu.SPIDER -> monstres.add(new Spider(j, i, 3));
                     case Jeu.TROLL -> monstres.add(new Troll(j, i, 1));
                     case Jeu.GHOST -> monstres.add(new Ghost(j, i, 4));
+                    case Jeu.ARTIFICIER -> {
+                        Artificier artificier = new Artificier(j, i, 15);
+                        artificier.setJeu(this);
+                        monstres.add(artificier);
+                    }
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
                 }
             }
