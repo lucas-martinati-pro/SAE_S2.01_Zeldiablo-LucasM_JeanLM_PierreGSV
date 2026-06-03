@@ -1,0 +1,32 @@
+# Fonctionnalités prévues version 4
+
+- fonctionnalité 1 : Cases déclencheurs d'effets
+  - descriptif texte : Intégration de cases spéciales dans le labyrinthe qui déclenchent un événement spécifique lorsqu'un personnage y pénètre.
+  - critères de validation :
+    - critère 1 : Les cases déclencheurs sont des cases traversables.
+    - critère 2 : Lorsqu'un personnage (héros ou monstre) marche sur cette case, l'effet se déclenche immédiatement.
+    - critère 3 : L'effet se traduit pour le moment par un affichage spécifique dans la console.
+  - responsables : LE MADEC Jean
+
+- fonctionnalité 2 : Affichage visuel des attaques
+  - descriptif texte : Les personnages changent de couleur temporairement lors de leur action d'attaque pour donner un retour visuel au joueur.
+  - critères de validation :
+    - critère 1 : La couleur du monstre passe de rouge à noir au moment de son attaque.
+    - critère 2 : La couleur du héros passe de bleu à bleu foncé au moment de son attaque.
+    - critère 3 : Après l'action, le héros et le monstre reprennent leur couleur d'origine.
+  - responsables : MARTINATI Lucas
+
+- fonctionnalité 3 : Monstres incendiaires
+  - descriptif texte : Introduction de monstres capables de poser des bombes dans le labyrinthe.
+  - critères de validation :
+    - critère 1 : La pose de bombes par les monstres respecte les mêmes règles que pour le héros (case bloquée, limitation du nombre de bombes simultanées).
+  - responsables : GALLOIS Pierre
+
+- fonctionnalité 4 : Ajout des monstres de type Blob
+  - descriptif texte : Nouveau type de monstre stationnaire et multi-cases : le Blob, dont chaque segment peut être détruit individuellement.
+  - critères de validation :
+    - critère 1 : Un blob occupe plusieurs cases du labyrinthe, rendant ces cases non traversables.
+    - critère 2 : Le blob ne se déplace jamais.
+    - critère 3 : Une attaque du héros sur une case occupée par le blob détruit ce segment et libère la case.
+    - critère 4 : Lorsque tous les segments d'un blob sont détruits, le monstre est considéré comme éliminé.
+  - responsables : MARTINATI Lucas

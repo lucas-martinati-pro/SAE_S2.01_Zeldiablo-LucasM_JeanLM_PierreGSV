@@ -10,6 +10,11 @@ import zeldiablo.exception.ActionInconnueException;
  */
 public abstract class Personnage extends Case {
     protected int vie;
+    protected boolean isAttaque = false;
+
+    public boolean getIsAttaque() {
+        return isAttaque;
+    }
 
     /**
      * Retourne la coordonnee x du personnage.
@@ -97,6 +102,15 @@ public abstract class Personnage extends Case {
      */
     public void attaquer(Personnage victime) {
         if (!etreMort()) victime.addVie(-2);
+
+        this.isAttaque = true;
+        new Thread(() -> {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+            }
+            this.isAttaque = false;
+        }).start();
     }
 
     /**
@@ -116,6 +130,9 @@ public abstract class Personnage extends Case {
                     return;
                 }
             }
+
+            Aventurier hero = jeu.getHero();
+            if (hero.getX() == coord[0] && hero.getY() == coord[1]) return;
 
             Case c = jeu.getCase(coord[0], coord[1]);
 

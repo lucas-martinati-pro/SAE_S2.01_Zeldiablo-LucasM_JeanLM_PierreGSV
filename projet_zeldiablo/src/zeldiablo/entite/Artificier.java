@@ -39,10 +39,19 @@ public class Artificier extends Personnage {
      */
     @Override
     public void attaquer(Personnage victime) {
-        Bombe bombe = new Bombe(x, y);
-        bombe.setJeu(jeu);
-        jeu.getCases().add(bombe);
-        bombe.exploser();
+        Bombe b = new Bombe(x, y);
+        jeu.getCases().add(b);
+        b.setJeu(jeu);
+        b.exploser();
+
+        this.isAttaque = true;
+        new Thread(() -> {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+            }
+            this.isAttaque = false;
+        }).start();
     }
 
 }

@@ -22,13 +22,14 @@ public class Jeu implements moteurJeu.Jeu {
     public static final char MUR = '#';
     public static final char MUR_FRIABLE = '*';
     public static final char PIEGE = 'P';
-    public static final char BOMBE = 'B';
+    public static final char BOMBE = '$';
     public static final char FIN = '&';
     public static final char AMULETTE = 'A';
     public static final char HERO = '@';
     public static final char SPIDER = 'S';
     public static final char TROLL = 'T';
     public static final char GHOST = 'G';
+    public static final char BLOB = 'B';
     public static final char ARTIFICIER = 'R';
 
     // ########## Variables ##########
@@ -174,11 +175,6 @@ public class Jeu implements moteurJeu.Jeu {
                     case Jeu.SPIDER -> monstres.add(new Spider(j, i, 3));
                     case Jeu.TROLL -> monstres.add(new Troll(j, i, 1));
                     case Jeu.GHOST -> monstres.add(new Ghost(j, i, 4));
-                    case Jeu.ARTIFICIER -> {
-                        Artificier artificier = new Artificier(j, i, 15);
-                        artificier.setJeu(this);
-                        monstres.add(artificier);
-                    }
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
                 }
             }
@@ -201,16 +197,6 @@ public class Jeu implements moteurJeu.Jeu {
             this.cases.add(new PiegeDetruit(x, y));
         }
         if (!(c instanceof Amulette)) this.cases.remove(getCase(x, y));
-    }
-
-    /**
-     * Ajoute une bombe dans le jeu aux coordonnees (x, y).
-     *
-     * @param x la colonne ou deposer la bombe
-     * @param y la ligne ou deposer la bombe
-     */
-    public void addBombe(int x, int y) {
-        cases.add(new Bombe(x, y));
     }
 
     // =========================================================

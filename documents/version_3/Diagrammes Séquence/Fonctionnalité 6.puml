@@ -1,0 +1,33 @@
+@startuml
+title Fonctionnalité 6 - Ajout des monstres de type Fantôme (Ghost)
+
+participant "GestionnaireMonstres" as GM
+participant "ghost : Ghost" as Ghost
+participant "j : Jeu" as Jeu
+
+activate GM
+GM -> Ghost : deplacer(j, commandeUser)
+activate Ghost
+
+Ghost -> Jeu : getSuivant(x, y, commandeUser)
+activate Jeu
+Jeu --> Ghost : coord
+deactivate Jeu
+
+Ghost -> Jeu : getMonstres()
+activate Jeu
+Jeu --> Ghost : monstres
+deactivate Jeu
+
+loop Pour chaque Personnage m dans monstres
+    alt m.getX() == coord[0] && m.getY() == coord[1]
+        note over Ghost : Mouvement bloqué par un autre monstre
+    end
+end
+
+Ghost -> Ghost : setPos(coord[0], coord[1])
+
+Ghost --> GM
+deactivate Ghost
+deactivate GM
+@enduml

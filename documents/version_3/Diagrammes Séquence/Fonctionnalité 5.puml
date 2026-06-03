@@ -1,0 +1,41 @@
+@startuml
+title Fonctionnalité 5 - Affichage graphique de l'inventaire
+
+participant "MoteurGraphique" as Moteur
+participant "dessin : DessinLaby" as Dessin
+participant "j : Jeu" as Jeu
+participant "hero : Aventurier" as Hero
+participant "Graphics2D" as G
+participant "o : Item" as Item
+
+activate Moteur
+Moteur -> Dessin : dessiner(image)
+activate Dessin
+
+Dessin -> Jeu : getHero()
+activate Jeu
+Jeu --> Dessin : hero
+deactivate Jeu
+
+Dessin -> Hero : getInventaire()
+activate Hero
+Hero --> Dessin : inventaire
+deactivate Hero
+
+loop Pour chaque Item o dans inventaire
+    Dessin -> Item : o.getType()
+    activate Item
+    Item --> Dessin : type
+    deactivate Item
+    alt Type est "Amulette"
+        Dessin -> G : drawImage(amulette, x, y, width, height, null)
+        activate G
+        G --> Dessin
+        deactivate G
+    end
+end
+
+Dessin --> Moteur
+deactivate Dessin
+deactivate Moteur
+@enduml

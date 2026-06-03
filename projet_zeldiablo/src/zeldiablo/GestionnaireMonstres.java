@@ -103,6 +103,7 @@ public class GestionnaireMonstres {
                     case "Spider" -> System.out.println("Vous avez tué une araignée ! \uD83D\uDD77️");
                     case "Troll" -> System.out.println("Vous avez tué un troll ! \uD83D\uDC79");
                     case "Ghost" -> System.out.println("Vous avez tué un fantôme ! \uD83D\uDC80");
+                    case "Blob" -> System.out.println("Vous avez tué un blob ! 🦠");
                     default -> System.out.println("Vous avez tué un monstre ! \uD83D\uDC7E");
                 }
                 jeu.getMonstres().remove(m);
