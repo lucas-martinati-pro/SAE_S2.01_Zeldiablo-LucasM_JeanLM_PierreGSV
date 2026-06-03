@@ -70,7 +70,7 @@
     - critère 2 : Les monstres sont créés sur des cases vides.
     - critère 3 : Il n'est pas possible de générer des monstres sur des cases non vides (position du joueur, d'autres monstres ou de murs)
     - critère 4 : Les monstres doivent apparaitre dans l'interface graphique sous la forme d'un cercle rouge.
-    - critère 5 : Les monstres ne se déplacent pas (mais attaquent éventuellement le héros s'il passe à proximité.
+    - critère 5 : Les monstres ne se déplacent pas (mais attaquent éventuellement le héros s'il passe à proximité).
   - responsables : MARTINATI Lucas
 
 - fonctionnalité 9 : Déplacement aléatoire des monstres

@@ -2,9 +2,8 @@ package zeldiablo;
 
 import moteurJeu.Commande;
 import zeldiablo.entite.Personnage;
+import zeldiablo.entite.Troll;
 import zeldiablo.environnement.Case;
-import zeldiablo.environnement.Labyrinthe;
-import zeldiablo.exception.ActionInconnueException;
 
 import java.util.Timer;
 
@@ -81,10 +80,18 @@ public class GestionnaireMonstres {
     public void evoluerMonster(Commande commandeUser) {
         if (!jeu.getMonstres().isEmpty()) {
             int index = (int) Math.floor(Math.random() * jeu.getMonstres().size());
-            Personnage m = jeu.getMonstres().get(index);
+            Personnage monstre = jeu.getMonstres().get(index);
 
-            m.deplacer(jeu, commandeUser);
+            monstre.deplacer(jeu, commandeUser);
             verifMort();
+
+            for (Personnage m : jeu.getMonstres()) {
+                if (m instanceof Troll t && !t.etreMort()) {
+                    if (Math.random() < 0.05) { // 5% de chance de régénérer à chaque évolution
+                        t.regenerer();
+                    }
+                }
+            }
         }
     }
 

@@ -46,6 +46,7 @@ public class Chargement {
                     case Labyrinthe.PIEGE -> jeu.getCases().add(new Piege(j, i));
                     case Labyrinthe.MurFriable -> jeu.getCases().add(new MurFriable(j,i));
                     case Labyrinthe.MONSTRE -> jeu.getMonstres().add(new Spider(j, i, 3));
+                    case Labyrinthe.TROLL -> jeu.getMonstres().add(new Troll(j, i, 6));
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
                 }
             }
