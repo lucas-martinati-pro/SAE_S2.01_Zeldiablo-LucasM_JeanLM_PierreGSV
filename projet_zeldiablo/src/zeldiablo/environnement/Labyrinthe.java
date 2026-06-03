@@ -38,6 +38,10 @@ public class Labyrinthe {
      * Constante pour une Bombe dans un fichier de labyrinthe
      */
     public static final char BOMBE = 'B';
+    /**
+     * Constante pour une Amulette dans un fichier de labyrinthe
+     */
+    public static final char AMULETTE = 'A';
 
     // ########## Constructeur ##########
 

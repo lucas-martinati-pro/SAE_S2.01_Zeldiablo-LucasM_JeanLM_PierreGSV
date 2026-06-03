@@ -1,4 +1,9 @@
 package zeldiablo.Objet;
 
-public interface ObjetUtile {
+import zeldiablo.entite.Personnage;
+
+public interface ItemUtile extends Item {
+
+    @Override
+    void use(Personnage personnage);
 }

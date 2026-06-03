@@ -54,7 +54,7 @@ public class DessinLaby implements DessinJeu {
             }
         }
 
-        for (Case c : jeu.getCases()) {
+        for (Case c : jeu.getCases()) { // ajout des cases
             int x = c.getX();
             int y = c.getY();
             switch (c.getType()) {
@@ -64,6 +64,7 @@ public class DessinLaby implements DessinJeu {
                 case "MurFriable" -> addImageCube("sprite/murFriable.png", x, y, g, Color.GRAY);
                 case "Bombe" -> addImageOval("sprite/bombe.png", x, y, g, Color.MAGENTA);
                 case "PiegeDetruit" -> addImageCube("sprite/piegeDetruit.png", x, y, g, Color.DARK_GRAY);
+                case "Amulette" -> addImageOval("", x, y, g, Color.YELLOW );
             }
         }
 

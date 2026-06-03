@@ -2,6 +2,6 @@ package zeldiablo.Objet;
 
 import zeldiablo.entite.Personnage;
 
-public interface Objet {
+public interface Item {
     public void use(Personnage personnage);
 }

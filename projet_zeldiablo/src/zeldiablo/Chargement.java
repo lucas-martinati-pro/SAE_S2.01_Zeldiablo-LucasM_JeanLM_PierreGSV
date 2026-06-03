@@ -1,5 +1,6 @@
 package zeldiablo;
 
+import zeldiablo.Objet.Amulette;
 import zeldiablo.entite.Spider;
 import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.entite.Aventurier;
@@ -45,7 +46,8 @@ public class Chargement {
                     case Labyrinthe.VIDE -> {}
                     case Labyrinthe.PIEGE -> jeu.getCases().add(new Piege(j, i));
                     case Labyrinthe.MurFriable -> jeu.getCases().add(new MurFriable(j,i));
-                    case Labyrinthe.MONSTRE -> jeu.getMonstres().add(new Spider(j, i, 3));
+                    case Labyrinthe.MONSTRE -> jeu.getMonstres().add(new Spider(j, i));
+                    case Labyrinthe.AMULETTE -> jeu.getCases().add(new Amulette(j, i));
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
                 }
             }
