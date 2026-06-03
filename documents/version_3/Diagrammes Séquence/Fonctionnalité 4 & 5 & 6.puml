@@ -1,0 +1,40 @@
+@startuml
+title Fonctionnalité 4 & 5 & 6 - Attaque de l'aventurier (Pose et dégât de bombe)
+
+actor Joueur
+participant "j:Jeu" as Jeu
+participant "hero:Aventurier" as Hero
+participant "bombe:Bombe" as Bombe
+
+Joueur -> Jeu : evoluer(commandeUser)
+activate Jeu
+
+alt commandeUser.space = true (attaquer)
+    Jeu -> Jeu : getSuivant(x, y, commandeUser)
+    activate Jeu
+    Jeu --> Jeu : [x, y]
+
+deactivate Jeu
+    Jeu -> Hero : attaquer(j)
+    activate Hero
+
+    Hero -> Jeu : addBombe(x, y)
+
+    Hero -> Jeu : getCase(x, y)
+    activate Jeu
+    Jeu --> Hero : bombe : Case
+    deactivate Jeu
+
+    Hero -> Bombe : setJeu(j)
+    Hero -> Bombe : effet(hero)
+    activate Bombe
+    Bombe --> Hero
+    deactivate Bombe
+
+    Hero --> Jeu
+    deactivate Hero
+end
+
+Jeu --> Joueur
+deactivate Jeu
+@enduml

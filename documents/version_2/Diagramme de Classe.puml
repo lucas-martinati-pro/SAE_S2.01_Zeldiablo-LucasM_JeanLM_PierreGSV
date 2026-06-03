@@ -1,0 +1,80 @@
+@startuml
+title Diagramme de classe
+
+class jeu.Jeu {
+    -laby : Labyrinthe
+    -hero : Aventurier
+    -fin : int[]
+    +HAUT = "Haut" : static final String
+    +BAS = "Bas" : static final String
+    +GAUCHE = "Gauche" : static final String
+    +DROITE = "Droite" : static final String
+
+    +setLaby(laby : Labyrinthe) : void
+    +setHero(hero : Aventurier) : void
+    +getHero() : Aventurier
+    +getLaby() : Labyrinthe
+
+    +chargerJeu(nomFichier : String) : void
+    +convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
+    -getChar(x : int, y : int) : char
+    +jeuToString() : String
+    +{static} getSuivant(x : int, y : int, commandeUser : Commande) : int[]
+    +etreFini() : boolean
+    +evoluer(commandeUser : Commande) : void
+    +verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
+}
+interface moteurJeu.Jeu {
+    +evoluer(commandeUser : Commande) : void
+    +etreFini() : boolean
+}
+class jeu.Labyrinthe {
+    +murs : boolean[][]
+    +MUR = '#' : static final char
+    +HERO = '@' : static final char
+    +FIN = '&' : static final char
+    +VIDE = ' ' : static final char
+
+    +Labyrinthe(x : int, y : int)
+    +getCases(int x, int y) : int[][]
+    +addMur(x : int, y : int) : void
+    +returnSize() : int[]
+}
+interface jeu.Personnage {
+    +getX() : int
+    +getY() : int
+
+    +setPos(x : int, y : int) : void
+}
+class jeu.Aventurier {
+    -x : int
+    -y : int
+
+    +Aventurier(x : int, y : int) : void
+    +getX() : int
+    +getY() : int
+
+    +setPos(x : int, y : int) : void
+}
+class jeu.FichierIncorrectException {
+    +FichierIncorrectException(message : String) : void
+}
+interface moteurJeu.DessinJeu {
+    +{abstract} dessiner(image : BufferedImage) : void
+}
+class jeu.DessinLaby {
+    -jeu : Jeu
+
+    +DessinLaby(jeu Jeu) : void
+    +dessiner(image : BufferedImage) : void
+}
+
+DessinJeu <|-- DessinLaby
+DessinLaby "1" --> "1" jeu.Jeu : affiche
+
+jeu.Jeu --> Labyrinthe
+moteurJeu.Jeu <|-- jeu.Jeu
+jeu.Jeu --> Aventurier
+Personnage <|.. Aventurier
+jeu.Jeu "1" --> "1" FichierIncorrectException : lève
+@enduml

@@ -1,0 +1,82 @@
+@startuml
+title Fonctionnalité 1 - Gestion des niveaux
+
+participant "MainZeldiablo" as Main
+participant "Chargement" as Chargement
+participant "moteur:MoteurGraphique" as Moteur
+participant "j:Jeu" as Jeu
+participant "hero:Aventurier" as Hero
+participant "laby:Labyrinthe" as Laby
+participant "gestionnaireMonstres:GestionnaireMonstres" as GM
+
+activate Main
+
+Main -> Chargement : chargerNiveau(j, "laby/niveaux/lvl1.txt")
+activate Chargement
+Chargement --> Main
+deactivate Chargement
+
+Main -> Moteur : lancerJeu(largeur, hauteur)
+activate Moteur
+Moteur --> Main
+deactivate Moteur
+
+loop Tant que le jeu est en cours (enCours == true)
+    Main -> Jeu : etreFini()
+    activate Jeu
+    Jeu --> Main : fini
+    deactivate Jeu
+
+    Main -> Hero : etreMort()
+    activate Hero
+    Hero --> Main : mort
+    deactivate Hero
+
+    Main -> Jeu : gethero()
+    activate Jeu
+    Jeu --> Main : hero
+    deactivate Jeu
+
+    Main -> Hero : getVie()
+    activate Hero
+    Hero --> Main : vie
+    deactivate Hero
+
+    alt fini == true et mort == false (Passage au niveau suivant)
+        Main -> Main : Incrémenter lvl
+        Main -> Chargement : chargerNiveau(j, path)
+        activate Chargement
+        Chargement --> Main
+        deactivate Chargement
+
+        Main -> Hero : setVie(vie + 3)
+        activate Hero
+        Hero --> Main
+        deactivate Hero
+
+        Main -> Jeu : getLaby()
+        activate Jeu
+        Jeu --> Main : laby
+        deactivate Jeu
+
+        Main -> Laby : returnSize()
+        activate Laby
+        Laby --> Main : size[]
+        deactivate Laby
+
+        Main -> GM : startMonsters()
+        activate GM
+        GM --> Main
+        deactivate GM
+
+        Main -> Moteur : lancerJeu(TAILLE * size[0], TAILLE * size[1])
+        activate Moteur
+        Moteur --> Main
+        deactivate Moteur
+    else mort == true
+        Main -> Main : enCours = false (Game Over)
+    end
+end
+
+deactivate Main
+@enduml

@@ -1,0 +1,62 @@
+# Fonctionnalités prévues version 3
+
+- fonctionnalité 1 : Mise en place de l'amulette
+  - descriptif texte : Au lancement du jeu, une amulette est placée sur une case vide du labyrinthe. Le placement de l'amulette est toujours le même et dépend du niveau.
+  - critères de validation :
+    - critère 1 : L'amulette ne peut être placée que sur une case vide.
+    - critère 2 : Les monstres et le héros peuvent se situer sur la case de l'amulette.
+    - critère 3 : L'amulette est affichée dans le jeu sous la forme d'un cercle jaune sur la case vide où elle se trouve.
+  - responsables : LE MADEC Jean
+
+- fonctionnalité 2 : Acquisition de l'amulette
+  - descriptif texte : Dès que le joueur demande à déplacer le héros sur l'amulette, le héros se déplace et prend l'amulette.
+  - critères de validation :
+    - critère 1 : L'amulette n'est plus sur le plateau (et n'est plus affichée).
+    - critère 2 : Le Héros possède l'amulette.
+    - critère 3 : Un monstre ne récupère pas l'amulette.
+  - responsables : LE MADEC Jean
+
+- fonctionnalité 3 : Fin du jeu : victoire du héros
+  - descriptif texte : Une fois que le héros a pris l'amulette, il peut retourner à l'entrée du labyrinthe et remporter le jeu.
+  - critères de validation :
+    - critère 1 : Lorsque le héros possède l'amulette et qu'il retourne à l'entrée du labyrinthe, le jeu s'arrête et un message est aché dans la console.
+    - critère 2 : Lorsque le héros ne possède pas l'amulette, le jeu ne s'arrête pas même si le héros retourne à l'entrée.
+  - responsables : LE MADEC Jean
+
+- fonctionnalité 4 : Gestion de l'inventaire et ramassage d'objets
+  - descriptif texte : Des objets sont disposés dans des cases vides du labyrinthe. Lorsque le héros appuie sur la touche d'utilisation ("E" par défaut), il récupère les objets de la case où il se trouve et les ajoute dans son inventaire.
+  - critères de validation :
+    - critère 1 : L'inventaire est de taille infinie.
+    - critère 2 : Lorsque le joueur cherche à prendre un objet alors qu'il n'y a rien sur la case où il se trouve, rien ne se passe.
+    - critère 3 : Lorsqu'un joueur prend un objet, l'objet disparaît du labyrinthe (et n'est plus affiché) mais apparaît dans son inventaire.
+    - critère 4 : À chaque évolution du jeu, le jeu affiche dans la console l'inventaire du héros.
+    - critère 5 : Les objets sont affichés dans le labyrinthe tant qu'ils sont présents (sous la forme d'un cercle noir).
+  - responsables : MARTINATI Lucas
+
+- fonctionnalité 5 : Affichage graphique de l'inventaire
+  - descriptif texte : L'inventaire est désormais affiché graphiquement dans la fenêtre de jeu, remplaçant ou complétant l'affichage console.
+  - critères de validation :
+    - critère 1 : L'inventaire est représenté par 6 cases carrées situées en bas de la fenêtre de jeu.
+    - critère 2 : À chaque fois qu'un joueur prend un objet, en plus de disparaître du labyrinthe, celui-ci s'affiche visuellement dans l'une des cases de l'inventaire.
+    - critère 3 : Les objets sélectionnés (meilleure arme et meilleur bouclier) sont mis en évidence par une couleur différente.
+    - critère 4 : Les objets affichés dans l'inventaire possèdent des formes spécifiques (cercle pour un bouclier, trait vertical pour une arme).
+    - critère 5 : Lorsqu'un bouclier est détruit, il disparaît automatiquement de l'affichage de l'inventaire.
+  - responsables : MARTINATI Lucas
+
+- fonctionnalité 6 : Ajout des monstres de type Fantôme
+  - descriptif texte : Le labyrinthe intègre une nouvelle catégorie de monstres : les fantômes, possédant des propriétés de déplacement uniques.
+  - critères de validation :
+    - critère 1 : Les fantômes peuvent traverser les murs du labyrinthe.
+    - critère 2 : Les fantômes restent bloqués par les autres personnages (héros ou autres monstres).
+    - critère 3 : Les monstres de base conservent leur comportement actuel et continuent d'être bloqués par les murs.
+    - critère 4 : Les attaques des fantômes fonctionnent selon les mêmes règles que les attaques des monstres standards.
+  - responsables : GALLOIS Pierre
+
+- fonctionnalité 16 : Ajout des monstres de type Troll
+  - descriptif texte : Intégration d'un nouveau type de monstre : le Troll, caractérisé par sa capacité de régénération passive.
+  - critères de validation :
+    - critère 1 : Le Troll se déplace selon les mêmes règles que les monstres de base (les murs constituent des obstacles infranchissables).
+    - critère 2 : Si le Troll ne subit aucun dégât au cours d'un tour de jeu, il regagne automatiquement un point de vie.
+    - critère 3 : Les attaques des Trolls suivent le même fonctionnement que celles des monstres standards.
+    - critère 4 : Par défaut, le Troll possède 3 points de vie.
+  - responsables : GALLOIS Pierre
