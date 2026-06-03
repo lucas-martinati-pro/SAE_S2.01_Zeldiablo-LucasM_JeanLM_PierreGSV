@@ -46,7 +46,25 @@ public class GestionnaireMonstres {
                     case 3 -> commandeUser.droite = true;
                     case 4 -> monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
                 }
-                evoluerMonster(commandeUser);
+
+                // On déplace le monstre s'il y a une commande de déplacement, sinon on le laisse attaquer
+                if (!(commandeUser.droite == false && commandeUser.gauche == false && commandeUser.haut == false && commandeUser.bas == false)) {
+                    if (!jeu.getMonstres().isEmpty()) {
+                        int index = (int) Math.floor(Math.random() * jeu.getMonstres().size());
+                        Personnage monstre = jeu.getMonstres().get(index);
+
+                        monstre.deplacer(jeu, commandeUser);
+                        verifMort();
+
+                        for (Personnage m : jeu.getMonstres()) {
+                            if (m instanceof Troll t && !t.etreMort()) {
+                                if (Math.random() < 0.05) { // 5% de chance de régénérer à chaque évolution
+                                    t.regenerer();
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }, 100L, 100L); // Exécute toutes les 100 ms (100 long)
     }
@@ -73,29 +91,6 @@ public class GestionnaireMonstres {
     }
 
     /**
-     * Gere le deplacement des monstres.
-     *
-     * @param commandeUser la direction de deplacement
-     */
-    public void evoluerMonster(Commande commandeUser) {
-        if (!jeu.getMonstres().isEmpty()) {
-            int index = (int) Math.floor(Math.random() * jeu.getMonstres().size());
-            Personnage monstre = jeu.getMonstres().get(index);
-
-            monstre.deplacer(jeu, commandeUser);
-            verifMort();
-
-            for (Personnage m : jeu.getMonstres()) {
-                if (m instanceof Troll t && !t.etreMort()) {
-                    if (Math.random() < 0.05) { // 5% de chance de régénérer à chaque évolution
-                        t.regenerer();
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Supprime les monstres morts.
      */
     public void verifMort() {
@@ -108,6 +103,7 @@ public class GestionnaireMonstres {
                     case "Ghost" -> System.out.println("Vous avez tué un fantôme ! \uD83D\uDC80");
                     default -> System.out.println("Vous avez tué un monstre ! \uD83D\uDC7E");
                 }
+                jeu.getMonstres().remove(m);
                 i--;
             }
         }

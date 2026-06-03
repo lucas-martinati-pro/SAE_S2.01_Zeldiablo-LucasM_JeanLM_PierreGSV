@@ -259,7 +259,9 @@ public class Jeu implements moteurJeu.Jeu {
             }
         }
 
-        this.hero.deplacer(this, commandeUser);
+        if (!(commandeUser.droite == false && commandeUser.gauche == false && commandeUser.haut == false && commandeUser.bas == false)) {
+            this.hero.deplacer(this, commandeUser);
+        }
     }
 
     /**

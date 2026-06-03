@@ -115,9 +115,7 @@ public abstract class Personnage {
             jeu.verifierDeplacement(coord[0], coord[1], commandeUser);
             switch (jeu.getChar(coord[0], coord[1])) {
                 case Labyrinthe.PIEGE -> {
-                    for (Case c : jeu.getCases()) {
-                        c.getCase(coord[0], coord[1]).effet(this);
-                    }
+                    jeu.getCase(coord[0], coord[1]).effet(this);
                     this.setPos(coord[0], coord[1]);
                 }
                 case Labyrinthe.VIDE, Labyrinthe.FIN, Labyrinthe.AMULETTE -> this.setPos(coord[0], coord[1]);
