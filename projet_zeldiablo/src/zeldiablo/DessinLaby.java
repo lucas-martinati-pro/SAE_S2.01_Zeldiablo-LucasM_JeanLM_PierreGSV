@@ -37,11 +37,13 @@ public class DessinLaby implements DessinJeu {
     private BufferedImage troll;
     private BufferedImage ghost;
     private BufferedImage blob;
+    private BufferedImage artificier;
     private BufferedImage hero;
     private BufferedImage spiderAttaque;
     private BufferedImage trollAttaque;
     private BufferedImage ghostAttaque;
     private BufferedImage blobAttaque;
+    private BufferedImage artificierAttaque;
     private BufferedImage heroAttaque;
     private BufferedImage coeur;
     private BufferedImage artificier;
@@ -71,11 +73,13 @@ public class DessinLaby implements DessinJeu {
             troll = ImageIO.read(new File("sprite/troll.png"));
             ghost = ImageIO.read(new File("sprite/ghost.png"));
             blob = ImageIO.read(new File("sprite/blob.png"));
+            artificier = ImageIO.read(new File("sprite/artificier.png"));
             hero = ImageIO.read(new File("sprite/hero.png"));
             spiderAttaque = ImageIO.read(new File("sprite/spiderAttaque.png"));
             trollAttaque = ImageIO.read(new File("sprite/trollAttaque.png"));
             ghostAttaque = ImageIO.read(new File("sprite/ghostAttaque.png"));
             blobAttaque = ImageIO.read(new File("sprite/blobAttaque.png"));
+            artificierAttaque = ImageIO.read(new File("sprite/artificierAttaque.png"));
             heroAttaque = ImageIO.read(new File("sprite/heroAttaque.png"));
             coeur = ImageIO.read(new File("sprite/coeur.png"));
             artificier = ImageIO.read(new File("sprite/coeur.png"));
