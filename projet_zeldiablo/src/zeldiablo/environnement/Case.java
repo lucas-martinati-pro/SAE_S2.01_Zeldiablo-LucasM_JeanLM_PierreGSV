@@ -8,6 +8,11 @@ public abstract class Case {
     protected int y;
     protected boolean isTraversable = false;
 
+    /**
+     * Indique si la case est traversable par les entites.
+     *
+     * @return true si la case est traversable, false sinon
+     */
     public boolean getIsTraversable() {
         return isTraversable;
     }

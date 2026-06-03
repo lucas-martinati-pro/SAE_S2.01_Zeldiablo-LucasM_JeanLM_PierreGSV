@@ -24,6 +24,11 @@ public class Bombe extends Case {
         return "Bombe";
     }
 
+    /**
+     * Fait exploser la bombe, appliquant des degats dans les 4 directions sur 3 cases et detruisant les obstacles destructibles.
+     *
+     * @param jeu l'instance du jeu
+     */
     public void exploser(Jeu jeu) {
         new Thread(() -> {
             try {

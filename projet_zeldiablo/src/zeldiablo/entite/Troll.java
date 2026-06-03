@@ -1,5 +1,8 @@
 package zeldiablo.entite;
 
+/**
+ * Represente un troll, un monstre capable de se regenerer.
+ */
 public class Troll extends Personnage {
     // ########## Constructeurs ##########
     /**

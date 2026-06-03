@@ -111,8 +111,8 @@ Toutes les fonctionnalités sont validées.
 - classe Chargement (chargement dynamique des niveaux et monstres)
 - responsable: LE MADEC Jean / MARTINATI Lucas
 
-- classe GestionnaireMonstres (déplacement, collisions et attaques des monstres)
-- responsable: MARTINATI Lucas
+- classe GestionnaireMonstres (déplacement, collisions, attaques et mort des monstres)
+- responsable: MARTINATI Lucas / LE MADEC Jean
 
 - classe Aventurier (points de vie, mort et action d'attaquer avec pose de bombes)
 - responsable: LE MADEC Jean / GALLOIS Pierre / MARTINATI Lucas

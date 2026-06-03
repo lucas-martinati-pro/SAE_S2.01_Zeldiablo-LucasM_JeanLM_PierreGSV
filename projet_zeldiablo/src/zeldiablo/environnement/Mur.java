@@ -1,5 +1,8 @@
 package zeldiablo.environnement;
 
+/**
+ * Represente un mur infranchissable dans le labyrinthe.
+ */
 public class Mur extends Case {
     /**
      * Construit une case en garantissant que les coordonnees ne sont pas negatives.

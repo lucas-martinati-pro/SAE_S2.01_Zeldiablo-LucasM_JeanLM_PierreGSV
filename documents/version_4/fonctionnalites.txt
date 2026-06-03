@@ -31,3 +31,29 @@
     - critère 3 : Une attaque du héros sur une case occupée par le blob détruit ce segment et libère la case.
     - critère 4 : Lorsque tous les segments d'un blob sont détruits, le monstre est considéré comme éliminé.
   - responsables : MARTINATI Lucas
+
+# Bilan
+
+Toutes les fonctionnalités sont validées.
+
+* réalisation
+- classe CaseEffet (mise en place de la hiérarchie pour les cases déclencheuses d'effets)
+  - responsable: LE MADEC Jean
+
+- classe DessinLaby (affichage visuel des attaques avec changement de sprite/couleur temporaire)
+  - responsable: MARTINATI Lucas
+
+- classe Artificier (monstres incendiaires qui posent des bombes)
+  - responsable: GALLOIS Pierre
+
+- classe Blob (monstre stationnaire et multi-cases avec destruction par segment)
+  - responsable: MARTINATI Lucas
+
+- classe Personnage (ajout de l'état d'attaque pour le retour visuel)
+  - responsable: MARTINATI Lucas
+
+- classe Jeu (chargement des nouveaux éléments de niveau et logique de destruction de segment de Blob)
+  - responsable: LE MADEC Jean / MARTINATI Lucas
+
+- tests associés aux fonctionnalités de la version 4
+  - responsable: LE MADEC Jean / MARTINATI Lucas / GALLOIS Pierre

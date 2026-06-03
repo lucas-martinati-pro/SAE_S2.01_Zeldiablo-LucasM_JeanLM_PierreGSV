@@ -1,5 +1,5 @@
 @startuml
-title Fonctionnalité 10 - Gestion de la mort des monstres (verifMort)
+    title Fonctionnalité 10 - Gestion de la mort des monstres (verifMort)
 
 participant "gm:GestionnaireMonstres" as GM
 participant "jeu:Jeu" as Jeu
@@ -26,7 +26,7 @@ loop i de 0 à monstres.size() - 1
         M --> GM : classe
         deactivate M
         GM -> GM : Affichage message console (ex: "Vous avez tué un monstre !")
-        
+
         GM -> Jeu : getMonstres()
         activate Jeu
         Jeu --> GM : monstres: ArrayList<Personnage>

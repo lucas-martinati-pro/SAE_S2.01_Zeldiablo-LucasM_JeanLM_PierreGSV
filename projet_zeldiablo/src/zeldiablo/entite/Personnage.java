@@ -12,6 +12,11 @@ public abstract class Personnage extends Case {
     protected int vie;
     protected boolean isAttaque = false;
 
+    /**
+     * Indique si le personnage est en train d'attaquer.
+     *
+     * @return true si le personnage attaque, false sinon
+     */
     public boolean getIsAttaque() {
         return isAttaque;
     }

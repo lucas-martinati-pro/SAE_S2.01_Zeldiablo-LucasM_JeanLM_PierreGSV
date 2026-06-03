@@ -4,6 +4,9 @@ import zeldiablo.Jeu;
 import zeldiablo.environnement.Bombe;
 
 
+/**
+ * Represente un artificier, un monstre capable de poser des bombes.
+ */
 public class Artificier extends Personnage {
     private Jeu jeu;
 
@@ -18,10 +21,20 @@ public class Artificier extends Personnage {
         super(x, y, vie);
     }
 
+    /**
+     * Associe le jeu a l'artificier.
+     *
+     * @param jeu l'instance du jeu
+     */
     public void setJeu(Jeu jeu) {
         this.jeu = jeu;
     }
 
+    /**
+     * Retourne le type de l'entite (Artificier).
+     *
+     * @return le type de l'entite
+     */
     @Override
     public String getType() {
         return "Artificier";

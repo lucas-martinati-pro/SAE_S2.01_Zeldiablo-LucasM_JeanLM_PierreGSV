@@ -3,6 +3,9 @@ package zeldiablo.entite;
 import moteurJeu.Commande;
 import zeldiablo.Jeu;
 
+/**
+ * Represente un fantome, un type de monstre capable de traverser les murs.
+ */
 public class Ghost extends Personnage {
     // ########## Constructeurs ##########
 
@@ -19,6 +22,13 @@ public class Ghost extends Personnage {
 
     // ########## Methodes ##########
 
+    /**
+     * Deplace le fantome, en lui permettant de traverser les murs.
+     *
+     * @param jeu l'instance du jeu
+     * @param commandeUser la commande de deplacement
+     */
+    @Override
     public void deplacer(Jeu jeu, Commande commandeUser) {
         int[] coord = jeu.getSuivant(this.x, this.y, commandeUser);
         for (Personnage m : jeu.getMonstres()) {

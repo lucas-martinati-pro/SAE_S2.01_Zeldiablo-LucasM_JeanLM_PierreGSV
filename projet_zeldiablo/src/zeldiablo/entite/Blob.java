@@ -3,6 +3,9 @@ package zeldiablo.entite;
 import moteurJeu.Commande;
 import zeldiablo.Jeu;
 
+/**
+ * Represente un blob, un monstre multi-cases immobile.
+ */
 public class Blob extends Personnage {
     // ########## Constructeurs ##########
     /**

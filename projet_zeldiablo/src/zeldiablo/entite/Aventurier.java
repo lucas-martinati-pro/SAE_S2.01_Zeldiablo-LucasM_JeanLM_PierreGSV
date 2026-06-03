@@ -16,7 +16,7 @@ public class Aventurier extends Personnage {
 
     /**
      * Créer un aventurier
-     * 
+     *
      * @param x coordonné x de l'aventurier
      * @param y coordonné y de l'aventurier
      * @param vie point de vie de l'aventurier
@@ -25,14 +25,29 @@ public class Aventurier extends Personnage {
         super(x, y, vie);
     }
 
+    /**
+     * Associe le jeu a l'aventurier.
+     *
+     * @param jeu l'instance du jeu
+     */
     public void setJeu(Jeu jeu) {
         this.jeu = jeu;
     }
 
+    /**
+     * Retourne l'inventaire de l'aventurier.
+     *
+     * @return la liste des items de l'inventaire
+     */
     public ArrayList<Item> getInventaire() {
         return inventaire;
     }
 
+    /**
+     * Fait attaquer l'aventurier en posant une bombe.
+     *
+     * @param victime le personnage cible (non utilise ici car l'attaque pose une bombe)
+     */
     @Override
     public void attaquer(Personnage victime) {
         Bombe b = new Bombe(x, y);
