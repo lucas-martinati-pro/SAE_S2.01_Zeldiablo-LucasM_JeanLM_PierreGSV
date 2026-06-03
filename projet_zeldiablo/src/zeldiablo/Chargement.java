@@ -1,6 +1,9 @@
 package zeldiablo;
 
+import zeldiablo.entite.Ghost;
+import zeldiablo.Objet.Amulette;
 import zeldiablo.entite.Spider;
+import zeldiablo.entite.Troll;
 import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.environnement.Piege;
@@ -45,8 +48,10 @@ public class Chargement {
                     case Labyrinthe.VIDE -> {}
                     case Labyrinthe.PIEGE -> jeu.getCases().add(new Piege(j, i));
                     case Labyrinthe.MurFriable -> jeu.getCases().add(new MurFriable(j,i));
-                    case Labyrinthe.MONSTRE -> jeu.getMonstres().add(new Spider(j, i, 3));
+                    case Labyrinthe.AMULETTE -> jeu.getCases().add(new Amulette(j, i));
+                    case Labyrinthe.SPIDER -> jeu.getMonstres().add(new Spider(j, i, 3));
                     case Labyrinthe.TROLL -> jeu.getMonstres().add(new Troll(j, i, 6));
+                    case Labyrinthe.GHOST -> jeu.getMonstres().add(new Ghost(j, i, 4));
                     default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
                 }
             }

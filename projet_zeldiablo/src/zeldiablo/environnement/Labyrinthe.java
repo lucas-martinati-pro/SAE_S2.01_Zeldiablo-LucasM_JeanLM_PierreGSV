@@ -15,9 +15,17 @@ public class Labyrinthe {
      */
     public static final char HERO = '@';
     /**
-     * Constante pour les monstres dans un fichier de labyrinthe
+     * Constante pour les areignée dans un fichier de labyrinthe
      */
-    public static final char MONSTRE = '£';
+    public static final char SPIDER = '£';
+    /**
+     * Constante pour les areignée dans un fichier de labyrinthe
+     */
+    public static final char TROLL = 'T';
+    /**
+     * Constante pour les areignée dans un fichier de labyrinthe
+     */
+    public static final char GHOST = '+';
     /**
      * Constante pour le vide dans un fichier de labyrinthe
      */
@@ -38,6 +46,10 @@ public class Labyrinthe {
      * Constante pour une Bombe dans un fichier de labyrinthe
      */
     public static final char BOMBE = 'B';
+    /**
+     * Constante pour une Amulette dans un fichier de labyrinthe
+     */
+    public static final char AMULETTE = 'A';
 
     // ########## Constructeur ##########
 
