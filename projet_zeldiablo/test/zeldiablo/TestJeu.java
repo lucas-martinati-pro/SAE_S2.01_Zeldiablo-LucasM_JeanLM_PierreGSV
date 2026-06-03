@@ -278,7 +278,7 @@ public class TestJeu {
     public void test_getChar_monstre() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
         jeu.getMonstres().add(new Spider(1, 1, 3));
-        assertEquals(Labyrinthe.MONSTRE, jeu.getChar(1, 1));
+        assertEquals(Labyrinthe.SPIDER, jeu.getChar(1, 1));
     }
 
     // ########## Tests detruire ##########

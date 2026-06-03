@@ -52,7 +52,7 @@
     - critère 4 : Les attaques des fantômes fonctionnent selon les mêmes règles que les attaques des monstres standards.
   - responsables : GALLOIS Pierre
 
-- fonctionnalité 16 : Ajout des monstres de type Troll
+- fonctionnalité 7 : Ajout des monstres de type Troll
   - descriptif texte : Intégration d'un nouveau type de monstre : le Troll, caractérisé par sa capacité de régénération passive.
   - critères de validation :
     - critère 1 : Le Troll se déplace selon les mêmes règles que les monstres de base (les murs constituent des obstacles infranchissables).

@@ -1,5 +1,6 @@
 package zeldiablo;
 
+import zeldiablo.Item.Item;
 import zeldiablo.environnement.*;
 import zeldiablo.entite.Personnage;
 import zeldiablo.entite.Aventurier;
@@ -196,7 +197,7 @@ public class Jeu implements moteurJeu.Jeu {
                 }
             }
             for (Personnage m : this.monstres) {
-                if (m.getX() == x && m.getY() == y) return Labyrinthe.MONSTRE;
+                if (m.getX() == x && m.getY() == y) return Labyrinthe.SPIDER;
             }
             if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
             return Labyrinthe.VIDE;

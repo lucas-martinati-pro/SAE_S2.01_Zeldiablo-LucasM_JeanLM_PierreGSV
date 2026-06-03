@@ -1,5 +1,6 @@
 package zeldiablo;
 
+import zeldiablo.Item.Item;
 import zeldiablo.entite.Ghost;
 import zeldiablo.entite.Spider;
 import zeldiablo.entite.Troll;
@@ -50,7 +51,7 @@ public class DessinLaby implements DessinJeu {
                 switch (jeu.getChar(x, y)) {
                     case Labyrinthe.MUR -> addImageCube("sprite/mur.png", x, y, g, Color.BLACK);
                     case Labyrinthe.FIN -> {
-                        if (jeu.getInventaire().haveObjet("Amulette")) addImageCube("sprite/porte.png", x, y, g, Color.GREEN);
+                        if (jeu.haveItem("Amulette")) addImageCube("sprite/porte.png", x, y, g, Color.GREEN);
                         else addImageCube("sprite/porteOuverte.png", x, y, g, Color.GREEN);
                     }
                     default -> addImageCube("sprite/vide.png", x, y, g, vide);
@@ -121,11 +122,10 @@ public class DessinLaby implements DessinJeu {
         for (int i = 0; i < inventaire.size(); i++) {
             Item o = inventaire.get(i);
             g.setColor(Color.LIGHT_GRAY);
-            int x = o.getX();
-            int y = o.getY();
+
             switch (o.getType()) {
-                case "Amullete" -> addImageInventaire("sprite/amulette.png", x, y, g, Color.YELLOW);
-                case "Bombe" -> addImageInventaire("sprite/bombe.png", x, y, g, Color.MAGENTA);
+                case "Amulette" -> addImageInventaire("sprite/amulette.png", TAILLE * i, i, g, Color.YELLOW);
+                case "Bombe" -> addImageInventaire("sprite/bombe.png", TAILLE * i, TAILLE * i, g, Color.MAGENTA);
             }
         }
     }
@@ -158,7 +158,7 @@ public class DessinLaby implements DessinJeu {
             g.drawImage(img, x * TAILLE, y * TAILLE, 15, 15, null);
         } catch (IOException e) {
             g.setColor(fallbackColor);
-            g.fillRect(x * TAILLE, y * TAILLE, 15, 15);
+            g.fillOval(x * TAILLE, y * TAILLE, 15, 15);
             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
         }
     }
