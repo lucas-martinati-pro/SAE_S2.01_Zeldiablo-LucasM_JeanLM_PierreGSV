@@ -40,6 +40,10 @@ public class DessinLaby implements DessinJeu {
     private BufferedImage troll;
     private BufferedImage ghost;
     private BufferedImage hero;
+    private BufferedImage spiderAttaque;
+    private BufferedImage trollAttaque;
+    private BufferedImage ghostAttaque;
+    private BufferedImage heroAttaque;
     private BufferedImage coeur;
 
     /**
@@ -67,13 +71,16 @@ public class DessinLaby implements DessinJeu {
             troll = ImageIO.read(new File("sprite/troll.png"));
             ghost = ImageIO.read(new File("sprite/ghost.png"));
             hero = ImageIO.read(new File("sprite/hero.png"));
+            spiderAttaque = ImageIO.read(new File("sprite/spiderAttaque.png"));
+            trollAttaque = ImageIO.read(new File("sprite/trollAttaque.png"));
+            ghostAttaque = ImageIO.read(new File("sprite/ghostAttaque.png"));
+            heroAttaque = ImageIO.read(new File("sprite/heroAttaque.png"));
             coeur = ImageIO.read(new File("sprite/coeur.png"));
         } catch (IOException e) {
-            System.err.println("Erreur lors du chargement des images : " + e.getMessage());
         }
     }
 
-    /**
+        /**
      * Dessin tous les éléments du jeu
      * @param image image sur laquelle dessiner
      */
@@ -117,9 +124,24 @@ public class DessinLaby implements DessinJeu {
 
         // Ajout des monstres
         for (Personnage m : jeu.getMonstres()) {
-            if (m instanceof Spider) g.drawImage(spider, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
-            else if (m instanceof Troll) g.drawImage(troll, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
-            else if (m instanceof Ghost) g.drawImage(ghost, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+            BufferedImage img;
+
+            if (m.getIsAttaque()) {
+                img = switch (m.getType()) {
+                    case "Spider" -> spiderAttaque;
+                    case "Troll" -> trollAttaque;
+                    case "Ghost" -> ghostAttaque;
+                    default -> null;
+                };
+            } else {
+                img = switch (m.getType()) {
+                    case "Spider" -> spider;
+                    case "Troll" -> troll;
+                    case "Ghost" -> ghost;
+                    default -> null;
+                };
+            }
+            if (img != null) g.drawImage(img, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
         }
 
         // Ajout des flammes d'explosion
@@ -129,13 +151,18 @@ public class DessinLaby implements DessinJeu {
 
         // Ajout du héros
         Personnage hero = jeu.getHero();
-        if (hero != null) {
-            g.drawImage(this.hero, hero.getX() * TAILLE, hero.getY() * TAILLE, TAILLE, TAILLE, null);
+        int x = hero.getX(), y = hero.getY();
+        g.drawImage(this.hero, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+        if (hero.getIsAttaque()) {
+            g.drawImage(heroAttaque, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+        } else {
+            g.drawImage(this.hero,x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
         }
 
         // Ajout des pv du héros
         for (int i = 0; i < jeu.getHero().getVie(); i++) {
-            int x = coordonnee[0] * TAILLE - (i + 1) * (TAILLE - 7), y = 7;
+            x = coordonnee[0] * TAILLE - (i + 1) * (TAILLE - 7);
+            y = 7;
             g.drawImage(coeur, x, y, TAILLE - 10, TAILLE - 10, null);
         }
 
@@ -143,7 +170,6 @@ public class DessinLaby implements DessinJeu {
         ArrayList<Item> inventaire = jeu.getHero().getInventaire();
         for (int i = 0; i < inventaire.size(); i++) {
             Item o = inventaire.get(i);
-            g.setColor(Color.LIGHT_GRAY);
             switch (o.getType()) {
                 case "Amulette" -> g.drawImage(amulette, TAILLE/6 + (i) * 20, TAILLE/6, TAILLE - 10, TAILLE - 10, null);
             }
