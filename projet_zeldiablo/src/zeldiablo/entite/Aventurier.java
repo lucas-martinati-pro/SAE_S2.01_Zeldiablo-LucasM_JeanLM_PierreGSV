@@ -1,13 +1,19 @@
 package zeldiablo.entite;
 
+import zeldiablo.Item.Item;
 import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Bombe;
 import zeldiablo.Jeu;
+
+import java.util.ArrayList;
 
 /**
  * Represente un aventurier, le hero du jeu.
  */
 public class Aventurier extends Personnage {
+    private ArrayList<Item> inventaire = new ArrayList<>();
+    private Jeu jeu;
+
     /**
      * Créer un avanturier
      * @param x coordonné x de l'avanturier
@@ -18,15 +24,43 @@ public class Aventurier extends Personnage {
         super(x, y, vie);
     }
 
-    /**
-     * Fait attaquer l'aventurier en posant une bombe.
-     *
-     * @param jeu l'instance du jeu en cours
-     */
-    public void attaquer(Jeu jeu) {
+    public void setJeu(Jeu jeu) {
+        this.jeu = jeu;
+    }
+
+    public ArrayList<Item> getInventaire() {
+        return inventaire;
+    }
+
+    @Override
+    public void attaquer(Personnage victime) {
         jeu.addBombe(x, y);
         Case bombe = jeu.getCase(x, y);
         ((Bombe) bombe).setJeu(jeu);
         bombe.effet(this);
+    }
+
+    /**
+     * Verifie si le hero possede un item de type specifie dans son inventaire.
+     *
+     * @param nom le nom de l'item a verifier
+     */
+    public boolean haveItem(String nom) {
+        for (Item o : this.inventaire) {
+            if (o.getType().equals(nom)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Ajoute un item de la case situee aux coordonnees (x, y) dans l'inventaire du hero et retire la case du jeu.
+     *
+     * @param x la colonne de la case contenant l'item a ajouter
+     * @param y la ligne de la case contenant l'item a ajouter
+     */
+    public void addInventaire(int x, int y) {
+        Case c = jeu.getCase(x, y);
+        inventaire.add((Item) c);
+        jeu.getCases().remove(c);
     }
 }

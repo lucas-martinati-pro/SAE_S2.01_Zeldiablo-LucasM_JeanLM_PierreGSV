@@ -1,7 +1,7 @@
 package zeldiablo;
 
 import zeldiablo.entite.Ghost;
-import zeldiablo.Objet.Amulette;
+import zeldiablo.Item.Amulette;
 import zeldiablo.entite.Spider;
 import zeldiablo.entite.Troll;
 import zeldiablo.environnement.Labyrinthe;
@@ -43,7 +43,10 @@ public class Chargement {
             for (int j = 0; j < line.length(); j++) {
                 switch (line.charAt(j)) {
                     case Labyrinthe.MUR -> lab.addMur(j, i);
-                    case Labyrinthe.HERO -> hero = new Aventurier(j, i, 5);
+                    case Labyrinthe.HERO -> {
+                        hero = new Aventurier(j, i, 5);
+                        hero.setJeu(jeu);
+                    }
                     case Labyrinthe.FIN -> fin = new int[]{j, i};
                     case Labyrinthe.VIDE -> {}
                     case Labyrinthe.PIEGE -> jeu.getCases().add(new Piege(j, i));

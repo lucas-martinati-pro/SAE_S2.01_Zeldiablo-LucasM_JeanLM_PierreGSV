@@ -2,6 +2,7 @@ package zeldiablo.entite;
 
 import moteurJeu.Commande;
 import zeldiablo.Jeu;
+import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.exception.ActionInconnueException;
 
@@ -36,12 +37,13 @@ public class Troll extends Personnage {
         int[] coord = jeu.getSuivant(this.x, this.y, commandeUser);
         try {
             jeu.verifierDeplacement(coord[0], coord[1], commandeUser);
-            switch (jeu.getChar(coord[0], coord[1])) {
-                case Labyrinthe.PIEGE -> {
-                    jeu.getCases().remove(jeu.getCase(coord[0], coord[1])); // Le Troll détruit le piège en marchant dessus
-                    this.setPos(coord[0], coord[1]);
-                }
-                case Labyrinthe.VIDE, Labyrinthe.FIN, Labyrinthe.AMULETTE -> this.setPos(coord[0], coord[1]);
+            Case c = jeu.getCase(coord[0], coord[1]);
+            if (c != null) {
+                jeu.getCases().remove(jeu.getCase(coord[0], coord[1])); // Le Troll détruit le piège en marchant dessus
+                this.setPos(coord[0], coord[1]);
+            }
+            if (jeu.getChar(coord[0], coord[1]) != Labyrinthe.FIN || jeu.getChar(coord[0], coord[1]) == Labyrinthe.VIDE) {
+                this.setPos(coord[0], coord[1]);
             }
         } catch (ActionInconnueException e) {
             // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
