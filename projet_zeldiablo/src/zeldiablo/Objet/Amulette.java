@@ -10,12 +10,11 @@ public class Amulette extends ObjetPlaçable {
 
     @Override
     public String getType() {
-        return "amulette";
+        return "Amulette";
     }
 
     @Override
     public void effet(Personnage perso) {
 
     }
-
 }

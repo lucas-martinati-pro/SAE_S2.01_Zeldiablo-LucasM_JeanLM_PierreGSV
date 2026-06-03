@@ -102,8 +102,12 @@ public class GestionnaireMonstres {
         for (int i = 0; i < jeu.getMonstres().size(); i++) {
             Personnage m = jeu.getMonstres().get(i);
             if (m.etreMort()) {
-                System.out.println("Vous avez tué un monstre ! \uD83D\uDC7E");
-                jeu.getMonstres().remove(m);
+                switch (m.getClass().getSimpleName()) { // Récupéré le nom de chaque classe de monstre pour afficher un message différent selon le type
+                    case "Spider" -> System.out.println("Vous avez tué une araignée ! \uD83D\uDD77️");
+                    case "Troll" -> System.out.println("Vous avez tué un troll ! \uD83D\uDC79");
+                    case "Ghost" -> System.out.println("Vous avez tué un fantôme ! \uD83D\uDC80");
+                    default -> System.out.println("Vous avez tué un monstre ! \uD83D\uDC7E");
+                }
                 i--;
             }
         }

@@ -1,9 +1,10 @@
 package zeldiablo.Objet;
 
+import zeldiablo.Item.Item;
 import zeldiablo.entite.Personnage;
 import zeldiablo.environnement.Case;
 
-public abstract class ObjetPlaçable extends Case implements Item   {
+public abstract class ObjetPlaçable extends Case implements Item {
     /**
      * Construit une case en garantissant que les coordonnees ne sont pas negatives.
      *

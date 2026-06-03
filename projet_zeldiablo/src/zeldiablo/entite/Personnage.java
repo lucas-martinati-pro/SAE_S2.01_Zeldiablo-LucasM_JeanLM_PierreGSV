@@ -120,7 +120,7 @@ public abstract class Personnage {
                     }
                     this.setPos(coord[0], coord[1]);
                 }
-                case Labyrinthe.VIDE, Labyrinthe.FIN -> this.setPos(coord[0], coord[1]);
+                case Labyrinthe.VIDE, Labyrinthe.FIN, Labyrinthe.AMULETTE -> this.setPos(coord[0], coord[1]);
             }
         } catch (ActionInconnueException e) {
             // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
