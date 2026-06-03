@@ -3,8 +3,6 @@ package zeldiablo.environnement;
 import zeldiablo.Jeu;
 import zeldiablo.entite.Personnage;
 
-import java.util.ArrayList;
-
 public class Teleporteur extends CaseEffet {
 
     public Teleporteur(int x, int y) {
