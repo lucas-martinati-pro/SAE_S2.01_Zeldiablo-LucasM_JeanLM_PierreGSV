@@ -47,13 +47,13 @@ public class Chargement {
             String line = ligne.get(i);
             for (int j = 0; j < line.length(); j++) {
                 switch (line.charAt(j)) {
+                    case Jeu.VIDE -> {}
                     case Jeu.MUR -> jeu.getCases().add(new Mur(j, i));
                     case Jeu.HERO -> {
                         hero = new Aventurier(j, i, 5);
                         hero.setJeu(jeu);
                     }
                     case Jeu.FIN -> fin = new int[]{j, i};
-                    case Jeu.VIDE -> {}
                     case Jeu.PIEGE -> jeu.getCases().add(new Piege(j, i));
                     case Jeu.MUR_FRIABLE -> jeu.getCases().add(new MurFriable(j, i));
                     case Jeu.AMULETTE -> jeu.getCases().add(new Amulette(j, i));

@@ -5,10 +5,9 @@ import zeldiablo.entite.Aventurier;
 import zeldiablo.entite.Personnage;
 
 public class Amulette extends ItemPlacable {
-    private Jeu jeu;
-
     public Amulette(int x, int y) {
         super(x, y);
+        this.isTraversable = true;
     }
 
     @Override

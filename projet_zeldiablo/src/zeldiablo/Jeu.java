@@ -1,10 +1,8 @@
 package zeldiablo;
 
 import zeldiablo.Item.Amulette;
-import zeldiablo.entite.Spider;
+import zeldiablo.entite.*;
 import zeldiablo.environnement.*;
-import zeldiablo.entite.Personnage;
-import zeldiablo.entite.Aventurier;
 import zeldiablo.exception.ActionInconnueException;
 
 import moteurJeu.Commande;
@@ -30,7 +28,33 @@ public class Jeu implements moteurJeu.Jeu {
     // ########## Variables ##########
     private int[] size;
     private Aventurier hero;
-    private ArrayList<Personnage> monstres = new ArrayList<>();
+    private ArrayList<Personnage> monstres = new ArrayList<Personnage>() {
+        @Override
+        public boolean add(Personnage p) {
+            if (!cases.contains(p)) {
+                cases.add(p);
+            }
+            return super.add(p);
+        }
+        @Override
+        public boolean remove(Object o) {
+            cases.remove(o);
+            return super.remove(o);
+        }
+        @Override
+        public Personnage remove(int index) {
+            Personnage p = super.remove(index);
+            cases.remove(p);
+            return p;
+        }
+        @Override
+        public void clear() {
+            for (Personnage p : this) {
+                cases.remove(p);
+            }
+            super.clear();
+        }
+    };
     private GestionnaireMonstres gestionnaireMonstres = new GestionnaireMonstres(this);
 
     private ArrayList<Case> cases = new ArrayList<>();
@@ -122,6 +146,10 @@ public class Jeu implements moteurJeu.Jeu {
         return monstres;
     }
 
+    public int[] getFin() {
+        return fin;
+    }
+
     // ########## Méthodes ##########
     /**
      * Detruit la case situee aux coordonnees (x, y) et la retire du jeu.
@@ -167,39 +195,6 @@ public class Jeu implements moteurJeu.Jeu {
             }
         }
         return null;
-    }
-
-    /**
-     * Retourne le caractere representant l'element present a la position (x, y).
-     * L'ordre de priorite est : mur, hero, vide.
-     *
-     * @param x la colonne a verifier
-     * @param y la ligne a verifier
-     * @return le caractere correspondant a l'element a cette position
-     */
-    public char getChar(int x, int y) {
-        Case c = getCase(x, y);
-        if (c instanceof Mur) return Jeu.MUR;
-        else if (this.hero.getX() == x && this.hero.getY() == y) return Jeu.HERO;
-        else if (this.fin[0] == x && this.fin[1] == y) return Jeu.FIN;
-        else {
-            for (Personnage m : this.monstres) {
-                if (m.getX() == x && m.getY() == y) {
-                    if (m instanceof zeldiablo.entite.Troll) return Jeu.TROLL;
-                    if (m instanceof zeldiablo.entite.Ghost) return Jeu.GHOST;
-                    return Jeu.SPIDER;
-                }
-            }
-            if (c != null) {
-                switch (c.getType()) {
-                    case "Piege": return Jeu.PIEGE;
-                    case "MurFriable": return Jeu.MUR_FRIABLE;
-                    case "Bombe": return Jeu.BOMBE;
-                    case "Amulette": return Jeu.AMULETTE;
-                }
-            }
-            return Jeu.VIDE;
-        }
     }
 
     /**
@@ -284,6 +279,38 @@ public class Jeu implements moteurJeu.Jeu {
     // =========================================================
     // SECTION : Compatibilités Testes
     // =========================================================
+
+    /**
+     * Retourne le caractere representant l'element present a la position (x, y).
+     * L'ordre de priorite est : mur, hero, vide.
+     *
+     * @param x la colonne a verifier
+     * @param y la ligne a verifier
+     * @return le caractere correspondant a l'element a cette position
+     */
+    public char getChar(int x, int y) {
+        Case c = getCase(x, y);
+        if (c instanceof Mur) return Jeu.MUR;
+        else if (this.hero.getX() == x && this.hero.getY() == y) return Jeu.HERO;
+        else if (this.fin[0] == x && this.fin[1] == y) return Jeu.FIN;
+        else {
+            if (c != null) {
+                switch (c.getType()) {
+                    case "Piege": return Jeu.PIEGE;
+                    case "MurFriable": return Jeu.MUR_FRIABLE;
+                    case "Bombe": return Jeu.BOMBE;
+                    case "Amulette": return Jeu.AMULETTE;
+                    case "PiegeDetruit": return Jeu.VIDE;
+                    case "Vide": return Jeu.VIDE;
+                    case "Aventurier": return Jeu.HERO;
+                    case "Spider": return Jeu.SPIDER;
+                    case "Troll": return Jeu.TROLL;
+                    case "Ghost": return Jeu.GHOST;
+                }
+            }
+            return Jeu.VIDE;
+        }
+    }
 
     /**
      * Genere une representation textuelle du jeu sous forme de chaine de caracteres.

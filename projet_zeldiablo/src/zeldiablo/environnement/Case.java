@@ -8,6 +8,11 @@ import zeldiablo.entite.Personnage;
 public abstract class Case {
     protected int x;
     protected int y;
+    protected boolean isTraversable = false;
+
+    public boolean getIsTraversable() {
+        return isTraversable;
+    }
 
     /**
      * Construit une case en garantissant que les coordonnees ne sont pas negatives.
@@ -39,14 +44,18 @@ public abstract class Case {
     }
 
     /**
+     * Applique l'effet de la case sur le personnage.
+     *
+     * @param perso le personnage subissant l'effet
+     */
+    public void effet(Personnage perso) {
+        // Par defaut, aucun effet
+    }
+
+    /**
     * Retourne le type de la case.
     *
     * @return le type de la case
     */
     public abstract String getType();
-
-    /**
-     * Applique l'effet de la case sur le héros.
-     */
-    public abstract void effet(Personnage perso);
 }

@@ -83,16 +83,9 @@ public class DessinLaby implements DessinJeu {
 
         int[] coordonnee = jeu.getSize();
 
-        for (int y = 0; y < coordonnee[1]; y++) {
-            for (int x = 0; x < coordonnee[0]; x++) {
-                switch (jeu.getChar(x, y)) {
-                    case Jeu.MUR -> g.drawImage(mur, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                    case Jeu.FIN -> {
-                        if (jeu.getHero().haveItem("Amulette")) g.drawImage(porteOuverte, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                        else g.drawImage(porte, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                    }
-                    default -> g.drawImage(vide, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                }
+        for (int i = 0; i < coordonnee[0]; i++) {
+            for (int j = 0; j < coordonnee[1]; j++) {
+                g.drawImage(vide, i * TAILLE, j * TAILLE, TAILLE, TAILLE, null);
             }
         }
 
@@ -101,6 +94,7 @@ public class DessinLaby implements DessinJeu {
             int x = c.getX();
             int y = c.getY();
             switch (c.getType()) {
+                case "Mur" -> g.drawImage(mur, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 case "Piege" -> {
                     if (((Piege) c).getIsRevele()) g.drawImage(piege, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 }
@@ -108,7 +102,16 @@ public class DessinLaby implements DessinJeu {
                 case "Bombe" -> g.drawImage(bombe, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 case "PiegeDetruit" -> g.drawImage(piegeDetruit, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 case "Amulette" -> g.drawImage(amulette, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                default -> g.drawImage(vide, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
             }
+        }
+
+        // Ajout de la porte
+        int[] fin = jeu.getFin();
+        if (jeu.getHero().haveItem("Amulette")) {
+            g.drawImage(porteOuverte, fin[0] * TAILLE, fin[1] * TAILLE, TAILLE, TAILLE, null);
+        } else {
+            g.drawImage(porte, fin[0] * TAILLE, fin[1] * TAILLE, TAILLE, TAILLE, null);
         }
 
         // Dessiner les flammes d'explosion

@@ -50,7 +50,7 @@ public class GestionnaireMonstres {
                 // On déplace le monstre que si il utilise une commande de déplacement, sinon on le laisse attaquer
                 if (!(commandeUser.droite == false && commandeUser.gauche == false && commandeUser.haut == false && commandeUser.bas == false)) {
                     if (!jeu.getMonstres().isEmpty()) {
-                        int index = (int) Math.floor(Math.random() * jeu.getMonstres().size());
+                        int index = (int) (Math.random() * jeu.getMonstres().size());
                         Personnage monstre = jeu.getMonstres().get(index);
 
                         monstre.deplacer(jeu, commandeUser);

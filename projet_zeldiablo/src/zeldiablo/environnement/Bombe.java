@@ -6,7 +6,7 @@ import zeldiablo.Jeu;
 /**
  * Represente une bombe dans le jeu, capable d'exploser et de detruire des elements ou blesser des personnages.
  */
-public class Bombe extends Case {
+public class Bombe extends CaseUtils {
     private Jeu jeu;
 
     /**

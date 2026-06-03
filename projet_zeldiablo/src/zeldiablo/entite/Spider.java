@@ -15,4 +15,9 @@ public class Spider extends Personnage {
     public Spider(int x, int y, int vie) {
         super(x, y, vie);
     }
+
+    @Override
+    public String getType() {
+        return "Spider";
+    }
 }

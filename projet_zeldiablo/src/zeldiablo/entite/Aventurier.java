@@ -41,7 +41,7 @@ public class Aventurier extends Personnage {
                 b.setJeu(jeu);
                 b.effet(this);
             }
-        } else if (victime != null) {
+        } else {
             victime.addVie(-2);
         }
     }
@@ -68,5 +68,10 @@ public class Aventurier extends Personnage {
         Case c = jeu.getCase(x, y);
         inventaire.add((Item) c);
         jeu.getCases().remove(c);
+    }
+
+    @Override
+    public String getType() {
+        return "Aventurier";
     }
 }

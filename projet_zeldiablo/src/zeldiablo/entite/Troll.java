@@ -24,4 +24,9 @@ public class Troll extends Personnage {
             this.vie += 2;
         }
     }
+
+    @Override
+    public String getType() {
+        return "Troll";
+    }
 }

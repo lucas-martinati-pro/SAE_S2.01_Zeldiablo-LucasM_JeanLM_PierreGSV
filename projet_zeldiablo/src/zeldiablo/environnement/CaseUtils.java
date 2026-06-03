@@ -1,18 +1,18 @@
 package zeldiablo.environnement;
 
-public class Mur extends Case {
+public abstract class CaseUtils extends Case {
     /**
      * Construit une case en garantissant que les coordonnees ne sont pas negatives.
      *
      * @param x coordonnee x
      * @param y coordonnee y
      */
-    public Mur(int x, int y) {
+    public CaseUtils(int x, int y) {
         super(x, y);
     }
 
-    @Override
-    public String getType() {
-        return "Mur";
-    }
+    /**
+     * Applique l'effet de la case sur le héros.
+     */
+    public abstract void effet(zeldiablo.entite.Personnage perso);
 }
