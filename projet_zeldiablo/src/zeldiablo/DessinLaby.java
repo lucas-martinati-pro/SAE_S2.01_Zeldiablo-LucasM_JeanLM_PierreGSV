@@ -1,5 +1,6 @@
 package zeldiablo;
 
+import zeldiablo.Item.Item;
 import zeldiablo.entite.Ghost;
 import zeldiablo.entite.Spider;
 import zeldiablo.entite.Troll;
@@ -15,6 +16,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Gere le dessin du labyrinthe et des entites du jeu.
@@ -48,7 +50,10 @@ public class DessinLaby implements DessinJeu {
             for (int x = 0; x < coordonnee[0]; x++) {
                 switch (jeu.getChar(x, y)) {
                     case Labyrinthe.MUR -> addImageCube("sprite/mur.png", x, y, g, Color.BLACK);
-                    case Labyrinthe.FIN -> addImageCube("sprite/fin.png", x, y, g, Color.GREEN);
+                    case Labyrinthe.FIN -> {
+                        if (jeu.haveItem("Amulette")) addImageCube("sprite/porte.png", x, y, g, Color.GREEN);
+                        else addImageCube("sprite/porteOuverte.png", x, y, g, Color.GREEN);
+                    }
                     default -> addImageCube("sprite/vide.png", x, y, g, vide);
                 }
             }
@@ -113,6 +118,17 @@ public class DessinLaby implements DessinJeu {
                 System.err.println("Erreur lors du chargement de l'image de victoire : " + e.getMessage());
             }
         }
+
+        ArrayList<Item> inventaire = jeu.getInventaire();
+        for (int i = 0; i < inventaire.size(); i++) {
+            Item o = inventaire.get(i);
+            g.setColor(Color.LIGHT_GRAY);
+
+            switch (o.getType()) {
+                case "Amulette" -> addImageInventaire("sprite/amulette.png", TAILLE * i, i, g, Color.YELLOW);
+                case "Bombe" -> addImageInventaire("sprite/bombe.png", TAILLE * i, TAILLE * i, g, Color.MAGENTA);
+            }
+        }
     }
 
     private void addImageCube(String image, int x, int y, Graphics2D g, Color fallbackColor) {
@@ -133,6 +149,17 @@ public class DessinLaby implements DessinJeu {
         } catch (IOException e) {
             g.setColor(fallbackColor);
             g.fillOval(x * TAILLE, y * TAILLE, TAILLE, TAILLE);
+            System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
+        }
+    }
+
+    private void addImageInventaire(String image, int x, int y, Graphics2D g, Color fallbackColor) {
+        try {
+            BufferedImage img = ImageIO.read(new File(image));
+            g.drawImage(img, x * TAILLE, y * TAILLE, 15, 15, null);
+        } catch (IOException e) {
+            g.setColor(fallbackColor);
+            g.fillOval(x * TAILLE, y * TAILLE, 15, 15);
             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
         }
     }
