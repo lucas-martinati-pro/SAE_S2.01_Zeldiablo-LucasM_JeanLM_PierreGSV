@@ -13,6 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Classe principale gerant la logique du jeu.
@@ -36,11 +38,13 @@ public class Jeu implements moteurJeu.Jeu {
     // ########## Variables ##########
     private int[] size;
     private Aventurier hero;
-    private ArrayList<Personnage> monstres = new ArrayList<>();
+    // On utilise des CopyOnWriteArrayList pour les monstres et les cases, car ça évite les ConcurrentModificationException lors de l'itération, ce qui arrive souvent dans notre jeu (par exemple, lorsqu'on itère sur les monstres pour les faire bouger, et qu'un monstre meurt et est retiré de la liste en même temps).
+    // Utilisation d'une IA pour trouver comment résoudre ce problème
+    private java.util.List<Personnage> monstres = new CopyOnWriteArrayList<>();
     private GestionnaireMonstres gestionnaireMonstres = new GestionnaireMonstres(this);
 
-    private ArrayList<Case> cases = new ArrayList<>();
-    private ArrayList<int[]> explosionAffichage = new ArrayList<>();
+    private java.util.List<Case> cases = new CopyOnWriteArrayList<>();
+    private java.util.List<int[]> explosionAffichage = new CopyOnWriteArrayList<>();
 
     private int[] fin;
     private boolean recharger = true;
@@ -97,7 +101,7 @@ public class Jeu implements moteurJeu.Jeu {
      *
      * @return la liste des cases
      */
-    public ArrayList<Case> getCases() {
+    public List<Case> getCases() {
         return cases;
     }
 
@@ -106,7 +110,7 @@ public class Jeu implements moteurJeu.Jeu {
      *
      * @return la liste des coordonnees d'explosions
      */
-    public ArrayList<int[]> getExplosionAffichage() {
+    public List<int[]> getExplosionAffichage() {
         return explosionAffichage;
     }
 
@@ -115,7 +119,7 @@ public class Jeu implements moteurJeu.Jeu {
      *
      * @return la liste des monstres
      */
-    public ArrayList<Personnage> getMonstres() {
+    public List<Personnage> getMonstres() {
         return monstres;
     }
 
@@ -339,8 +343,6 @@ public class Jeu implements moteurJeu.Jeu {
                     case "MurFriable": return Jeu.MUR_FRIABLE;
                     case "Amulette": return Jeu.AMULETTE;
                     case "Teleporteur": return Jeu.TELEPORTEUR;
-                    case "PiegeDetruit": return Jeu.VIDE;
-                    case "Vide": return Jeu.VIDE;
                     case "Aventurier": return Jeu.HERO;
                     case "Spider": return Jeu.SPIDER;
                     case "Troll": return Jeu.TROLL;
