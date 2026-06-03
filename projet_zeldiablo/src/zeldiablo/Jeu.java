@@ -164,7 +164,7 @@ public class Jeu implements moteurJeu.Jeu {
                     case Jeu.VIDE -> {}
                     case Jeu.MUR -> this.cases.add(new Mur(j, i));
                     case Jeu.HERO -> {
-                        hero = new Aventurier(j, i, 50);
+                        hero = new Aventurier(j, i, 5);
                         hero.setJeu(this);
                     }
                     case Jeu.FIN -> fin = new int[]{j, i};
