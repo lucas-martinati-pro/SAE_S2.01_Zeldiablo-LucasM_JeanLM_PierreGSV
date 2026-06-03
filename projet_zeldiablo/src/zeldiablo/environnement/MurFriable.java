@@ -1,7 +1,5 @@
 package zeldiablo.environnement;
 
-import zeldiablo.entite.Personnage;
-
 /**
  * Represente un mur qui peut etre detruit (par exemple par une explosion).
  */
@@ -19,9 +17,5 @@ public class MurFriable extends Case {
     @Override
     public String getType() {
         return "MurFriable";
-    }
-
-    @Override
-    public void effet(Personnage perso) {
     }
 }

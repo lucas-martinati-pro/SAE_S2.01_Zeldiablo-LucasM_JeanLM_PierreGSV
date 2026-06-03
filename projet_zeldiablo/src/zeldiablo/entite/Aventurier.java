@@ -1,6 +1,6 @@
 package zeldiablo.entite;
 
-import zeldiablo.Item.Item;
+import zeldiablo.item.Item;
 import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Bombe;
 import zeldiablo.Jeu;
@@ -39,9 +39,9 @@ public class Aventurier extends Personnage {
             Case bombe = jeu.getCase(x, y);
             if (bombe instanceof Bombe b) {
                 b.setJeu(jeu);
-                b.effet(this);
+                b.exploser();
             }
-        } else if (victime != null) {
+        } else {
             victime.addVie(-2);
         }
     }
@@ -68,5 +68,10 @@ public class Aventurier extends Personnage {
         Case c = jeu.getCase(x, y);
         inventaire.add((Item) c);
         jeu.getCases().remove(c);
+    }
+
+    @Override
+    public String getType() {
+        return "Aventurier";
     }
 }

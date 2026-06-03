@@ -1,28 +1,40 @@
 @startuml
-title Diagramme Classes avec fonctionnalités
+title Diagramme Classes avec fonctionnalités (version 3)
 
 class "Jeu" {
-    - laby : Labyrinthe
+    + {static} VIDE = ' ' : char
+    + {static} MUR = '#' : char
+    + {static} MUR_FRIABLE = '*' : char
+    + {static} PIEGE = 'P' : char
+    + {static} BOMBE = 'B' : char
+    + {static} FIN = '&' : char
+    + {static} AMULETTE = 'A' : char
+    + {static} HERO = '@' : char
+    + {static} SPIDER = 'S' : char
+    + {static} TROLL = 'T' : char
+    + {static} GHOST = 'G' : char
+
     - hero : Aventurier
     - monstres : ArrayList<Personnage>
-    - gestionnaireMonstres : GestionnaireMonstres
-
     - cases : ArrayList<Case>
     - fin : int[]
-
     - explosionAffichage : ArrayList<int[]>
     - recharger : boolean
+    - gestionnaireMonstres : GestionnaireMonstres
 
-    + getGestionnaireMonstres() : GestionnaireMonstres
+    + chargerNiveau(jeu : Jeu, nomFichier : String) : void
     + getHero() : Aventurier
-    + getLaby() : Labyrinthe
     + getCases() : ArrayList<Case>
     + getExplosionAffichage() : ArrayList<int[]>
     + getMonstres() : ArrayList<Personnage>
     + getCase(x : int, y : int) : Case
     + getChar(x : int, y : int) : char
+    + getFin() : int[]
+    + getGestionnaireMonstres() : GestionnaireMonstres
+    + getSize() : int[]
     + setHero(hero : Aventurier) : void
-    + setLaby(laby : Labyrinthe) : void
+    + setFin(fin : int[]) : void
+    + setSize(size : int[]) : void
 
     + detruire(x : int, y : int) : void
     + getSuivant(x : int, y : int, commandeUser : Commande) : int[]
@@ -31,6 +43,7 @@ class "Jeu" {
     + evoluer(commandeUser : Commande) : void
     + etreFini() : boolean
 
+    + getChar(x : int, y : int) : char
     + jeuToString() : String
 }
 
@@ -45,107 +58,117 @@ class GestionnaireMonstres {
     + verifMort() : void
 }
 
-class Chargement {
-    + {static} chargerNiveau(jeu : Jeu, nomFichier : String) : void
-    + {static} convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
-}
-
 class DessinLaby {
     - jeu : Jeu
+    - flamme : BufferedImage
+    - gameOver : BufferedImage
+    - win : BufferedImage
+    - porte : BufferedImage
+    - porteOuverte : BufferedImage
+    - mur : BufferedImage
+    - vide : BufferedImage
+    - piege : BufferedImage
+    - murFriable : BufferedImage
+    - bombe : BufferedImage
+    - piegeDetruit : BufferedImage
+    - amulette : BufferedImage
+    - spider : BufferedImage
+    - troll : BufferedImage
+    - ghost : BufferedImage
+    - hero : BufferedImage
+    - coeur : BufferedImage
 
     + DessinLaby(jeu : Jeu)
     + dessiner(image : BufferedImage) : void
-    - addImageCube(image : String, x : int, y : int, g : Graphics2D, fallbackColor : Color) : void
-    - addImageOval(image : String, x : int, y : int, g : Graphics2D, fallbackColor : Color) : void
 }
 
 package "entite" {
     abstract class Personnage {
-        # x : int
-        # y : int
         # vie : int
 
         + Personnage(x : int, y : int, vie : int)
 
-        + getX() : int
-        + getY() : int
         + getVie() : int
-        + setPos(x : int, y : int) : void
         + setVie(vie : int) : void
 
         + addVie(i : int) : void
+        + setPos(x : int, y : int) : void
         + etreMort() : boolean
         + attaquer(victime : Personnage) : void
         + deplacer(jeu : Jeu, commandeUser : Commande) : void
     }
 
     class Aventurier {
+        - inventaire : ArrayList<Item>
+        - jeu : Jeu
+
         + Aventurier(x : int, y : int, vie : int)
-        + attaquer(jeu : Jeu) : void
+        + setJeu(jeu : Jeu) : void
+        + getInventaire() : ArrayList<Item>
+        + haveItem(nom : String) : boolean
+        + addInventaire(x : int, y : int) : void
+        + attaquer(victime : Personnage) : void
+        + getType() : String
     }
 
-    class Monstre {
-        + Monstre(x : int, y : int, vie : int)
+    class Spider {
+        + Spider(x : int, y : int, vie : int)
+        + getType() : String
+    }
+
+    class Troll {
+        + Troll(x : int, y : int, vie : int)
+        + getType() : String
+        + regenerer() : void
+    }
+
+    class Ghost {
+        + Ghost(x : int, y : int, vie : int)
+        + getType() : String
+        + deplacer(jeu : Jeu, commandeUser : Commande) : void
     }
 }
 
 package "environnement" {
-
     abstract class Case {
         # x : int
         # y : int
+        # isTraversable : boolean
 
         + Case(x : int, y : int)
-        + getType() : String
+
         + getX() : int
         + getY() : int
-
-        + effet(perso : Personnage) : void
+        + getIsTraversable() : boolean
+        + getType() : String
     }
 
-    class Labyrinthe {
-        - murs : boolean[][]
-        + {static} MUR : char = '#'
-        + {static} HERO : char = '@'
-        + {static} MONSTRE : char = '£'
-        + {static} FIN : char = '&'
-        + {static} VIDE : char = ' '
-        + {static} PIEGE : char = '$'
-        + {static} MurFriable : char = '*'
-        + {static} BOMBE : char = 'B'
+    class Mur {
+        + Mur(x : int, y : int)
+        + getType() : String
+    }
 
-        + Labyrinthe(x : int, y : int)
+    class PiegeDetruit {
+        + PiegeDetruit(x : int, y : int)
+        + getType() : String
+    }
 
-        + getCase(x : int, y : int) : boolean
+    class MurFriable {
+        + MurFriable(x : int, y : int)
+        + getType() : String
+    }
 
-        + addMur(x : int, y : int) : void
-        + returnSize() : int[]
+    abstract class CaseEffet {
+        + CaseEffet(x : int, y : int)
+        + {abstract} effet(perso : Personnage) : void
     }
 
     class Piege {
         - isRevele : boolean
 
         + Piege(x : int, y : int)
-
-        + getType() : String
         + getIsRevele() : boolean
-
-        + effet(perso : Personnage) : void
-    }
-
-    class PiegeDetruit {
-            + Piege(x : int, y : int)
-
-            + getType() : String
-
-            + effet(perso : Personnage) : void
-        }
-
-    class MurFriable {
-        + MurFriable(x : int, y : int)
-
         + getType() : String
-
         + effet(perso : Personnage) : void
     }
 
@@ -153,11 +176,27 @@ package "environnement" {
         - jeu : Jeu
 
         + Bombe(x : int, y : int)
-
         + setJeu(jeu : Jeu) : void
         + getType() : String
+        + exploser() : void
+    }
+}
 
+package "item" {
+    interface Item {
+        + getType() : String
+        + use(personnage : Personnage) : void
+    }
+
+    abstract class ItemPlacable {
+        + ItemPlacable(x : int, y : int)
         + effet(perso : Personnage) : void
+    }
+
+    class Amulette {
+        + Amulette(x : int, y : int)
+        + getType() : String
+        + use(personnage : Personnage) : void
     }
 }
 
@@ -174,27 +213,38 @@ package "exception" {
 ' ========================
 ' Relations
 ' ========================
-Case <|-- Piege
+Case <|-- Mur
 Case <|-- PiegeDetruit
 Case <|-- MurFriable
+Case <|-- Personnage
+Case <|-- CaseEffet
 Case <|-- Bombe
 
+CaseEffet <|-- Piege
+CaseEffet <|-- ItemPlacable
+
+ItemPlacable <|-- Amulette
+Item <|.. ItemPlacable
+
 Personnage <|-- Aventurier
-Personnage <|-- Monstre
+Personnage <|-- Spider
+Personnage <|-- Troll
+Personnage <|-- Ghost
 
 ActionInconnueException --|> RuntimeException
 FichierIncorrectException --|> RuntimeException
 
 DessinJeu <|.. DessinLaby
 
-Jeu "1" --> "1" Labyrinthe : laby
 Jeu "1" --> "1" Aventurier : hero
 Jeu "1" *-- "1" GestionnaireMonstres : gestionnaireMonstres
 Jeu "1" --> "*" Personnage : monstres
 Jeu "1" --> "*" Case : cases
 
+Aventurier "1" --> "*" Item : inventaire
+Aventurier "1" --> "1" Jeu : jeu
+
 GestionnaireMonstres "1" --> "1" Jeu : jeu
-Chargement --> Jeu : charge
 
 DessinLaby "1" --> "1" Jeu : jeu
 

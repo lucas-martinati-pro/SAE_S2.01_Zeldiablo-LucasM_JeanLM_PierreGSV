@@ -5,7 +5,7 @@ import zeldiablo.entite.Personnage;
 /**
  * Represente un piege cache qui blesse le personnage s'il marche dessus.
  */
-public class Piege extends Case {
+public class Piege extends CaseEffet {
     private boolean isRevele = false;
 
     /**

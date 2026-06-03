@@ -1,5 +1,5 @@
 @startuml
-title Diagramme de Classe
+title Diagramme de Classe (version 0)
 
 '''classes
 class Jeu

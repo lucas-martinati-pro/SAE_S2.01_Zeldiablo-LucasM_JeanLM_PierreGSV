@@ -1,26 +1,55 @@
 @startuml
-title Fonctionnalité 7 - Murs friables (destruction par une bombe)
+title Fonctionnalité 7 - Comportement du Troll (Régénération & Pièges)
 
-participant "bombe:Bombe" as Bombe
-participant "j:Jeu" as Jeu
-participant "laby:Labyrinthe" as Laby
-participant "mur:MurFriable" as Mur
+participant "GestionnaireMonstres" as GM
+participant "troll : Troll" as Troll
+participant "j : Jeu" as Jeu
 
-activate Bombe
+' ===== Déplacement et Destruction de Piège =====
+activate GM
+GM -> Troll : deplacer(j, commandeUser)
+activate Troll
 
-loop Pour chaque case (jusqu'à 3 cases de distance dans une direction)
-    Bombe -> Laby : getCase(cx, cy)
-    activate Laby
-    Laby --> Bombe : false (pas de mur)
-    deactivate Laby
+Troll -> Jeu : getSuivant(x, y, commandeUser)
+activate Jeu
+Jeu --> Troll : coord
+deactivate Jeu
 
-    Bombe -> Jeu : getCase(cx, cy)
+Troll -> Jeu : verifierDeplacement(coord[0], coord[1], commandeUser)
+activate Jeu
+Jeu --> Troll
+deactivate Jeu
+
+Troll -> Jeu : getCase(coord[0], coord[1])
+activate Jeu
+Jeu --> Troll : piege
+deactivate Jeu
+
+alt piege instanceof CaseEffet
+    Troll -> Jeu : detruire(coord[0], coord[1])
     activate Jeu
-    Jeu --> Bombe : mur : Case
+    Jeu -> Jeu : cases.remove(piege)
+    create participant "piegeDetruit : PiegeDetruit" as PD
+    Jeu -> PD : new PiegeDetruit(x, y)
+    Jeu -> Jeu : cases.add(piegeDetruit)
+    Jeu --> Troll
     deactivate Jeu
-
-    Bombe -> Jeu : detruire(cx, cy)
 end
 
-deactivate Bombe
+Troll -> Troll : setPos(coord[0], coord[1])
+Troll --> GM
+deactivate Troll
+
+' ===== Régénération =====
+alt (Math.random() < 0.05)
+    GM -> Troll : regenerer()
+    activate Troll
+    alt vie < 6
+        Troll -> Troll : vie += 2
+    end
+    Troll --> GM
+    deactivate Troll
+end
+
+deactivate GM
 @enduml

@@ -61,3 +61,29 @@
     - critère 4 : Par défaut, le Troll possède 6 points de vie.
     - critère 5 : un Troll détruit les pièges si il marche dessus
   - responsables : GALLOIS Pierre
+
+# Bilan
+
+Toutes les fonctionnalités sont validées.
+
+* réalisation
+- classe Amulette (mise en place et acquisition de l'amulette, gestion de l'effet)
+  - responsable: LE MADEC Jean
+
+- classe Jeu (chargement de l'amulette, conditions de victoire avec l'amulette)
+  - responsable: LE MADEC Jean
+
+- classe Aventurier (gestion de l'inventaire et ramassage des items)
+  - responsable: MARTINATI Lucas / LE MADEC Jean
+
+- classe DessinLaby (affichage graphique de l'inventaire et de l'amulette)
+  - responsable: MARTINATI Lucas
+
+- classe Ghost (comportement de déplacement à travers les murs pour le fantôme)
+  - responsable: GALLOIS Pierre
+
+- classe Troll (comportement du troll, régénération passive et destruction des pièges)
+  - responsable: GALLOIS Pierre
+
+- classe GestionnaireMonstres (gestion de la régénération automatique des trolls)
+  - responsable: GALLOIS Pierre

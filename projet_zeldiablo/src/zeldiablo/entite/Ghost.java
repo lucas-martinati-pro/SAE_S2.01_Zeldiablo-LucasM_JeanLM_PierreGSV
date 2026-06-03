@@ -23,10 +23,15 @@ public class Ghost extends Personnage {
         int[] coord = jeu.getSuivant(this.x, this.y, commandeUser);
         for (Personnage m : jeu.getMonstres()) {
             if (m.getX() == coord[0] && m.getY() == coord[1]) {
-                return; // Si un monstre est déjà présent à la position cible, ne pas se déplacer
+                return;
             }
         }
         setPos(coord[0], coord[1]);
+    }
+
+    @Override
+    public String getType() {
+        return "Ghost";
     }
 }
 

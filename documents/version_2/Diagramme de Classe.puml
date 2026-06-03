@@ -1,5 +1,5 @@
 @startuml
-title Diagramme de classe
+title Diagramme de classe (version 1)
 
 class jeu.Jeu {
     -laby : Labyrinthe

@@ -1,6 +1,6 @@
 package zeldiablo;
 
-import zeldiablo.Item.Item;
+import zeldiablo.item.Item;
 import zeldiablo.entite.Ghost;
 import zeldiablo.entite.Spider;
 import zeldiablo.entite.Troll;
@@ -83,24 +83,19 @@ public class DessinLaby implements DessinJeu {
 
         int[] coordonnee = jeu.getSize();
 
-        for (int y = 0; y < coordonnee[1]; y++) {
-            for (int x = 0; x < coordonnee[0]; x++) {
-                switch (jeu.getChar(x, y)) {
-                    case Jeu.MUR -> g.drawImage(mur, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                    case Jeu.FIN -> {
-                        if (jeu.getHero().haveItem("Amulette")) g.drawImage(porteOuverte, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                        else g.drawImage(porte, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                    }
-                    default -> g.drawImage(vide, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                }
+        // Ajout des sols
+        for (int i = 0; i < coordonnee[0]; i++) {
+            for (int j = 0; j < coordonnee[1]; j++) {
+                g.drawImage(vide, i * TAILLE, j * TAILLE, TAILLE, TAILLE, null);
             }
         }
 
-        // ajout des cases
+        // Ajout des cases
         for (Case c : jeu.getCases()) {
             int x = c.getX();
             int y = c.getY();
             switch (c.getType()) {
+                case "Mur" -> g.drawImage(mur, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 case "Piege" -> {
                     if (((Piege) c).getIsRevele()) g.drawImage(piege, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 }
@@ -108,38 +103,43 @@ public class DessinLaby implements DessinJeu {
                 case "Bombe" -> g.drawImage(bombe, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 case "PiegeDetruit" -> g.drawImage(piegeDetruit, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 case "Amulette" -> g.drawImage(amulette, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                default -> g.drawImage(vide, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
             }
         }
 
-        // Dessiner les flammes d'explosion
+        // Ajout de la porte de fin (porte ouverte ou porte fermée selon si le héros a l'amulette ou pas)
+        int[] fin = jeu.getFin();
+        if (jeu.getHero().haveItem("Amulette")) {
+            g.drawImage(porteOuverte, fin[0] * TAILLE, fin[1] * TAILLE, TAILLE, TAILLE, null);
+        } else {
+            g.drawImage(porte, fin[0] * TAILLE, fin[1] * TAILLE, TAILLE, TAILLE, null);
+        }
+
+        // Ajout des monstres
+        for (Personnage m : jeu.getMonstres()) {
+            if (m instanceof Spider) g.drawImage(spider, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+            else if (m instanceof Troll) g.drawImage(troll, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+            else if (m instanceof Ghost) g.drawImage(ghost, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+        }
+
+        // Ajout des flammes d'explosion
         for (int[] coord : jeu.getExplosionAffichage()) {
             g.drawImage(flamme, coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE, null);
         }
 
-        for (Personnage m : jeu.getMonstres()) {
-            if (m instanceof Spider) g.drawImage(spider, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
-            if (m instanceof Troll) g.drawImage(troll, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
-            if (m instanceof Ghost) g.drawImage(ghost, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
-        }
-
-        // Coeurs de vie du héros
-        for (int i = 0; i < jeu.getHero().getVie(); i++) {
-            int x = coordonnee[0] * TAILLE - (i + 1) * (TAILLE - 7), y = 7;
-            g.drawImage(coeur, x, y, TAILLE - 10, TAILLE - 10, null);
-        }
-
-        // Mettre le héros après les monstres pour qu'il soit dessiné par-dessus
+        // Ajout du héros
         Personnage hero = jeu.getHero();
         if (hero != null) {
             g.drawImage(this.hero, hero.getX() * TAILLE, hero.getY() * TAILLE, TAILLE, TAILLE, null);
         }
 
-        if (hero.etreMort()) {
-            g.drawImage(gameOver, 0, 0, image.getWidth(), image.getHeight(), null);
-        } else if (jeu.etreFini()) {
-            g.drawImage(win, 0, 0, image.getWidth(), image.getHeight(), null);
+        // Ajout des pv du héros
+        for (int i = 0; i < jeu.getHero().getVie(); i++) {
+            int x = coordonnee[0] * TAILLE - (i + 1) * (TAILLE - 7), y = 7;
+            g.drawImage(coeur, x, y, TAILLE - 10, TAILLE - 10, null);
         }
 
+        // Ajout de l'inventaire du héros
         ArrayList<Item> inventaire = jeu.getHero().getInventaire();
         for (int i = 0; i < inventaire.size(); i++) {
             Item o = inventaire.get(i);
@@ -147,6 +147,13 @@ public class DessinLaby implements DessinJeu {
             switch (o.getType()) {
                 case "Amulette" -> g.drawImage(amulette, TAILLE/6 + (i) * 20, TAILLE/6, TAILLE - 10, TAILLE - 10, null);
             }
+        }
+
+        // Affichage de l'écran de fin si le héros est mort ou a gagné
+        if (hero.etreMort()) {
+            g.drawImage(gameOver, 0, 0, image.getWidth(), image.getHeight(), null);
+        } else if (jeu.etreFini()) {
+            g.drawImage(win, 0, 0, image.getWidth(), image.getHeight(), null);
         }
     }
 }

@@ -82,14 +82,23 @@
     - critère 4 : A chaque évolution, tous les monstres tentent de se déplacer.
     - critère 5 : L'interface graphique se met à jour en fonction des déplacements des Monstres.
   - responsables : MARTINATI Lucas
+  
+  - fonctionnalité 10 : Gestion de la mort des monstres
+  - descriptif texte : Mise en place de la logique de destruction des monstres lorsque leurs points de vie tombent à zéro.
+  - critères de validation :
+    - critère 1 : Les monstres ont par défaut 2 points de vie et ce total ne peut pas être négatif.
+    - critère 2 : Un monstre meurt et disparaît du labyrinthe après avoir subi deux points de dégâts.
+    - critère 3 : Priorité d'attaque : le héros attaque avant le monstre. Si le coup fatal est porté, le monstre meurt avant de pouvoir répliquer.
+  - responsables : LE MADEC Jean
 
-- fonctionnalité 10 : Affichage avec des sprites
+- fonctionnalité 11 : Affichage avec des sprites
   - descriptif texte : La fenêtre n'affiche plus des figures de base (rond, ...) mais des sprites représentant les personnages et les objets.
   - critères de validation :
     - critère 1 : Les sprites concernent les murs, les monstres et le héros.
     - critère 2 : Ils sont chargés une fois pour toute au lancement de l'application et ils peuvent être affichés dans le JPanel grâce à la méthode drawImage.
     - critère 3 : Vous pourrez utiliser l'image http://www.qcfdesign.com/?p=354 qui est un ensemble de sprites pour le jeu Desktop Dungeons. Ces sprites sont disposés régulièrement dans l'image et sont donc facile à extraire à partir de l'Image.
     - critère 4 : Il est possible de charger une image (de type BufferedImage en mémoire grâce à la classe ImageIO et la méthode statique read).
+ - responsables : MARTINATI Lucas
 
 # Bilan
 

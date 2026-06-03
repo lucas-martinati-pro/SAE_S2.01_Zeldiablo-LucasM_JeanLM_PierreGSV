@@ -8,9 +8,7 @@ import zeldiablo.exception.ActionInconnueException;
 /**
  * Represente un personnage abstrait dans le jeu.
  */
-public abstract class Personnage {
-    protected int x;
-    protected int y;
+public abstract class Personnage extends Case {
     protected int vie;
 
     /**
@@ -57,7 +55,7 @@ public abstract class Personnage {
      * @param vie les points de vie
      */
     public Personnage(int x, int y, int vie) {
-        setPos(x, y);
+        super(x, y);
         this.vie = vie;
     }
 
@@ -109,23 +107,27 @@ public abstract class Personnage {
      */
     public void deplacer(Jeu jeu, Commande commandeUser) {
         int[] coord = jeu.getSuivant(this.x, this.y, commandeUser);
+
         try {
             jeu.verifierDeplacement(coord[0], coord[1], commandeUser);
+
+            for (Personnage m : jeu.getMonstres()) {
+                if (m.getX() == coord[0] && m.getY() == coord[1]) {
+                    return;
+                }
+            }
+
             Case c = jeu.getCase(coord[0], coord[1]);
-            if (c != null) {
-                if (c instanceof Bombe) return; // Le personnage ne peut pas marcher sur une bombe, il doit attendre qu'elle explose
-                if (c instanceof MurFriable) return; // Le personnage ne peut pas marcher sur un mur friable
-                if (this instanceof Troll) {
-                    jeu.getCases().remove(c);
-                    jeu.getCases().add(new PiegeDetruit(c.getX(), c.getY()));
-                } else c.effet(this);
+
+            if (c == null || c.getIsTraversable()) {
+                if (c instanceof CaseEffet cE) {
+                    if (this instanceof Troll) jeu.detruire(coord[0], coord[1]);
+                    else cE.effet(this);
+                }
                 this.setPos(coord[0], coord[1]);
             }
-            switch (jeu.getChar(coord[0], coord[1])) {
-                case Jeu.VIDE, Jeu.FIN, Jeu.AMULETTE -> this.setPos(coord[0], coord[1]);
-            }
         } catch (ActionInconnueException e) {
-            // Ignorer le déplacement si c'est un mur ou un mur friable ou un monstre
+            // Si le deplacement est invalide, ne rien faire
         }
     }
 }

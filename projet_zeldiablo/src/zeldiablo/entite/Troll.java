@@ -13,6 +13,11 @@ public class Troll extends Personnage {
         super(x, y, vie);
     }
 
+    @Override
+    public String getType() {
+        return "Troll";
+    }
+
     // ########## Methodes ##########
     /**
      * si le troll est attaqué, il ne ce regenere pas, sinon il se regenere de 1 point de vie par tour

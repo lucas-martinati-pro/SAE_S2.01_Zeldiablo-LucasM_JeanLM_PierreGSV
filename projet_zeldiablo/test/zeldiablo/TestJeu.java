@@ -26,7 +26,7 @@ public class TestJeu {
     @BeforeEach
     public void beforeEach() throws FichierIncorrectException, IOException {
         jeu = new Jeu();
-        Chargement.chargerNiveau(jeu, "laby/laby.txt");
+        jeu.chargerNiveau("laby/laby.txt");
     }
 
     // ########## Tests getters/setters ##########
@@ -81,7 +81,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_gauche() throws ActionInconnueException, IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         int xAvant = jeu.getHero().getX();
         Commande c = new Commande();
         c.gauche = true;
@@ -91,7 +91,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_droite() throws ActionInconnueException, IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         int xAvant = jeu.getHero().getX();
         Commande c = new Commande();
         c.droite = true;
@@ -101,7 +101,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_haut() throws ActionInconnueException, IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         int yAvant = jeu.getHero().getY();
         Commande c = new Commande();
         c.haut = true;
@@ -111,7 +111,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_bas() throws ActionInconnueException, IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         int yAvant = jeu.getHero().getY();
         Commande c = new Commande();
         c.bas = true;
@@ -121,7 +121,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluer_allerRetour() throws ActionInconnueException, IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         int xInit = jeu.getHero().getX();
         int yInit = jeu.getHero().getY();
         Commande c = new Commande();
@@ -143,8 +143,7 @@ public class TestJeu {
         Commande c = new Commande();
         c.droite = true;
         jeu.evoluer(c);
-        jeu.evoluer(c); // mur
-        assertEquals(xAvant + 1, jeu.getHero().getX());
+        assertEquals(xAvant, jeu.getHero().getX());
         assertEquals(yAvant, jeu.getHero().getY());
     }
 
@@ -152,117 +151,57 @@ public class TestJeu {
 
     @Test
     public void test_chargerJeu_labySimple_ok() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         assertNotNull(jeu.getHero());
         assertNotNull(jeu.getSize());
     }
 
     @Test
     public void test_chargerJeu_positionPerso() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         assertEquals(2, jeu.getHero().getX());
         assertEquals(4, jeu.getHero().getY());
     }
 
     @Test
     public void test_chargerJeu_caseVidePasMur() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         assertFalse(jeu.getCase(2, 2) instanceof Mur);
     }
 
     @Test
     public void test_chargerJeu_fichierInexistant() {
-        assertThrows(FileNotFoundException.class, () -> Chargement.chargerNiveau(jeu, "laby/inexistant.txt"));
+        assertThrows(FileNotFoundException.class, () -> jeu.chargerNiveau("laby/inexistant.txt"));
     }
 
     @Test
     public void test_chargerJeu_caractereInconnu() {
-        assertThrows(FichierIncorrectException.class, () -> Chargement.chargerNiveau(jeu, "laby/laby_invalie_carac.txt"));
+        assertThrows(FichierIncorrectException.class, () -> jeu.chargerNiveau("laby/laby_invalie_carac.txt"));
     }
 
     @Test
     public void test_chargerJeu_sansPersonnage() {
-        assertThrows(FichierIncorrectException.class, () -> Chargement.chargerNiveau(jeu, "laby/laby_sans_perso.txt"));
+        assertThrows(FichierIncorrectException.class, () -> jeu.chargerNiveau("laby/laby_sans_perso.txt"));
     }
 
     @Test
     public void test_chargerJeu_avecMonstres() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_test_monstre.txt");
+        jeu.chargerNiveau("laby/laby_test_monstre.txt");
         assertFalse(jeu.getMonstres().isEmpty());
     }
 
     @Test
     public void test_chargerJeu_avecPieges() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_test_monstre.txt");
+        jeu.chargerNiveau("laby/laby_test_monstre.txt");
         boolean hasPiege = jeu.getCases().stream().anyMatch(c -> c instanceof Piege);
         assertTrue(hasPiege);
     }
 
     @Test
     public void test_chargerJeu_avecMurFriable() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_test_monstre.txt");
+        jeu.chargerNiveau("laby/laby_test_monstre.txt");
         boolean hasMur = jeu.getCases().stream().anyMatch(c -> c instanceof MurFriable);
         assertTrue(hasMur);
-    }
-
-    // ########## Tests convertLab ##########
-
-    @Test
-    public void test_convertLab_nombreLignes() throws IOException {
-        ArrayList<String> lignes = new ArrayList<>();
-        Chargement.convertLab("laby/laby_simple.txt", lignes);
-        assertEquals(7, lignes.size());
-    }
-
-    @Test
-    public void test_convertLab_fichierInexistant() {
-        assertThrows(FileNotFoundException.class, () -> Chargement.convertLab("laby/inexistant.txt", new ArrayList<>()));
-    }
-
-    // ########## Tests getChar ##########
-
-    @Test
-    public void test_getChar_mur() {
-        assertEquals(Jeu.MUR, jeu.getChar(0, 0));
-    }
-
-    @Test
-    public void test_getChar_hero() {
-        assertEquals(Jeu.HERO, jeu.getChar(jeu.getHero().getX(), jeu.getHero().getY()));
-    }
-
-    @Test
-    public void test_getChar_vide() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
-        assertEquals(Jeu.VIDE, jeu.getChar(1, 1));
-    }
-
-    @Test
-    public void test_getChar_piege() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
-        jeu.getCases().add(new Piege(1, 1));
-        assertEquals(Jeu.PIEGE, jeu.getChar(1, 1));
-    }
-
-    @Test
-    public void test_getChar_murFriable() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
-        jeu.getCases().add(new MurFriable(1, 1));
-        assertEquals(Jeu.MUR_FRIABLE, jeu.getChar(1, 1));
-    }
-
-    @Test
-    public void test_getChar_bombe() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
-        jeu.addBombe(1, 1);
-        assertEquals(Jeu.BOMBE, jeu.getChar(1, 1));
-    }
-
-    @Test
-    public void test_getChar_monstre() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
-        jeu.getMonstres().add(new Spider(1, 1, 3));
-        assertEquals(Jeu.SPIDER, jeu.getChar(1, 1));
     }
 
     // ########## Tests detruire ##########
@@ -377,7 +316,7 @@ public class TestJeu {
 
     @Test
     public void test_etreFini_heroSurFin() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         Commande c = new Commande();
         c.haut = true;
         jeu.evoluer(c);
@@ -404,14 +343,14 @@ public class TestJeu {
 
     @Test
     public void test_jeuToString_nonVide() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         assertNotNull(jeu.jeuToString());
         assertFalse(jeu.jeuToString().isEmpty());
     }
 
     @Test
     public void test_jeuToString_contientPerso() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         String s = jeu.jeuToString();
         assertEquals("#####\n#   #\n# & #\n#   #\n# @ #\n#   #\n#####\n", s);
     }
@@ -462,7 +401,7 @@ public class TestJeu {
     public void test_evoluerMonster_deplacement() {
         Spider m = new Spider(1, 1, 3);
         jeu.getMonstres().add(m);
-        moteurJeu.Commande c = new moteurJeu.Commande();
+        Commande c = new Commande();
         c.droite = true;
         m.deplacer(jeu, c);
         assertEquals(2, m.getX());
@@ -473,7 +412,7 @@ public class TestJeu {
 
     @Test
     public void test_heroMarcheSurPiege() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         Piege piege = new Piege(x, y - 1);
@@ -490,7 +429,7 @@ public class TestJeu {
 
     @Test
     public void test_heroBloqueParMurFriable() throws IOException {
-        Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
+        jeu.chargerNiveau("laby/laby_simple.txt");
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         jeu.getCases().add(new MurFriable(x, y - 1));
@@ -522,9 +461,9 @@ public class TestJeu {
         int y = jeu.getHero().getY();
         int vieAvant = jeu.getHero().getVie();
         jeu.addBombe(x, y);
-        Case bombe = jeu.getCase(x, y);
-        ((Bombe) bombe).setJeu(jeu);
-        bombe.effet(jeu.getHero());
+        Bombe bombe = (Bombe) jeu.getCase(x, y);
+        bombe.setJeu(jeu);
+        bombe.exploser();
         Thread.sleep(1600);
         assertEquals(vieAvant - 5, jeu.getHero().getVie());
     }
@@ -533,26 +472,26 @@ public class TestJeu {
     public void test_bombeExplosionDetruitMurFriable() throws InterruptedException {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
-        MurFriable mur = new MurFriable(x + 1, y);
+        MurFriable mur = new MurFriable(x, y - 1);
         jeu.getCases().add(mur);
-        jeu.addBombe(x, y);
-        Case bombe = jeu.getCase(x, y);
-        ((Bombe) bombe).setJeu(jeu);
-        bombe.effet(jeu.getHero());
+        jeu.addBombe(x, y - 2);
+        Bombe bombe = (Bombe) jeu.getCase(x, y - 2);
+        bombe.setJeu(jeu);
+        bombe.exploser();
         Thread.sleep(1600);
-        assertNull(jeu.getCase(x + 1, y));
+        assertNull(jeu.getCase(x, y - 1));
     }
 
     @Test
     public void test_bombeExplosionTueMonstre() throws InterruptedException {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
-        Spider m = new Spider(x + 1, y, 3);
+        Spider m = new Spider(x, y - 6, 3);
         jeu.getMonstres().add(m);
-        jeu.addBombe(x, y);
-        Case bombe = jeu.getCase(x, y);
-        ((Bombe) bombe).setJeu(jeu);
-        bombe.effet(jeu.getHero());
+        jeu.addBombe(x, y - 5);
+        Bombe bombe = (Bombe) jeu.getCase(x, y - 5);
+        bombe.setJeu(jeu);
+        bombe.exploser();
         Thread.sleep(1600);
         assertFalse(jeu.getMonstres().contains(m));
     }

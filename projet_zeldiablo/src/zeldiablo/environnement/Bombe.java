@@ -27,6 +27,7 @@ public class Bombe extends Case {
      */
     public Bombe(int x, int y) {
         super(x, y);
+        this.isTraversable = false; // La bombe n'est pas traversable
     }
 
     @Override
@@ -34,8 +35,7 @@ public class Bombe extends Case {
         return "Bombe";
     }
 
-    @Override
-    public void effet(Personnage perso) {
+    public void exploser() {
         new Thread(() -> {
             try {
                 Thread.sleep(1500);
