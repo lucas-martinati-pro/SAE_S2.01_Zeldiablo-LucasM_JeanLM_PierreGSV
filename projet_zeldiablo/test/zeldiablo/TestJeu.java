@@ -1,11 +1,11 @@
 package zeldiablo;
 
 import moteurJeu.Commande;
+import zeldiablo.entite.Spider;
 import zeldiablo.environnement.*;
 import zeldiablo.exception.ActionInconnueException;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.exception.FichierIncorrectException;
-import zeldiablo.entite.Monstre;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -277,7 +277,7 @@ public class TestJeu {
     @Test
     public void test_getChar_monstre() throws IOException {
         Chargement.chargerNiveau(jeu, "laby/laby_simple.txt");
-        jeu.getMonstres().add(new Monstre(1, 1, 3));
+        jeu.getMonstres().add(new Spider(1, 1, 3));
         assertEquals(Labyrinthe.MONSTRE, jeu.getChar(1, 1));
     }
 
@@ -438,7 +438,7 @@ public class TestJeu {
     public void test_monstreAttaque_heroProche() {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
-        Monstre m = new Monstre(x + 1, y, 3);
+        Spider m = new Spider(x + 1, y, 3);
         jeu.getMonstres().add(m);
         int vieAvant = jeu.getHero().getVie();
         jeu.getGestionnaireMonstres().monstreAttaque(x, y);
@@ -447,7 +447,7 @@ public class TestJeu {
 
     @Test
     public void test_monstreAttaque_heroLoin_pasDeDegat() {
-        Monstre m = new Monstre(1, 1, 3);
+        Spider m = new Spider(1, 1, 3);
         jeu.getMonstres().add(m);
         int vieAvant = jeu.getHero().getVie();
         jeu.getGestionnaireMonstres().monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
@@ -458,7 +458,7 @@ public class TestJeu {
 
     @Test
     public void test_verifMort_monstreMortRetire() {
-        Monstre m = new Monstre(1, 1, 0);
+        Spider m = new Spider(1, 1, 0);
         jeu.getMonstres().add(m);
         jeu.getGestionnaireMonstres().verifMort();
         assertFalse(jeu.getMonstres().contains(m));
@@ -466,7 +466,7 @@ public class TestJeu {
 
     @Test
     public void test_verifMort_monstreVivantReste() {
-        Monstre m = new Monstre(1, 1, 3);
+        Spider m = new Spider(1, 1, 3);
         jeu.getMonstres().add(m);
         jeu.getGestionnaireMonstres().verifMort();
         assertTrue(jeu.getMonstres().contains(m));
@@ -476,7 +476,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluerMonster_deplacement() {
-        Monstre m = new Monstre(1, 1, 3);
+        Spider m = new Spider(1, 1, 3);
         jeu.getMonstres().add(m);
         moteurJeu.Commande c = new moteurJeu.Commande();
         c.droite = true;
@@ -563,7 +563,7 @@ public class TestJeu {
     public void test_bombeExplosionTueMonstre() throws InterruptedException {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
-        Monstre m = new Monstre(x + 1, y, 3);
+        Spider m = new Spider(x + 1, y, 3);
         jeu.getMonstres().add(m);
         jeu.addBombe(x, y);
         Case bombe = jeu.getCase(x, y);

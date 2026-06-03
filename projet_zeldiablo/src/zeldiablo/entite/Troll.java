@@ -1,9 +1,6 @@
 package zeldiablo.entite;
 
-/**
- * Represente un monstre dans le jeu.
- */
-public class Monstre extends Personnage {
+public class Troll extends Personnage {
     // ########## Constructeurs ##########
     /**
      * Cree un nouveau monstre.
@@ -12,7 +9,7 @@ public class Monstre extends Personnage {
      * @param y la coordonnee y
      * @param vie les points de vie
      */
-    public Monstre(int x, int y, int vie) {
+    public Troll(int x, int y, int vie) {
         super(x, y, vie);
     }
 }

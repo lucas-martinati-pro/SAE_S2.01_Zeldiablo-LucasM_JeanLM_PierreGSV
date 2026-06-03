@@ -1,8 +1,8 @@
 package zeldiablo;
 
+import zeldiablo.entite.Spider;
 import zeldiablo.environnement.*;
 import zeldiablo.entite.Aventurier;
-import zeldiablo.entite.Monstre;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,7 +79,7 @@ public class TestEnvironnement {
     @Test
     public void test_Piege_effetSurMonstre() {
         Piege p = new Piege(1, 1);
-        Monstre m = new Monstre(1, 1, 3);
+        Spider m = new Spider(1, 1, 3);
         p.effet(m);
         assertEquals(2, m.getVie());
         assertTrue(p.getIsRevele());

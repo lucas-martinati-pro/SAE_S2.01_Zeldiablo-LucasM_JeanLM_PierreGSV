@@ -1,8 +1,9 @@
 package zeldiablo;
 
 import zeldiablo.entite.Aventurier;
-import zeldiablo.entite.Monstre;
+import zeldiablo.entite.Spider;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestPersonnage {
@@ -71,11 +72,11 @@ public class TestPersonnage {
         assertTrue(a.etreMort());
     }
 
-    // ########## Tests Monstre ##########
+    // ########## Tests Spider ##########
 
     @Test
     public void test_Monstre_creation() {
-        Monstre m = new Monstre(2, 3, 3);
+        Spider m = new Spider(2, 3, 3);
         assertEquals(2, m.getX());
         assertEquals(3, m.getY());
         assertEquals(3, m.getVie());
@@ -83,7 +84,7 @@ public class TestPersonnage {
 
     @Test
     public void test_Monstre_setPos() {
-        Monstre m = new Monstre(1, 1, 3);
+        Spider m = new Spider(1, 1, 3);
         m.setPos(4, 5);
         assertEquals(4, m.getX());
         assertEquals(5, m.getY());
@@ -93,7 +94,7 @@ public class TestPersonnage {
 
     @Test
     public void test_attaquer_infliceDegats() {
-        Monstre m = new Monstre(1, 1, 3);
+        Spider m = new Spider(1, 1, 3);
         Aventurier a = new Aventurier(2, 2, 5);
         m.attaquer(a);
         assertEquals(3, a.getVie());
@@ -101,7 +102,7 @@ public class TestPersonnage {
 
     @Test
     public void test_attaquer_mortNeAttaquePas() {
-        Monstre m = new Monstre(1, 1, 0);
+        Spider m = new Spider(1, 1, 0);
         Aventurier a = new Aventurier(2, 2, 5);
         m.attaquer(a);
         assertEquals(5, a.getVie());
@@ -110,7 +111,7 @@ public class TestPersonnage {
     @Test
     public void test_attaquer_aventurierContreMontsre() {
         Aventurier a = new Aventurier(1, 1, 5);
-        Monstre m = new Monstre(2, 2, 3);
+        Spider m = new Spider(2, 2, 3);
         a.attaquer(m);
         assertEquals(1, m.getVie());
     }
@@ -118,7 +119,7 @@ public class TestPersonnage {
     @Test
     public void test_attaquer_tueMonstre() {
         Aventurier a = new Aventurier(1, 1, 5);
-        Monstre m = new Monstre(2, 2, 2);
+        Spider m = new Spider(2, 2, 2);
         a.attaquer(m);
         assertTrue(m.etreMort());
     }
