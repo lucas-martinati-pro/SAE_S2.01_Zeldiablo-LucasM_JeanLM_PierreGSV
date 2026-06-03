@@ -13,17 +13,17 @@ import java.util.ArrayList;
  * Classe principale gerant la logique du jeu.
  */
 public class Jeu implements moteurJeu.Jeu {
-    public static final char MUR = '#';
-    public static final char HERO = '@';
-    public static final char SPIDER = '£';
-    public static final char TROLL = 'T';
-    public static final char GHOST = '+';
-    public static final char FIN = '&';
     public static final char VIDE = ' ';
-    public static final char PIEGE = '$';
+    public static final char MUR = '#';
     public static final char MUR_FRIABLE = '*';
+    public static final char PIEGE = 'P';
     public static final char BOMBE = 'B';
+    public static final char FIN = '&';
     public static final char AMULETTE = 'A';
+    public static final char HERO = '@';
+    public static final char SPIDER = 'S';
+    public static final char TROLL = 'T';
+    public static final char GHOST = 'G';
 
     // ########## Variables ##########
     private int[] size;

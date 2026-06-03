@@ -110,7 +110,6 @@ public abstract class Personnage extends Case {
 
         try {
             jeu.verifierDeplacement(coord[0], coord[1], commandeUser);
-            Case c = jeu.getCase(coord[0], coord[1]);
 
             for (Personnage m : jeu.getMonstres()) {
                 if (m.getX() == coord[0] && m.getY() == coord[1]) {
@@ -118,13 +117,16 @@ public abstract class Personnage extends Case {
                 }
             }
 
+            Case c = jeu.getCase(coord[0], coord[1]);
+
             if (c == null || c.getIsTraversable()) {
                 if (c instanceof CaseUtils cU) {
                     if (this instanceof Troll) {
                         jeu.getCases().remove(cU);
                         jeu.getCases().add(new PiegeDetruit(cU.getX(), cU.getY()));
                     } else cU.effet(this);
-                } else this.setPos(coord[0], coord[1]);
+                }
+                this.setPos(coord[0], coord[1]);
             }
         } catch (ActionInconnueException e) {
             // Si le deplacement est invalide, ne rien faire

@@ -115,16 +115,16 @@ public class DessinLaby implements DessinJeu {
             g.drawImage(porte, fin[0] * TAILLE, fin[1] * TAILLE, TAILLE, TAILLE, null);
         }
 
-        // Ajout des flammes d'explosion
-        for (int[] coord : jeu.getExplosionAffichage()) {
-            g.drawImage(flamme, coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE, null);
-        }
-
         // Ajout des monstres
         for (Personnage m : jeu.getMonstres()) {
             if (m instanceof Spider) g.drawImage(spider, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
-            if (m instanceof Troll) g.drawImage(troll, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
-            if (m instanceof Ghost) g.drawImage(ghost, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+            else if (m instanceof Troll) g.drawImage(troll, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+            else if (m instanceof Ghost) g.drawImage(ghost, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+        }
+
+        // Ajout des flammes d'explosion
+        for (int[] coord : jeu.getExplosionAffichage()) {
+            g.drawImage(flamme, coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE, null);
         }
 
         // Ajout du héros
