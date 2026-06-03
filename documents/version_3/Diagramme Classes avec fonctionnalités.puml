@@ -190,12 +190,12 @@ package "item" {
 
     abstract class ItemPlacable {
         + ItemPlacable(x : int, y : int)
+        + effet(perso : Personnage) : void
     }
 
     class Amulette {
         + Amulette(x : int, y : int)
         + getType() : String
-        + effet(perso : Personnage) : void
         + use(personnage : Personnage) : void
     }
 }

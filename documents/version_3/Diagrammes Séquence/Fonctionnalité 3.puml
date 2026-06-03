@@ -1,57 +1,35 @@
 @startuml
-title Fonctionnalité 3 - Cases piégées
+title Fonctionnalité 3 - Fin du jeu : victoire du héros
 
-actor Joueur
-participant "j:Jeu" as Jeu
-participant "hero:Aventurier" as Hero
-participant "piege:Piege" as Piege
+participant "Main : MainZeldiablo" as Main
+participant "j : Jeu" as Jeu
+participant "hero : Aventurier" as Hero
 
-Joueur -> Jeu : evoluer(commandeUser)
+activate Main
+Main -> Jeu : etreFini()
 activate Jeu
 
-Jeu -> Hero : deplacer(j, commandeUser)
+Jeu -> Hero : haveItem("Amulette")
 activate Hero
 
-Hero -> Jeu : getSuivant(x, y, commandeUser)
-activate Jeu
-Jeu --> Hero : [x, y]
-deactivate Jeu
-
-Hero -> Jeu : verifierDeplacement(x, y, commandeUser)
-
-Hero -> Jeu : getChar(x, y)
-activate Jeu
-Jeu --> Hero : PIEGE
-deactivate Jeu
-
-Hero -> Jeu : getCases()
-activate Jeu
-Jeu --> Hero : cases
-deactivate Jeu
-
-loop pour chaque case
-    Hero -> Piege : getX()
-    activate Piege
-    Piege --> Hero : xPiege
-    deactivate Piege
-    Hero -> Piege : getY()
-    activate Piege
-    Piege --> Hero : yPiege
-    deactivate Piege
-    alt xPiege == coord[0] && yPiege == coord[1]
-        Hero -> Piege : effet(hero)
-        activate Piege
-        Piege -> Hero : addVie(-1)
-        Piege --> Hero
-        deactivate Piege
+loop Pour chaque Item o dans inventaire
+    alt o.getType().equals("Amulette")
+        Hero --> Jeu : true
     end
 end
-
-Hero -> Hero : setPos(x, y)
-
-Hero --> Jeu
 deactivate Hero
 
-Jeu --> Joueur
+Jeu -> Hero : getX()
+activate Hero
+Hero --> Jeu : xHero
+deactivate Hero
+
+Jeu -> Hero : getY()
+activate Hero
+Hero --> Jeu : yHero
+deactivate Hero
+
+Jeu --> Main : true
 deactivate Jeu
+deactivate Main
 @enduml

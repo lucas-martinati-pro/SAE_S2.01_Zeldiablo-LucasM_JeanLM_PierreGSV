@@ -1,24 +1,60 @@
 @startuml
-title Fonctionnalité 2 - Fin du zeldiablo : mort du héros
+title Fonctionnalité 2 - Acquisition de l'amulette
 
-participant "MainZeldiablo" as Main
-participant "Chargement" as Chargement
+participant "j : Jeu" as Jeu
+participant "hero : Aventurier" as Hero
+participant "amulette : Amulette" as Amulette
 
-Main -> Chargement : chargerNiveaux()
-activate Chargement
+activate Jeu
+Jeu -> Hero : deplacer(j, commandeUser)
+activate Hero
 
-create "hero:Aventurier" as Hero
-Chargement -> Hero : new Aventurier()
+Hero -> Jeu : getSuivant(x, y, commandeUser)
+activate Jeu
+Jeu --> Hero : coord
+deactivate Jeu
 
-Hero -> Personnage : etreMort()
-activate Personnage
+Hero -> Jeu : verifierDeplacement(coord[0], coord[1], commandeUser)
 
-alt this.pv > 1
-   Personnage --> Main : true
-else
-  Personnage --> Main : false
-  deactivate Personnage
+Hero -> Jeu : getMonstres()
+activate Jeu
+Jeu --> Hero : monstres
+deactivate Jeu
+
+Hero -> Jeu : getCase(coord[0], coord[1])
+activate Jeu
+Jeu --> Hero : amulette
+deactivate Jeu
+
+alt amulette != null && amulette.getIsTraversable()
+    Hero -> Amulette : effet(hero)
+    activate Amulette
+
+    Amulette -> Hero : addInventaire(x, y)
+    activate Hero
+
+    Hero -> Jeu : getCase(x, y)
+    activate Jeu
+    Jeu --> Hero : amulette
+    deactivate Jeu
+
+    Hero -> Hero : inventaire.add(amulette)
+    Hero -> Jeu : getCases()
+    activate Jeu
+    Jeu --> Hero : cases
+    deactivate Jeu
+    Hero -> Hero : cases.remove(amulette)
+
+    Hero --> Amulette
+    deactivate Hero
+
+    Amulette --> Hero
+    deactivate Amulette
+
+    Hero -> Hero : setPos(coord[0], coord[1])
 end
-Chargement --> Main
-deactivate Chargement
+
+Hero --> Jeu
+deactivate Hero
+deactivate Jeu
 @enduml

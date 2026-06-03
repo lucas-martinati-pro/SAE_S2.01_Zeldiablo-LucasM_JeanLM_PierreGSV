@@ -15,11 +15,6 @@ public class Amulette extends ItemPlacable {
     }
 
     @Override
-    public void effet(Personnage perso) {
-        if ((perso instanceof Aventurier)) ((Aventurier) perso).addInventaire(x, y);
-    }
-
-    @Override
     public void use(Personnage personnage) {
 
     }
