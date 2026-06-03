@@ -21,21 +21,18 @@ loop Pour chaque monstre m dans monstres
     activate Monstre
     Monstre --> Dessin : true/false
     deactivate Monstre
-    
+
     alt isAttaque == true
         Dessin -> Monstre : getType()
         activate Monstre
         Monstre --> Dessin : mtype
         deactivate Monstre
-        note over Dessin: Sélectionne l'image d'attaque (ex: spiderAttaque)
     else isAttaque == false
         Dessin -> Monstre : getType()
         activate Monstre
         Monstre --> Dessin : mtype
         deactivate Monstre
-        note over Dessin: Sélectionne l'image normale (ex: spider)
     end
-    note over Dessin: Dessine le monstre à sa position (x, y)
 end
 
 Dessin -> Jeu : getHero()
@@ -47,12 +44,6 @@ Dessin -> Hero : getIsAttaque()
 activate Hero
 Hero --> Dessin : true/false
 deactivate Hero
-
-alt isAttaque == true
-    note over Dessin: Dessine heroAttaque à sa position
-else isAttaque == false
-    note over Dessin: Dessine hero à sa position
-end
 
 deactivate Dessin
 deactivate Moteur

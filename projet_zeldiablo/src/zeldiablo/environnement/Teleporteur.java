@@ -25,7 +25,7 @@ public class Teleporteur extends CaseEffet {
                         break;
                     }
                 }
-                if (jeu.getHero() != null && jeu.getHero() != perso && jeu.getHero().getX() == c.getX() && jeu.getHero().getY() == c.getY()) {
+                if (jeu.getHero() != perso && jeu.getHero().getX() == c.getX() && jeu.getHero().getY() == c.getY()) {
                     libre = false;
                 }
                 if (libre) {
@@ -35,6 +35,4 @@ public class Teleporteur extends CaseEffet {
             }
         }
     }
-
-
 }
