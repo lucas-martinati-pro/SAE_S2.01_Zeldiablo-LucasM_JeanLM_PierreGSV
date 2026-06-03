@@ -1,0 +1,24 @@
+@startuml
+title Fonctionnalité 4 - Gestion de l'inventaire et ramassage d'objets
+
+participant "ItemPlacable" as ItemPlacable
+participant "hero : Aventurier" as Hero
+participant "j : Jeu" as Jeu
+
+ItemPlacable -> Hero : addInventaire(x, y)
+activate Hero
+Hero -> Jeu : getCase(x, y)
+activate Jeu
+Jeu --> Hero : item
+deactivate Jeu
+
+Hero -> Hero : inventaire.add(item)
+Hero -> Jeu : getCases()
+activate Jeu
+Jeu --> Hero : cases
+deactivate Jeu
+Hero -> Hero : cases.remove(item)
+
+Hero --> ItemPlacable
+deactivate Hero
+@enduml
