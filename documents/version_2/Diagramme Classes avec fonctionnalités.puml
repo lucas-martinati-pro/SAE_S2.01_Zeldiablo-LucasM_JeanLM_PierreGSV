@@ -1,5 +1,5 @@
 @startuml
-title Diagramme Classes avec fonctionnalités
+title Diagramme Classes avec fonctionnalités (version 2)
 
 class "Jeu" {
     - laby : Labyrinthe

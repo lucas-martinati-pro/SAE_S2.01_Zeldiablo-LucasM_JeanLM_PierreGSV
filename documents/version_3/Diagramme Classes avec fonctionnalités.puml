@@ -1,5 +1,5 @@
 @startuml
-title Diagramme Classes avec fonctionnalités (Version 3)
+title Diagramme Classes avec fonctionnalités (version 3)
 
 class "Jeu" {
     - hero : Aventurier
