@@ -1,5 +1,5 @@
 @startuml
-title Fonctionnalité 1 - Cases déclencheurs d'effets (Piège)
+title Fonctionnalité 1 - Cases déclencheurs d'effets (Soins)
 
 participant "j : Jeu" as Jeu
 participant "p : Personnage" as Perso
@@ -18,7 +18,7 @@ alt cE instanceof CaseEffet
     alt !(this instanceof Troll)
         Perso -> CaseEffet : effet(this)
         activate CaseEffet
-        CaseEffet -> Perso : addVie(-1)
+        CaseEffet -> Perso : addVie(2)
         activate Perso
         Perso --> CaseEffet
         deactivate Perso
