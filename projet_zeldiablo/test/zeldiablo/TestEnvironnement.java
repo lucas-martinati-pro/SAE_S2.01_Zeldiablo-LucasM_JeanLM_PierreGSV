@@ -109,4 +109,33 @@ public class TestEnvironnement {
         assertEquals(5, a.getX());
         assertEquals(5, a.getY());
     }
+
+    // ########## Tests Soins ##########
+
+    /**
+     * Teste la creation d'une case de Soins.
+     */
+    @Test
+    public void test_Soins_creation() {
+        Soins s = new Soins(3, 4);
+        assertEquals("Soins", s.getType());
+        assertEquals(3, s.getX());
+        assertEquals(4, s.getY());
+    }
+
+    /**
+     * Teste l'effet de soin sur un aventurier blesse et la destruction de la case.
+     */
+    @Test
+    public void test_Soins_effetSoigneEtDetruit() {
+        Jeu jeu = new Jeu();
+        Aventurier a = new Aventurier(1, 1, 3);
+        Soins s = new Soins(1, 1);
+        jeu.getCases().add(s);
+        s.effet(jeu, a);
+        assertEquals(5, a.getVie());
+        // La case Soins doit etre remplacee par SoinsDetruit
+        boolean hasSoinsDetruit = jeu.getCases().stream().anyMatch(c -> c instanceof SoinsDetruit);
+        assertTrue(hasSoinsDetruit);
+    }
 }
