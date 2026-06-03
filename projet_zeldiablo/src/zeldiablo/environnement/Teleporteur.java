@@ -16,19 +16,24 @@ public class Teleporteur extends CaseEffet {
 
     @Override
     public void effet(Jeu jeu, Personnage perso) {
-        int x = this.x, y = this.y;
         for (Case c : jeu.getCases()) {
             if (c instanceof Teleporteur && (c.getX() != this.x || c.getY() != this.y)) {
+                boolean libre = true;
                 for (Personnage m : jeu.getMonstres()) {
                     if (m.getX() == c.getX() && m.getY() == c.getY()) {
+                        libre = false;
                         break;
                     }
-                    x = c.getX();
-                    y = c.getY();
+                }
+                if (jeu.getHero() != null && jeu.getHero() != perso && jeu.getHero().getX() == c.getX() && jeu.getHero().getY() == c.getY()) {
+                    libre = false;
+                }
+                if (libre) {
+                    perso.setPos(c.getX(), c.getY());
+                    return;
                 }
             }
         }
-       perso.setPos(x, y);
     }
 
 
