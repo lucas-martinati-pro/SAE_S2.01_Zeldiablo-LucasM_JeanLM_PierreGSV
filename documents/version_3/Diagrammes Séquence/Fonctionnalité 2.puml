@@ -1,0 +1,24 @@
+@startuml
+title Fonctionnalité 2 - Fin du zeldiablo : mort du héros
+
+participant "MainZeldiablo" as Main
+participant "Chargement" as Chargement
+
+Main -> Chargement : chargerNiveaux()
+activate Chargement
+
+create "hero:Aventurier" as Hero
+Chargement -> Hero : new Aventurier()
+
+Hero -> Personnage : etreMort()
+activate Personnage
+
+alt this.pv > 1
+   Personnage --> Main : true
+else
+  Personnage --> Main : false
+  deactivate Personnage
+end
+Chargement --> Main
+deactivate Chargement
+@enduml

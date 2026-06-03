@@ -1,5 +1,8 @@
 package zeldiablo;
 
+import zeldiablo.entite.Ghost;
+import zeldiablo.entite.Spider;
+import zeldiablo.entite.Troll;
 import zeldiablo.environnement.Case;
 import zeldiablo.entite.Personnage;
 import zeldiablo.environnement.Labyrinthe;
@@ -69,7 +72,11 @@ public class DessinLaby implements DessinJeu {
             addImageCube("sprite/flamme.png", coord[0], coord[1], g, Color.RED);
         }
 
-        for (Personnage m : jeu.getMonstres()) addImageOval("sprite/monstre.png", m.getX(), m.getY(), g, Color.RED);
+        for (Personnage m : jeu.getMonstres()) {
+            if (m instanceof Spider) addImageOval("sprite/spider.png", m.getX(), m.getY(), g, Color.RED);
+            if (m instanceof Troll) addImageOval("sprite/troll.png", m.getX(), m.getY(), g, Color.DARK_GRAY);
+            if (m instanceof Ghost) addImageOval("sprite/ghost.png", m.getX(), m.getY(), g, Color.LIGHT_GRAY);
+        }
 
         // Coeurs de vie du héros
         for (int i = 0; i < jeu.getHero().getVie(); i++) {

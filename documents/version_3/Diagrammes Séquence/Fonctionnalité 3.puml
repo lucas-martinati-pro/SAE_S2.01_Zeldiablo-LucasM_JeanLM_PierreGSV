@@ -1,0 +1,57 @@
+@startuml
+title Fonctionnalité 3 - Cases piégées
+
+actor Joueur
+participant "j:Jeu" as Jeu
+participant "hero:Aventurier" as Hero
+participant "piege:Piege" as Piege
+
+Joueur -> Jeu : evoluer(commandeUser)
+activate Jeu
+
+Jeu -> Hero : deplacer(j, commandeUser)
+activate Hero
+
+Hero -> Jeu : getSuivant(x, y, commandeUser)
+activate Jeu
+Jeu --> Hero : [x, y]
+deactivate Jeu
+
+Hero -> Jeu : verifierDeplacement(x, y, commandeUser)
+
+Hero -> Jeu : getChar(x, y)
+activate Jeu
+Jeu --> Hero : PIEGE
+deactivate Jeu
+
+Hero -> Jeu : getCases()
+activate Jeu
+Jeu --> Hero : cases
+deactivate Jeu
+
+loop pour chaque case
+    Hero -> Piege : getX()
+    activate Piege
+    Piege --> Hero : xPiege
+    deactivate Piege
+    Hero -> Piege : getY()
+    activate Piege
+    Piege --> Hero : yPiege
+    deactivate Piege
+    alt xPiege == coord[0] && yPiege == coord[1]
+        Hero -> Piege : effet(hero)
+        activate Piege
+        Piege -> Hero : addVie(-1)
+        Piege --> Hero
+        deactivate Piege
+    end
+end
+
+Hero -> Hero : setPos(x, y)
+
+Hero --> Jeu
+deactivate Hero
+
+Jeu --> Joueur
+deactivate Jeu
+@enduml

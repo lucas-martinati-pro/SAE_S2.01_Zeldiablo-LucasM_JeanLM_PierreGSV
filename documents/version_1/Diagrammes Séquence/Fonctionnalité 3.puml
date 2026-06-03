@@ -1,0 +1,37 @@
+@startuml
+title Fonctionnalité 3 — Affichage textuel du labyrinthe
+
+actor Joueur
+participant "jeu:Jeu" as Jeu
+participant "laby:Labyrinthe" as Laby
+participant "hero:Aventurier" as Hero
+
+Joueur -> Jeu : jeuToString()
+activate Jeu
+
+Jeu -> Laby : returnSize()
+activate Laby
+Laby --> Jeu : coordonnées
+deactivate Laby
+
+loop pour chaque case
+    Jeu -> Laby : getCase(int i, int j)
+    activate Laby
+    Laby --> Jeu : cases[i][h]
+    deactivate Laby
+
+    Jeu -> Hero : getX()
+    activate Hero
+    Hero --> Jeu : x
+    deactivate Hero
+
+    Jeu -> Hero : getY()
+    activate Hero
+    Hero --> Jeu : y
+    deactivate Hero
+end
+
+Jeu --> Joueur
+deactivate Jeu
+
+@enduml
