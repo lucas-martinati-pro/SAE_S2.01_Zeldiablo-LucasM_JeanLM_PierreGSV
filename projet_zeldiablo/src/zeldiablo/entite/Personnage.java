@@ -2,6 +2,7 @@ package zeldiablo.entite;
 
 import zeldiablo.Jeu;
 import moteurJeu.Commande;
+import zeldiablo.environnement.Bombe;
 import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.exception.ActionInconnueException;
@@ -113,11 +114,13 @@ public abstract class Personnage {
         int[] coord = jeu.getSuivant(this.x, this.y, commandeUser);
         try {
             jeu.verifierDeplacement(coord[0], coord[1], commandeUser);
+            Case c = jeu.getCase(coord[0], coord[1]);
+            if (c != null) {
+                if (c instanceof Bombe) return; // Le personnage ne peut pas marcher sur une bombe, il doit attendre qu'elle explose
+                c.effet(this);
+                this.setPos(coord[0], coord[1]);
+            }
             switch (jeu.getChar(coord[0], coord[1])) {
-                case Labyrinthe.PIEGE -> {
-                    jeu.getCase(coord[0], coord[1]).effet(this);
-                    this.setPos(coord[0], coord[1]);
-                }
                 case Labyrinthe.VIDE, Labyrinthe.FIN, Labyrinthe.AMULETTE -> this.setPos(coord[0], coord[1]);
             }
         } catch (ActionInconnueException e) {

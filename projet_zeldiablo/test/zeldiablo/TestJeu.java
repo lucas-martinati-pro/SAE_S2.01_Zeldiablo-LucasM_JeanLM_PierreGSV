@@ -524,7 +524,7 @@ public class TestJeu {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         assertNull(jeu.getCase(x, y));
-        jeu.getHero().attaquer(jeu);
+        jeu.getHero().attaquer(new Spider(0, 0, 0)); // L'attaque de l'aventurier pose une bombe sur sa position
         Case bombe = jeu.getCase(x, y);
         assertNotNull(bombe);
         assertTrue(bombe instanceof Bombe);

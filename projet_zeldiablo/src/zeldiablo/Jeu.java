@@ -1,6 +1,8 @@
 package zeldiablo;
 
+import zeldiablo.Item.Amulette;
 import zeldiablo.Item.Item;
+import zeldiablo.entite.Spider;
 import zeldiablo.environnement.*;
 import zeldiablo.entite.Personnage;
 import zeldiablo.entite.Aventurier;
@@ -22,7 +24,6 @@ public class Jeu implements moteurJeu.Jeu {
 
     private ArrayList<Case> cases = new ArrayList<>();
     private ArrayList<int[]> explosionAffichage = new ArrayList<>();
-    private ArrayList<Item> inventaire = new ArrayList<>();
 
     private int[] fin;
     private boolean recharger = true;
@@ -110,25 +111,7 @@ public class Jeu implements moteurJeu.Jeu {
         return monstres;
     }
 
-    /**
-     * Retourne la liste des items (pieges, bombes, murs friables, etc.) presentes dans le jeu.
-     * @return
-     */
-    public ArrayList<Item> getInventaire() {
-        return inventaire;
-    }
-
     // ########## Méthodes ##########
-    /**
-     *
-     */
-    public boolean haveItem(String nom) {
-        for (Item o : this.inventaire) {
-            if (o.getType().equals(nom)) return true;
-        }
-        return false;
-    }
-
     /**
      * Detruit la case situee aux coordonnees (x, y) et la retire du jeu.
      *
@@ -187,19 +170,9 @@ public class Jeu implements moteurJeu.Jeu {
         if (this.laby.getCase(x, y)) return Labyrinthe.MUR;
         else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
         else {
-            for (Case c : this.cases) {
-                if (c.getX() == x && c.getY() == y) {
-                    if (c instanceof Piege) {
-                        return Labyrinthe.PIEGE;
-                    }
-                    if (c instanceof MurFriable) return Labyrinthe.MurFriable;
-                    if (c instanceof Bombe) return Labyrinthe.BOMBE;
-                }
-            }
             for (Personnage m : this.monstres) {
                 if (m.getX() == x && m.getY() == y) return Labyrinthe.SPIDER;
             }
-            if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
             return Labyrinthe.VIDE;
         }
     }
@@ -247,7 +220,7 @@ public class Jeu implements moteurJeu.Jeu {
             Case c = this.getCase(this.hero.getX(), this.hero.getY());
             if (recharger && (c == null || !(c instanceof PiegeDetruit))) { // temps de recharge de la bombe pour éviter les spams
                 recharger = false;
-                this.hero.attaquer(this);
+                this.hero.attaquer(new Spider(0, 0, 0)); // La victime n'est pas utilisée dans l'attaque de l'aventurier, on peut donc lui donner n'importe quelle position et nombre de points de vie
                 new Thread(() -> { // Obliger de créer un nouveau Thread car sinon ça bloque le jeu pendant 2 secondes, et c'est pas très drôle
                     try {
                         Thread.sleep(2000);
@@ -270,7 +243,7 @@ public class Jeu implements moteurJeu.Jeu {
      * @return true si le hero est sur la case de fin, false sinon
      */
     public boolean etreFini() {
-        return (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1]) || this.hero.etreMort();
+        return (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1] && hero.haveItem("Amulette")) || this.hero.etreMort();
     }
 
     // =========================================================

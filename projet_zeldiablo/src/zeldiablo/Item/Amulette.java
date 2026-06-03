@@ -1,8 +1,11 @@
 package zeldiablo.Item;
 
+import zeldiablo.Jeu;
+import zeldiablo.entite.Aventurier;
 import zeldiablo.entite.Personnage;
 
 public class Amulette extends ItemPlacable {
+    private Jeu jeu;
 
     public Amulette(int x, int y) {
         super(x, y);
@@ -15,11 +18,11 @@ public class Amulette extends ItemPlacable {
 
     @Override
     public void effet(Personnage perso) {
-
+        if ((perso instanceof Aventurier)) ((Aventurier) perso).addInventaire(x, y);
     }
 
     @Override
-    public void use(zeldiablo.entite.Personnage personnage) {
+    public void use(Personnage personnage) {
 
     }
 }

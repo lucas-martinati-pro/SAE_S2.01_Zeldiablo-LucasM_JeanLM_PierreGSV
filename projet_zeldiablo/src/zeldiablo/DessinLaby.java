@@ -51,8 +51,8 @@ public class DessinLaby implements DessinJeu {
                 switch (jeu.getChar(x, y)) {
                     case Labyrinthe.MUR -> addImageCube("sprite/mur.png", x, y, g, Color.BLACK);
                     case Labyrinthe.FIN -> {
-                        if (jeu.haveItem("Amulette")) addImageCube("sprite/porte.png", x, y, g, Color.GREEN);
-                        else addImageCube("sprite/porteOuverte.png", x, y, g, Color.GREEN);
+                        if (jeu.getHero().haveItem("Amulette")) addImageCube("sprite/porteOuverte.png", x, y, g, Color.GREEN);
+                        else addImageCube("sprite/porte.png", x, y, g, Color.GREEN);
                     }
                     default -> addImageCube("sprite/vide.png", x, y, g, vide);
                 }
@@ -120,7 +120,7 @@ public class DessinLaby implements DessinJeu {
             }
         }
 
-        ArrayList<Item> inventaire = jeu.getInventaire();
+        ArrayList<Item> inventaire = jeu.getHero().getInventaire();
         for (int i = 0; i < inventaire.size(); i++) {
             Item o = inventaire.get(i);
             g.setColor(Color.LIGHT_GRAY);
