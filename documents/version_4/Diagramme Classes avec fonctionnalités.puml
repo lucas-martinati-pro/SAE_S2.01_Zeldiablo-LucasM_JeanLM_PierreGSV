@@ -1,0 +1,273 @@
+@startuml
+title Diagramme Classes avec fonctionnalités (version 4)
+
+class "Jeu" {
+    + {static} VIDE = ' ' : char
+    + {static} MUR = '#' : char
+    + {static} MUR_FRIABLE = '*' : char
+    + {static} PIEGE = 'P' : char
+    + {static} BOMBE = '$' : char
+    + {static} FIN = '&' : char
+    + {static} AMULETTE = 'A' : char
+    + {static} HERO = '@' : char
+    + {static} SPIDER = 'S' : char
+    + {static} TROLL = 'T' : char
+    + {static} GHOST = 'G' : char
+    + {static} BLOB = 'B' : char
+
+    - size : int[]
+    - hero : Aventurier
+    - monstres : ArrayList<Personnage>
+    - cases : ArrayList<Case>
+    - fin : int[]
+    - explosionAffichage : ArrayList<int[]>
+    - recharger : boolean
+    - gestionnaireMonstres : GestionnaireMonstres
+
+    + chargerNiveau(nomFichier : String) : void
+    + getHero() : Aventurier
+    + getCases() : ArrayList<Case>
+    + getExplosionAffichage() : ArrayList<int[]>
+    + getMonstres() : ArrayList<Personnage>
+    + getCase(x : int, y : int) : Case
+    + getChar(x : int, y : int) : char
+    + getFin() : int[]
+    + getGestionnaireMonstres() : GestionnaireMonstres
+    + getSize() : int[]
+    + setHero(hero : Aventurier) : void
+    + setFin(fin : int[]) : void
+    + setSize(size : int[]) : void
+
+    + detruire(x : int, y : int) : void
+    + getSuivant(x : int, y : int, commandeUser : Commande) : int[]
+    + addBombe(x : int, y : int) : void
+    + verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
+    + evoluer(commandeUser : Commande) : void
+    + etreFini() : boolean
+
+    + jeuToString() : String
+}
+
+class GestionnaireMonstres {
+    - jeu : Jeu
+    - timer : Timer
+
+    + GestionnaireMonstres(jeu : Jeu)
+    + startMonsters() : void
+    + monstreAttaque(x : int, y : int) : void
+    + verifMort() : void
+}
+
+class DessinLaby {
+    - jeu : Jeu
+    - flamme : BufferedImage
+    - gameOver : BufferedImage
+    - win : BufferedImage
+    - porte : BufferedImage
+    - porteOuverte : BufferedImage
+    - mur : BufferedImage
+    - vide : BufferedImage
+    - piege : BufferedImage
+    - murFriable : BufferedImage
+    - bombe : BufferedImage
+    - piegeDetruit : BufferedImage
+    - amulette : BufferedImage
+    - spider : BufferedImage
+    - troll : BufferedImage
+    - ghost : BufferedImage
+    - blob : BufferedImage
+    - hero : BufferedImage
+    - spiderAttaque : BufferedImage
+    - trollAttaque : BufferedImage
+    - ghostAttaque : BufferedImage
+    - blobAttaque : BufferedImage
+    - heroAttaque : BufferedImage
+    - coeur : BufferedImage
+
+    + DessinLaby(jeu : Jeu)
+    + dessiner(image : BufferedImage) : void
+}
+
+package "entite" {
+    abstract class Personnage {
+        # vie : int
+        # isAttaque : boolean
+
+        + Personnage(x : int, y : int, vie : int)
+
+        + getVie() : int
+        + setVie(vie : int) : void
+        + getIsAttaque() : boolean
+
+        + addVie(i : int) : void
+        + setPos(x : int, y : int) : void
+        + etreMort() : boolean
+        + attaquer(victime : Personnage) : void
+        + deplacer(jeu : Jeu, commandeUser : Commande) : void
+    }
+
+    class Aventurier {
+        - inventaire : ArrayList<Item>
+        - jeu : Jeu
+
+        + Aventurier(x : int, y : int, vie : int)
+        + setJeu(jeu : Jeu) : void
+        + getInventaire() : ArrayList<Item>
+        + haveItem(nom : String) : boolean
+        + addInventaire(x : int, y : int) : void
+        + attaquer(victime : Personnage) : void
+        + getType() : String
+    }
+
+    class Spider {
+        + Spider(x : int, y : int, vie : int)
+        + getType() : String
+    }
+
+    class Troll {
+        + Troll(x : int, y : int, vie : int)
+        + getType() : String
+        + regenerer() : void
+    }
+
+    class Ghost {
+        + Ghost(x : int, y : int, vie : int)
+        + getType() : String
+        + deplacer(jeu : Jeu, commandeUser : Commande) : void
+    }
+
+    class Blob {
+        + Blob(x : int, y : int, vie : int)
+        + getType() : String
+        + deplacer(jeu : Jeu, commandeUser : Commande) : void
+    }
+
+    class Artificier {
+        + Blob(x : int, y : int, vie : int)
+        + getType() : String
+        + attaquer(jeu : Jeu, commandeUser : Commande) : void
+    }
+}
+
+package "environnement" {
+    abstract class Case {
+        # x : int
+        # y : int
+        # isTraversable : boolean
+
+        + Case(x : int, y : int)
+
+        + getX() : int
+        + getY() : int
+        + getIsTraversable() : boolean
+        + getType() : String
+    }
+
+    class Mur {
+        + Mur(x : int, y : int)
+        + getType() : String
+    }
+
+    class PiegeDetruit {
+        + PiegeDetruit(x : int, y : int)
+        + getType() : String
+    }
+
+    class MurFriable {
+        + MurFriable(x : int, y : int)
+        + getType() : String
+    }
+
+    abstract class CaseEffet {
+        + CaseEffet(x : int, y : int)
+        + {abstract} effet(perso : Personnage) : void
+    }
+
+    class Piege {
+        - isRevele : boolean
+
+        + Piege(x : int, y : int)
+        + getIsRevele() : boolean
+        + getType() : String
+        + effet(perso : Personnage) : void
+    }
+
+    class Bombe {
+        - jeu : Jeu
+
+        + Bombe(x : int, y : int)
+        + setJeu(jeu : Jeu) : void
+        + getType() : String
+        + exploser() : void
+    }
+}
+
+package "item" {
+    interface Item {
+        + getType() : String
+        + use(personnage : Personnage) : void
+    }
+
+    abstract class ItemPlacable {
+        + ItemPlacable(x : int, y : int)
+        + effet(perso : Personnage) : void
+    }
+
+    class Amulette {
+        + Amulette(x : int, y : int)
+        + getType() : String
+        + use(personnage : Personnage) : void
+    }
+}
+
+package "exception" {
+    class ActionInconnueException {
+        + ActionInconnueException(message : String)
+    }
+
+    class FichierIncorrectException {
+        + FichierIncorrectException(message : String)
+    }
+}
+
+' ========================
+' Relations
+' ========================
+Case <|-- Mur
+Case <|-- PiegeDetruit
+Case <|-- MurFriable
+Case <|-- Personnage
+Case <|-- CaseEffet
+Case <|-- Bombe
+
+CaseEffet <|-- Piege
+CaseEffet <|-- ItemPlacable
+
+ItemPlacable <|-- Amulette
+Item <|.. ItemPlacable
+
+Personnage <|-- Aventurier
+Personnage <|-- Spider
+Personnage <|-- Troll
+Personnage <|-- Ghost
+Personnage <|-- Blob
+Personnage <|-- Artificier
+
+ActionInconnueException --|> RuntimeException
+FichierIncorrectException --|> RuntimeException
+
+DessinJeu <|.. DessinLaby
+
+Jeu "1" --> "1" Aventurier : hero
+Jeu "1" *-- "1" GestionnaireMonstres : gestionnaireMonstres
+Jeu "1" --> "*" Personnage : monstres
+Jeu "1" --> "*" Case : cases
+
+Aventurier "1" --> "*" Item : inventaire
+Aventurier "1" --> "1" Jeu : jeu
+
+GestionnaireMonstres "1" --> "1" Jeu : jeu
+
+DessinLaby "1" --> "1" Jeu : jeu
+
+@enduml

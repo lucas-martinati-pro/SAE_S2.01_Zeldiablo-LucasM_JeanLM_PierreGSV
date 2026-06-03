@@ -46,7 +46,6 @@ public class DessinLaby implements DessinJeu {
     private BufferedImage artificierAttaque;
     private BufferedImage heroAttaque;
     private BufferedImage coeur;
-    private BufferedImage artificier;
 
     /**
      * Constructeur de DessinLaby
@@ -82,7 +81,6 @@ public class DessinLaby implements DessinJeu {
             artificierAttaque = ImageIO.read(new File("sprite/artificierAttaque.png"));
             heroAttaque = ImageIO.read(new File("sprite/heroAttaque.png"));
             coeur = ImageIO.read(new File("sprite/coeur.png"));
-            artificier = ImageIO.read(new File("sprite/coeur.png"));
         } catch (IOException e) {
         }
     }
@@ -153,6 +151,7 @@ public class DessinLaby implements DessinJeu {
                 };
             }
             if (img != null) g.drawImage(img, m.getX() * TAILLE, m.getY() * TAILLE, TAILLE, TAILLE, null);
+        }
 
         // Ajout des flammes d'explosion
         for (int[] coord : jeu.getExplosionAffichage()) {
