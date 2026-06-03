@@ -1,0 +1,55 @@
+@startuml
+title Fonctionnalité 4 - Ajout des monstres de type Blob (Destruction d'un segment)
+
+participant "b : Bombe" as Bombe
+participant "j : Jeu" as Jeu
+participant "m : Blob" as Blob
+participant "gm : GestionnaireMonstres" as GM
+
+activate Bombe
+note over Bombe: Thread d'explosion (1500ms écoulés)
+Bombe -> Jeu : getMonstres()
+activate Jeu
+Jeu --> Bombe : monstres
+deactivate Jeu
+
+loop Pour chaque monstre m dans monstres
+    alt m.getX() == cx && m.getY() == cy (coordonnées de l'explosion)
+        Bombe -> Blob : addVie(-5)
+        activate Blob
+        Blob --> Bombe
+        deactivate Blob
+        
+        Bombe -> Jeu : getGestionnaireMonstres()
+        activate Jeu
+        Jeu --> Bombe : gm
+        deactivate Jeu
+        
+        Bombe -> GM : verifMort()
+        activate GM
+        
+        GM -> Blob : etreMort()
+        activate Blob
+        Blob --> GM : true
+        deactivate Blob
+        
+        GM -> Blob : getClass().getSimpleName()
+        activate Blob
+        Blob --> GM : "Blob"
+        deactivate Blob
+        
+        note over GM: Affiche "Vous avez tué un blob ! 🦠"
+        
+        GM -> Jeu : getMonstres()
+        activate Jeu
+        Jeu --> GM : monstres
+        deactivate Jeu
+        
+        GM -> GM : monstres.remove(m)
+        
+        GM --> Bombe
+        deactivate GM
+    end
+end
+deactivate Bombe
+@enduml

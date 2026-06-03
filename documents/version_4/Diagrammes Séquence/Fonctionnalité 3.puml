@@ -1,0 +1,38 @@
+@startuml
+title Fonctionnalité 3 - Monstres incendiaires (Pose de Bombe)
+
+participant "m : Artificier" as Artificier
+participant "j : Jeu" as Jeu
+participant "cases : ArrayList<Case>" as Cases
+
+activate Artificier
+note over Artificier: Artificier décide d'attaquer (ex: près du héros)
+Artificier -> Jeu : getCases()
+activate Jeu
+Jeu --> Artificier : cases
+deactivate Jeu
+
+create "b : Bombe" as Bombe
+Artificier -> Bombe : new Bombe(x, y)
+activate Bombe
+Bombe --> Artificier : b
+deactivate Bombe
+
+Artificier -> Cases : add(b)
+activate Cases
+Cases --> Artificier
+deactivate Cases
+
+Artificier -> Bombe : setJeu(j)
+activate Bombe
+Bombe --> Artificier
+deactivate Bombe
+
+Artificier -> Bombe : exploser()
+activate Bombe
+note over Bombe: Démarre un Thread d'explosion (1500ms d'attente)
+Bombe --> Artificier
+deactivate Bombe
+
+deactivate Artificier
+@enduml

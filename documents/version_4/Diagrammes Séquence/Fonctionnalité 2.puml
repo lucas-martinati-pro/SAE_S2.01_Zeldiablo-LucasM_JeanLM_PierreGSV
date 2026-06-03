@@ -1,0 +1,59 @@
+@startuml
+title Fonctionnalité 2 - Affichage visuel des attaques
+
+participant "moteur : MoteurGraphique" as Moteur
+participant "jeu : DessinLaby" as Dessin
+participant "j : Jeu" as Jeu
+participant "m : Personnage" as Monstre
+participant "hero : Aventurier" as Hero
+
+activate Moteur
+Moteur -> Dessin : dessiner(im)
+activate Dessin
+
+Dessin -> Jeu : getMonstres()
+activate Jeu
+Jeu --> Dessin : monstres
+deactivate Jeu
+
+loop Pour chaque monstre m dans monstres
+    Dessin -> Monstre : getIsAttaque()
+    activate Monstre
+    Monstre --> Dessin : true/false
+    deactivate Monstre
+    
+    alt isAttaque == true
+        Dessin -> Monstre : getType()
+        activate Monstre
+        Monstre --> Dessin : mtype
+        deactivate Monstre
+        note over Dessin: Sélectionne l'image d'attaque (ex: spiderAttaque)
+    else isAttaque == false
+        Dessin -> Monstre : getType()
+        activate Monstre
+        Monstre --> Dessin : mtype
+        deactivate Monstre
+        note over Dessin: Sélectionne l'image normale (ex: spider)
+    end
+    note over Dessin: Dessine le monstre à sa position (x, y)
+end
+
+Dessin -> Jeu : getHero()
+activate Jeu
+Jeu --> Dessin : hero
+deactivate Jeu
+
+Dessin -> Hero : getIsAttaque()
+activate Hero
+Hero --> Dessin : true/false
+deactivate Hero
+
+alt isAttaque == true
+    note over Dessin: Dessine heroAttaque à sa position
+else isAttaque == false
+    note over Dessin: Dessine hero à sa position
+end
+
+deactivate Dessin
+deactivate Moteur
+@enduml

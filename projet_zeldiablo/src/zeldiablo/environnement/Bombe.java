@@ -55,6 +55,16 @@ public class Bombe extends Case {
                 }
             }
 
+            // Montrer l'explosion pendant 300ms (une seule fois en dehors de la boucle)
+            jeu.getExplosionAffichage().addAll(casesTouchees); // Ajoute toutes les cases touchées à l'affichage de l'explosion
+            new Thread(() -> {
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                }
+                jeu.getExplosionAffichage().clear();
+            }).start();
+
             // Appliquer l'explosion et les dégâts sur les cases touchées
             for (int[] coord : casesTouchees) {
                 int cx = coord[0];
@@ -80,16 +90,6 @@ public class Bombe extends Case {
                      jeu.detruire(cx, cy);
                 }
             }
-
-            // Montrer l'explosion pendant 300ms (une seule fois en dehors de la boucle)
-            jeu.getExplosionAffichage().addAll(casesTouchees); // Ajoute toutes les cases touchées à l'affichage de l'explosion
-            new Thread(() -> {
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                }
-                jeu.getExplosionAffichage().clear();
-            }).start();
         }).start();
     }
 }

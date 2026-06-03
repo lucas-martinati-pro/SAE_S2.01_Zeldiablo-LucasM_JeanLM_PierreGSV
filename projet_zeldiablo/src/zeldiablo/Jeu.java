@@ -21,9 +21,9 @@ public class Jeu implements moteurJeu.Jeu {
     public static final char VIDE = ' ';
     public static final char MUR = '#';
     public static final char MUR_FRIABLE = '*';
+    public static final char SOINS = '+';
     public static final char PIEGE = 'P';
     public static final char TELEPORTEUR = '|';
-    public static final char BOMBE = '$';
     public static final char FIN = '&';
     public static final char AMULETTE = 'A';
     public static final char HERO = '@';
@@ -171,7 +171,6 @@ public class Jeu implements moteurJeu.Jeu {
                     }
                     case Jeu.FIN -> fin = new int[]{j, i};
                     case Jeu.PIEGE -> this.cases.add(new Piege(j, i));
-                    case Jeu.TELEPORTEUR -> this.cases.add(new Teleporteur(j, i));
                     case Jeu.MUR_FRIABLE -> this.cases.add(new MurFriable(j, i));
                     case Jeu.AMULETTE -> this.cases.add(new Amulette(j, i));
                     case Jeu.SPIDER -> monstres.add(new Spider(j, i, 3));
@@ -329,7 +328,6 @@ public class Jeu implements moteurJeu.Jeu {
                 switch (c.getType()) {
                     case "Piege": return Jeu.PIEGE;
                     case "MurFriable": return Jeu.MUR_FRIABLE;
-                    case "Bombe": return Jeu.BOMBE;
                     case "Amulette": return Jeu.AMULETTE;
                     case "Teleporteur": return Jeu.TELEPORTEUR;
                     case "PiegeDetruit": return Jeu.VIDE;
@@ -338,6 +336,9 @@ public class Jeu implements moteurJeu.Jeu {
                     case "Spider": return Jeu.SPIDER;
                     case "Troll": return Jeu.TROLL;
                     case "Ghost": return Jeu.GHOST;
+                    case "Blob": return Jeu.BLOB;
+                    case "Artificier": return Jeu.ARTIFICIER;
+                    case "Soins": return Jeu.SOINS;
                 }
             }
             return Jeu.VIDE;

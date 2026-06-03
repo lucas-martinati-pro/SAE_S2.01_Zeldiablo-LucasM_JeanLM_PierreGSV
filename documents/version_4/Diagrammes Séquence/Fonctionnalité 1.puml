@@ -1,0 +1,39 @@
+@startuml
+title Fonctionnalité 1 - Cases déclencheurs d'effets (Piège)
+
+participant "j : Jeu" as Jeu
+participant "p : Personnage" as Perso
+participant "cE : CaseEffet" as CaseEffet
+
+activate Jeu
+Jeu -> Perso : deplacer(j, commandeUser)
+activate Perso
+
+Perso -> Jeu : getCase(coord[0], coord[1])
+activate Jeu
+Jeu --> Perso : cE
+deactivate Jeu
+
+alt cE instanceof CaseEffet
+    alt !(this instanceof Troll)
+        Perso -> CaseEffet : effet(this)
+        activate CaseEffet
+        CaseEffet -> Perso : addVie(-1)
+        activate Perso
+        Perso --> CaseEffet
+        deactivate Perso
+        CaseEffet --> Perso
+        deactivate CaseEffet
+    else this instanceof Troll
+        Perso -> Jeu : detruire(coord[0], coord[1])
+        activate Jeu
+        Jeu --> Perso
+        deactivate Jeu
+    end
+end
+
+Perso -> Perso : setPos(coord[0], coord[1])
+Perso --> Jeu
+deactivate Perso
+deactivate Jeu
+@enduml

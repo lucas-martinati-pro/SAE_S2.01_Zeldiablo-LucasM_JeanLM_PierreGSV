@@ -1,6 +1,7 @@
 package zeldiablo;
 
 import zeldiablo.entite.*;
+import zeldiablo.environnement.Soins;
 import zeldiablo.item.Item;
 import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Piege;

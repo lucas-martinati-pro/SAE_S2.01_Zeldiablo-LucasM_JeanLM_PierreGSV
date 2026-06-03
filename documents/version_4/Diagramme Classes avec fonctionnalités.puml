@@ -40,7 +40,6 @@ class "Jeu" {
 
     + detruire(x : int, y : int) : void
     + getSuivant(x : int, y : int, commandeUser : Commande) : int[]
-    + addBombe(x : int, y : int) : void
     + verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
     + evoluer(commandeUser : Commande) : void
     + etreFini() : boolean
@@ -143,9 +142,9 @@ package "entite" {
     }
 
     class Artificier {
-        + Blob(x : int, y : int, vie : int)
+        + Artificier(x : int, y : int, vie : int)
         + getType() : String
-        + attaquer(jeu : Jeu, commandeUser : Commande) : void
+        + attaquer(victime : Personnage) : void
     }
 }
 
