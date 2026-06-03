@@ -1,7 +1,5 @@
 package zeldiablo.environnement;
 
-import zeldiablo.entite.Personnage;
-
 /**
  * Interface représentant une case dans le jeu.
  */

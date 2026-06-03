@@ -1,6 +1,5 @@
 package zeldiablo.item;
 
-import zeldiablo.entite.Aventurier;
 import zeldiablo.entite.Personnage;
 
 public class Amulette extends ItemPlacable {

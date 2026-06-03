@@ -1,10 +1,8 @@
 package zeldiablo;
 
 import moteurJeu.Commande;
-import zeldiablo.entite.Artificier;
 import zeldiablo.entite.Personnage;
 import zeldiablo.entite.Troll;
-import zeldiablo.environnement.Case;
 
 import java.util.Timer;
 
