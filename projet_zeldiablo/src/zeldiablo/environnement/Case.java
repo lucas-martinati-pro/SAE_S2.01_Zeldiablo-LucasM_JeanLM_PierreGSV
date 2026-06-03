@@ -44,15 +44,6 @@ public abstract class Case {
     }
 
     /**
-     * Applique l'effet de la case sur le personnage.
-     *
-     * @param perso le personnage subissant l'effet
-     */
-    public void effet(Personnage perso) {
-        // Par defaut, aucun effet
-    }
-
-    /**
     * Retourne le type de la case.
     *
     * @return le type de la case

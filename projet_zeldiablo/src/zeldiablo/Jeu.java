@@ -1,5 +1,6 @@
 package zeldiablo;
 
+import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.item.Amulette;
 import zeldiablo.entite.*;
 import zeldiablo.environnement.*;
@@ -7,6 +8,10 @@ import zeldiablo.exception.ActionInconnueException;
 
 import moteurJeu.Commande;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -28,33 +33,7 @@ public class Jeu implements moteurJeu.Jeu {
     // ########## Variables ##########
     private int[] size;
     private Aventurier hero;
-    private ArrayList<Personnage> monstres = new ArrayList<Personnage>() {
-        @Override
-        public boolean add(Personnage p) {
-            if (!cases.contains(p)) {
-                cases.add(p);
-            }
-            return super.add(p);
-        }
-        @Override
-        public boolean remove(Object o) {
-            cases.remove(o);
-            return super.remove(o);
-        }
-        @Override
-        public Personnage remove(int index) {
-            Personnage p = super.remove(index);
-            cases.remove(p);
-            return p;
-        }
-        @Override
-        public void clear() {
-            for (Personnage p : this) {
-                cases.remove(p);
-            }
-            super.clear();
-        }
-    };
+    private ArrayList<Personnage> monstres = new ArrayList<>();
     private GestionnaireMonstres gestionnaireMonstres = new GestionnaireMonstres(this);
 
     private ArrayList<Case> cases = new ArrayList<>();
@@ -64,15 +43,6 @@ public class Jeu implements moteurJeu.Jeu {
     private boolean recharger = true;
 
     // ########## Getters/Setters ##########
-
-    /**
-     * Modifie la case de fin du jeu.
-     *
-     * @param fin la nouvelle coordonnee de fin
-     */
-    public void setFin(int[] fin) {
-        this.fin = fin;
-    }
 
     /**
      * Retourne le gestionnaire de monstres associe au jeu.
@@ -146,11 +116,72 @@ public class Jeu implements moteurJeu.Jeu {
         return monstres;
     }
 
+    /**
+     * Retourne les coordonnees de la case de fin du niveau.
+     *
+     * @return les coordonnees de la case de fin
+     */
     public int[] getFin() {
         return fin;
     }
 
     // ########## Méthodes ##########
+    /**
+     * Charge un jeu a partir d'un fichier texte.
+     *
+     * @param nomFichier le chemin vers le fichier de labyrinthe
+     * @throws FileNotFoundException si le fichier n'existe pas
+     * @throws IOException si une erreur de lecture survient
+     * @throws FichierIncorrectException si le fichier contient des caracteres invalides, si le personnage est absent, ou si le nombre de caisses ne correspond pas au nombre de depots
+     */
+    public void chargerNiveau(String nomFichier) throws FileNotFoundException, IOException, FichierIncorrectException {
+        ArrayList<String> ligne = new ArrayList<>();
+
+        BufferedReader file = new BufferedReader(new FileReader(nomFichier));
+
+        String currentLine;
+        while ((currentLine = file.readLine()) != null) {
+            ligne.add(currentLine);
+        }
+        file.close();
+
+        this.cases.clear();
+        this.monstres.clear();
+        this.hero = null;
+        this.fin = null;
+
+        int max = 0;
+        for (String line : ligne) {
+            if (line.length() > max) max = line.length();
+        }
+        this.size = new int[]{max, ligne.size()};
+
+        for (int i = 0; i < ligne.size(); i++) {
+            String line = ligne.get(i);
+            for (int j = 0; j < line.length(); j++) {
+                switch (line.charAt(j)) {
+                    case Jeu.VIDE -> {}
+                    case Jeu.MUR -> this.cases.add(new Mur(j, i));
+                    case Jeu.HERO -> {
+                        hero = new Aventurier(j, i, 5);
+                        hero.setJeu(this);
+                    }
+                    case Jeu.FIN -> fin = new int[]{j, i};
+                    case Jeu.PIEGE -> this.cases.add(new Piege(j, i));
+                    case Jeu.MUR_FRIABLE -> this.cases.add(new MurFriable(j, i));
+                    case Jeu.AMULETTE -> this.cases.add(new Amulette(j, i));
+                    case Jeu.SPIDER -> monstres.add(new Spider(j, i, 3));
+                    case Jeu.TROLL -> monstres.add(new Troll(j, i, 1));
+                    case Jeu.GHOST -> monstres.add(new Ghost(j, i, 4));
+                    default -> throw new FichierIncorrectException("caractère inconnu " + line.charAt(j));
+                }
+            }
+        }
+
+        if (hero == null) throw new FichierIncorrectException("hero inconnu");  // Si il y as 2 personnages, ça prend le dernière
+        else if (fin == null) throw new FichierIncorrectException("case de fin inconnue");
+    }
+
     /**
      * Detruit la case situee aux coordonnees (x, y) et la retire du jeu.
      *

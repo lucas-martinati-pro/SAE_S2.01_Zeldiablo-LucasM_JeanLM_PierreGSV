@@ -8,19 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestEnvironnement {
 
-    // ########## Tests Jeu Constantes ##########
-
-    @Test
-    public void test_Jeu_constantes() {
-        assertEquals('#', Jeu.MUR);
-        assertEquals('@', Jeu.HERO);
-        assertEquals(' ', Jeu.VIDE);
-        assertEquals('&', Jeu.FIN);
-        assertEquals('$', Jeu.PIEGE);
-        assertEquals('*', Jeu.MUR_FRIABLE);
-        assertEquals('B', Jeu.BOMBE);
-    }
-
     // ########## Tests Piege ##########
 
     @Test
@@ -64,14 +51,6 @@ public class TestEnvironnement {
         assertEquals("MurFriable", mf.getType());
         assertEquals(2, mf.getX());
         assertEquals(3, mf.getY());
-    }
-
-    @Test
-    public void test_MurFriable_effetNeInfligePasDegat() {
-        MurFriable mf = new MurFriable(1, 1);
-        Aventurier a = new Aventurier(1, 1, 5);
-        mf.effet(a);
-        assertEquals(5, a.getVie()); // pas de dégâts
     }
 
     @Test

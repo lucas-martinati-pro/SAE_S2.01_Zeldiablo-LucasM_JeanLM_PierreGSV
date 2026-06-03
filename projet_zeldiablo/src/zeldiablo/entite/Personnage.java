@@ -120,11 +120,9 @@ public abstract class Personnage extends Case {
             Case c = jeu.getCase(coord[0], coord[1]);
 
             if (c == null || c.getIsTraversable()) {
-                if (c instanceof CaseUtils cU) {
-                    if (this instanceof Troll) {
-                        jeu.getCases().remove(cU);
-                        jeu.getCases().add(new PiegeDetruit(cU.getX(), cU.getY()));
-                    } else cU.effet(this);
+                if (c instanceof CaseEffet cE) {
+                    if (this instanceof Troll) jeu.detruire(coord[0], coord[1]);
+                    else cE.effet(this);
                 }
                 this.setPos(coord[0], coord[1]);
             }

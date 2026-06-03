@@ -6,7 +6,7 @@ import zeldiablo.Jeu;
 /**
  * Represente une bombe dans le jeu, capable d'exploser et de detruire des elements ou blesser des personnages.
  */
-public class Bombe extends CaseUtils {
+public class Bombe extends Case {
     private Jeu jeu;
 
     /**
@@ -27,6 +27,7 @@ public class Bombe extends CaseUtils {
      */
     public Bombe(int x, int y) {
         super(x, y);
+        this.isTraversable = false; // La bombe n'est pas traversable
     }
 
     @Override
@@ -34,8 +35,7 @@ public class Bombe extends CaseUtils {
         return "Bombe";
     }
 
-    @Override
-    public void effet(Personnage perso) {
+    public void exploser() {
         new Thread(() -> {
             try {
                 Thread.sleep(1500);

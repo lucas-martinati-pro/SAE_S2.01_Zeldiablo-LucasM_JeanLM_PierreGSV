@@ -1,6 +1,5 @@
 package main;
 
-import zeldiablo.Chargement;
 import zeldiablo.DessinLaby;
 import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.Jeu;
@@ -52,7 +51,7 @@ public class MainZeldiablo {
         Jeu j = new Jeu();
 
         try {
-            Chargement.chargerNiveau(j, laby);
+            j.chargerNiveau(laby);
         } catch (FichierIncorrectException e) {
             System.err.println("Le fichier n'est pas valide, veuillez réessayer : " + e.getMessage());
             main(args);
@@ -91,7 +90,7 @@ public class MainZeldiablo {
                     String path = "laby/niveaux/lvl" + lvl + ".txt";
 
                     try {
-                        Chargement.chargerNiveau(j, path);
+                        j.chargerNiveau(path);
                     } catch (IOException e) {
                         System.err.println("Une erreur s'est produite lors de la lecture du fichier : " + e.getMessage());
                         enCours = false; // On arrête si on ne trouve plus de niveau (fin du jeu)

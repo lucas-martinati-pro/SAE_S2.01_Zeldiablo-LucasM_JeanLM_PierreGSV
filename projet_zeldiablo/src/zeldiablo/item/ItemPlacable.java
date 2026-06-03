@@ -1,8 +1,8 @@
 package zeldiablo.item;
 
-import zeldiablo.environnement.CaseUtils;
+import zeldiablo.environnement.CaseEffet;
 
-public abstract class ItemPlacable extends CaseUtils implements Item {
+public abstract class ItemPlacable extends CaseEffet implements Item {
 
     /**
      * Construit une case en garantissant que les coordonnees ne sont pas negatives.
