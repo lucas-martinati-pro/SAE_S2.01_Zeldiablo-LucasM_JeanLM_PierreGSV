@@ -7,7 +7,6 @@ participant "m : Blob" as Blob
 participant "gm : GestionnaireMonstres" as GM
 
 activate Bombe
-note over Bombe: Thread d'explosion (1500ms écoulés)
 Bombe -> Jeu : getMonstres()
 activate Jeu
 Jeu --> Bombe : monstres
@@ -19,34 +18,32 @@ loop Pour chaque monstre m dans monstres
         activate Blob
         Blob --> Bombe
         deactivate Blob
-        
+
         Bombe -> Jeu : getGestionnaireMonstres()
         activate Jeu
         Jeu --> Bombe : gm
         deactivate Jeu
-        
+
         Bombe -> GM : verifMort()
         activate GM
-        
+
         GM -> Blob : etreMort()
         activate Blob
         Blob --> GM : true
         deactivate Blob
-        
+
         GM -> Blob : getClass().getSimpleName()
         activate Blob
         Blob --> GM : "Blob"
         deactivate Blob
-        
-        note over GM: Affiche "Vous avez tué un blob ! 🦠"
-        
+
         GM -> Jeu : getMonstres()
         activate Jeu
         Jeu --> GM : monstres
         deactivate Jeu
-        
+
         GM -> GM : monstres.remove(m)
-        
+
         GM --> Bombe
         deactivate GM
     end
