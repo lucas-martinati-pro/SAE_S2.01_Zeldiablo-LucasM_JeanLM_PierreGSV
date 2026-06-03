@@ -21,6 +21,7 @@ public class Jeu implements moteurJeu.Jeu {
 
     private ArrayList<Case> cases = new ArrayList<>();
     private ArrayList<int[]> explosionAffichage = new ArrayList<>();
+    private ArrayList<Item> inventaire = new ArrayList<>();
 
     private int[] fin;
     private boolean recharger = true;
@@ -108,7 +109,25 @@ public class Jeu implements moteurJeu.Jeu {
         return monstres;
     }
 
+    /**
+     * Retourne la liste des items (pieges, bombes, murs friables, etc.) presentes dans le jeu.
+     * @return
+     */
+    public ArrayList<Item> getInventaire() {
+        return inventaire;
+    }
+
     // ########## Méthodes ##########
+    /**
+     *
+     */
+    public boolean haveItem(String nom) {
+        for (Item o : this.inventaire) {
+            if (o.getType().equals(nom)) return true;
+        }
+        return false;
+    }
+
     /**
      * Detruit la case situee aux coordonnees (x, y) et la retire du jeu.
      *

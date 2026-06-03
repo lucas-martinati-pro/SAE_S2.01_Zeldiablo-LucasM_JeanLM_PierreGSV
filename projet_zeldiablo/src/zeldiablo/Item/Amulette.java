@@ -1,4 +1,4 @@
-package zeldiablo.Objet;
+package zeldiablo.Item;
 
 public class Amulette {
 }
