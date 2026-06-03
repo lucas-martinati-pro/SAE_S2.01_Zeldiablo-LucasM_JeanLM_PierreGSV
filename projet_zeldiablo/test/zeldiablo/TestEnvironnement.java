@@ -24,7 +24,7 @@ public class TestEnvironnement {
     public void test_Piege_effetInfligeDegatEtRevele() {
         Piege p = new Piege(1, 1);
         Aventurier a = new Aventurier(1, 1, 5);
-        p.effet(a);
+        p.effet(new Jeu(), a);
         assertEquals(4, a.getVie());
         assertTrue(p.getIsRevele());
     }
@@ -33,7 +33,7 @@ public class TestEnvironnement {
     public void test_Piege_effetSurMonstre() {
         Piege p = new Piege(1, 1);
         Spider m = new Spider(1, 1, 3);
-        p.effet(m);
+        p.effet(new Jeu(), m);
         assertEquals(2, m.getVie());
         assertTrue(p.getIsRevele());
     }

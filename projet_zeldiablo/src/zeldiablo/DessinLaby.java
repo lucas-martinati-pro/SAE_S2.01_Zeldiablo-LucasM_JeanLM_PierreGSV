@@ -1,7 +1,6 @@
 package zeldiablo;
 
 import zeldiablo.entite.*;
-import zeldiablo.environnement.Soins;
 import zeldiablo.item.Item;
 import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Piege;
@@ -29,11 +28,14 @@ public class DessinLaby implements DessinJeu {
     private BufferedImage porteOuverte;
     private BufferedImage mur;
     private BufferedImage vide;
+    private BufferedImage soins;
+    private BufferedImage soinsDetruit;
     private BufferedImage piege;
+    private BufferedImage piegeDetruit;
     private BufferedImage teleporteur;
+    private BufferedImage teleporteurDetruit;
     private BufferedImage murFriable;
     private BufferedImage bombe;
-    private BufferedImage piegeDetruit;
     private BufferedImage amulette;
     private BufferedImage spider;
     private BufferedImage troll;
@@ -65,8 +67,11 @@ public class DessinLaby implements DessinJeu {
             porteOuverte = ImageIO.read(new File("sprite/porteOuverte.png"));
             mur = ImageIO.read(new File("sprite/mur.png"));
             vide = ImageIO.read(new File("sprite/vide.png"));
+            soins = ImageIO.read(new File("sprite/soins.png"));
+            soinsDetruit = ImageIO.read(new File("sprite/soinsDetruit.png"));
             piege = ImageIO.read(new File("sprite/piege.png"));
             teleporteur = ImageIO.read(new File("sprite/teleporteur.png"));
+            teleporteurDetruit = ImageIO.read(new File("sprite/teleporteurDetruit.png"));
             murFriable = ImageIO.read(new File("sprite/murFriable.png"));
             bombe = ImageIO.read(new File("sprite/bombe.png"));
             piegeDetruit = ImageIO.read(new File("sprite/piegeDetruit.png"));
@@ -111,16 +116,19 @@ public class DessinLaby implements DessinJeu {
             int y = c.getY();
             BufferedImage img = switch (c.getType()) {
                 case "Mur" -> mur;
+                case "Soins" -> soins;
+                case "SoinsDetruit" -> soinsDetruit;
                 case "Piege" -> {
                     // Le yield sert à renvoyer la valeur en dehors des accolade, c'est ce que le switch avec les -> demande
                     if (((Piege) c).getIsRevele()) yield piege;
                     else yield vide;
                 }
+                case "PiegeDetruit" -> piegeDetruit;
                 case "MurFriable" -> murFriable;
                 case "Bombe" -> bombe;
-                case "PiegeDetruit" -> piegeDetruit;
                 case "Amulette" -> amulette;
                 case "Teleporteur" -> teleporteur;
+                case "TeleporteurDetruit" -> teleporteurDetruit;
                 default -> vide;
             };
             g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);

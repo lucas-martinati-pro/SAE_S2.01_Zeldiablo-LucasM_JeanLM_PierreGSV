@@ -14,6 +14,9 @@ class "Jeu" {
     + {static} TROLL = 'T' : char
     + {static} GHOST = 'G' : char
     + {static} BLOB = 'B' : char
+    + {static} SOINS = '+' : char
+    + {static} TELEPORTEUR = '|' : char
+    + {static} ARTIFICIER = 'R' : char
 
     - size : int[]
     - hero : Aventurier
@@ -66,7 +69,11 @@ class DessinLaby {
     - porteOuverte : BufferedImage
     - mur : BufferedImage
     - vide : BufferedImage
+    - soins : BufferedImage
+    - soinsDetruit : BufferedImage
     - piege : BufferedImage
+    - teleporteur : BufferedImage
+    - teleporteurDetruit : BufferedImage
     - murFriable : BufferedImage
     - bombe : BufferedImage
     - piegeDetruit : BufferedImage
@@ -75,11 +82,13 @@ class DessinLaby {
     - troll : BufferedImage
     - ghost : BufferedImage
     - blob : BufferedImage
+    - artificier : BufferedImage
     - hero : BufferedImage
     - spiderAttaque : BufferedImage
     - trollAttaque : BufferedImage
     - ghostAttaque : BufferedImage
     - blobAttaque : BufferedImage
+    - artificierAttaque : BufferedImage
     - heroAttaque : BufferedImage
     - coeur : BufferedImage
 
@@ -142,7 +151,10 @@ package "entite" {
     }
 
     class Artificier {
+        - jeu : Jeu
+
         + Artificier(x : int, y : int, vie : int)
+        + setJeu(jeu : Jeu) : void
         + getType() : String
         + attaquer(victime : Personnage) : void
     }
@@ -179,7 +191,7 @@ package "environnement" {
 
     abstract class CaseEffet {
         + CaseEffet(x : int, y : int)
-        + {abstract} effet(perso : Personnage) : void
+        + {abstract} effet(jeu : Jeu, perso : Personnage) : void
     }
 
     class Piege {
@@ -188,16 +200,38 @@ package "environnement" {
         + Piege(x : int, y : int)
         + getIsRevele() : boolean
         + getType() : String
-        + effet(perso : Personnage) : void
+        + effet(jeu : Jeu, perso : Personnage) : void
     }
 
     class Bombe {
-        - jeu : Jeu
-
         + Bombe(x : int, y : int)
-        + setJeu(jeu : Jeu) : void
         + getType() : String
-        + exploser() : void
+        + exploser(jeu : Jeu) : void
+    }
+
+    interface CaseDetruite {
+    }
+
+    class Soins {
+        + Soins(x : int, y : int)
+        + getType() : String
+        + effet(jeu : Jeu, perso : Personnage) : void
+    }
+
+    class SoinsDetruit {
+        + SoinsDetruit(x : int, y : int)
+        + getType() : String
+    }
+
+    class Teleporteur {
+        + Teleporteur(x : int, y : int)
+        + getType() : String
+        + effet(jeu : Jeu, perso : Personnage) : void
+    }
+
+    class TeleporteurDetruit {
+        + TeleporteurDetruit(x : int, y : int)
+        + getType() : String
     }
 }
 
@@ -209,13 +243,16 @@ package "item" {
 
     abstract class ItemPlacable {
         + ItemPlacable(x : int, y : int)
-        + effet(perso : Personnage) : void
+        + effet(jeu : Jeu, perso : Personnage) : void
     }
 
     class Amulette {
         + Amulette(x : int, y : int)
         + getType() : String
         + use(personnage : Personnage) : void
+    }
+
+    abstract class ItemUtils {
     }
 }
 
@@ -238,12 +275,21 @@ Case <|-- MurFriable
 Case <|-- Personnage
 Case <|-- CaseEffet
 Case <|-- Bombe
+Case <|-- SoinsDetruit
+Case <|-- TeleporteurDetruit
 
 CaseEffet <|-- Piege
 CaseEffet <|-- ItemPlacable
+CaseEffet <|-- Soins
+CaseEffet <|-- Teleporteur
+
+CaseDetruite <|.. PiegeDetruit
+CaseDetruite <|.. SoinsDetruit
+CaseDetruite <|.. TeleporteurDetruit
 
 ItemPlacable <|-- Amulette
 Item <|.. ItemPlacable
+Item <|.. ItemUtils
 
 Personnage <|-- Aventurier
 Personnage <|-- Spider
@@ -264,6 +310,8 @@ Jeu "1" --> "*" Case : cases
 
 Aventurier "1" --> "*" Item : inventaire
 Aventurier "1" --> "1" Jeu : jeu
+
+Artificier "1" --> "1" Jeu : jeu
 
 GestionnaireMonstres "1" --> "1" Jeu : jeu
 

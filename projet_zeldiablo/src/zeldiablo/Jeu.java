@@ -171,6 +171,8 @@ public class Jeu implements moteurJeu.Jeu {
                     }
                     case Jeu.FIN -> fin = new int[]{j, i};
                     case Jeu.PIEGE -> this.cases.add(new Piege(j, i));
+                    case Jeu.SOINS -> this.cases.add(new Soins(j, i));
+                    case Jeu.TELEPORTEUR -> this.cases.add(new Teleporteur(j, i));
                     case Jeu.MUR_FRIABLE -> this.cases.add(new MurFriable(j, i));
                     case Jeu.AMULETTE -> this.cases.add(new Amulette(j, i));
                     case Jeu.SPIDER -> monstres.add(new Spider(j, i, 3));
@@ -199,11 +201,18 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public void detruire(int x, int y) {
         Case c = getCase(x, y);
-        if (c instanceof Piege) {
-            this.cases.remove(c);
-            this.cases.add(new PiegeDetruit(x, y));
+        if (c != null) {
+            if (!(c instanceof Amulette)) this.cases.remove(getCase(x, y));
+            if (c instanceof Piege) {
+                this.cases.add(new PiegeDetruit(x, y));
+            }
+            if (c instanceof Soins) {
+                this.cases.add(new SoinsDetruit(x, y));
+            }
+            if (c instanceof Teleporteur) {
+                this.cases.add(new TeleporteurDetruit(x, y));
+            }
         }
-        if (!(c instanceof Amulette)) this.cases.remove(getCase(x, y));
     }
 
     // =========================================================
@@ -220,8 +229,8 @@ public class Jeu implements moteurJeu.Jeu {
     public Case getCase(int x, int y) {
         for (Case c : cases) {
             if (c.getX() == x && c.getY() == y) {
-                // Si c'est un piège détruit, on le considère comme une case vide
-                if (!(c instanceof PiegeDetruit)) return c;
+                // Si c'est une case détruite, on le considère comme une case vide
+                if (!(c instanceof CaseDetruite)) return c;
             }
         }
         return null;

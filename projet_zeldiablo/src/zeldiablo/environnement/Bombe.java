@@ -85,10 +85,7 @@ public class Bombe extends Case {
                 }
 
                 // Détruire la case si destructible (Mur friable, autre bombe...)
-                Case c = jeu.getCase(cx, cy);
-                if (c != null) {
-                     jeu.detruire(cx, cy);
-                }
+                jeu.detruire(cx, cy);
             }
         }).start();
     }

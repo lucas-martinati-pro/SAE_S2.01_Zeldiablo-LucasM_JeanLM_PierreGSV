@@ -7,7 +7,6 @@ public class Soins extends CaseEffet {
 
     public Soins(int x, int y) {
         super(x, y);
-        this.isTraversable = true; // La potion est traversable
     }
 
     @Override
@@ -18,7 +17,7 @@ public class Soins extends CaseEffet {
     @Override
     public void effet(Jeu jeu, Personnage perso) {
         System.out.println("Une personne a trouvé une potion de vie ! +1pv ❤.");
-        perso.addVie(5);
+        perso.addVie(2);
         jeu.detruire(x, y);
     }
 }

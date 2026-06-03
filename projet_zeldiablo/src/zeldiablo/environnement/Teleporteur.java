@@ -6,7 +6,6 @@ import zeldiablo.entite.Personnage;
 import java.util.ArrayList;
 
 public class Teleporteur extends CaseEffet {
-    ArrayList<Case> cases;
 
     public Teleporteur(int x, int y) {
         super(x, y);
@@ -15,10 +14,6 @@ public class Teleporteur extends CaseEffet {
     @Override
     public String getType() {
         return "Teleporteur";
-    }
-
-    public void setCases(ArrayList<Case> cases) {
-        this.cases = cases;
     }
 
     @Override

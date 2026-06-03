@@ -1,6 +1,6 @@
 package zeldiablo.environnement;
 
-public class PiegeDetruit extends Case {
+public class PiegeDetruit extends Case implements CaseDetruite {
 
     public PiegeDetruit(int x, int y) {
         super(x, y);

@@ -6,6 +6,7 @@
     - critère 1 : Les cases déclencheurs sont des cases traversables.
     - critère 2 : Lorsqu'un personnage (héros ou monstre) marche sur cette case, l'effet se déclenche immédiatement.
     - critère 3 : L'effet se traduit pour le moment par un affichage spécifique dans la console.
+    - critère 4 : Quand une case déclencheuse est cassée, elle est remplacée par une version de cette case détruite, et ne déclenchera plus aucun effet.
   - responsables : LE MADEC Jean
 
 - fonctionnalité 2 : Affichage visuel des attaques
