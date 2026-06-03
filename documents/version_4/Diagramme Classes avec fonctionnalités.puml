@@ -311,8 +311,6 @@ Jeu "1" --> "*" Case : cases
 Aventurier "1" --> "*" Item : inventaire
 Aventurier "1" --> "1" Jeu : jeu
 
-Artificier "1" --> "1" Jeu : jeu
-
 GestionnaireMonstres "1" --> "1" Jeu : jeu
 
 DessinLaby "1" --> "1" Jeu : jeu

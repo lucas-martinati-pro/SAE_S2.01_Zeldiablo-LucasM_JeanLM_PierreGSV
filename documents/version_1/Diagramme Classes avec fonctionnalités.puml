@@ -5,14 +5,16 @@ class Jeu {
     -laby : Labyrinthe
     -hero : Aventurier
     -fin : int[]
-    +BAS = "Bas" : static final String
-    +GAUCHE = "Gauche" : static final String
-    +DROITE = "Droite" : static final String
+    +{static} HAUT = "Haut" : String
+    +{static} BAS = "Bas" : String
+    +{static} GAUCHE = "Gauche" : String
+    +{static} DROITE = "Droite" : String
 
     +setHero(perso : Personnage) : void
 
     +chargerJeu(nomFichier : String) : void
     +convertLab(nomFichier : String, ligne : ArrayList<String>) : Labyrinthe
+    +deplacerHero(action : String) : void
     +setLaby(laby : Labyrinthe) : void
 }
 
