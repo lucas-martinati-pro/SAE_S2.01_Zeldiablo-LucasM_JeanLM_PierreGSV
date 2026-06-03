@@ -202,7 +202,7 @@ public class Jeu implements moteurJeu.Jeu {
     public void detruire(int x, int y) {
         Case c = getCase(x, y);
         if (c != null) {
-            if (!(c instanceof Amulette)) this.cases.remove(getCase(x, y));
+            if (!(c instanceof Amulette)) this.cases.remove(c);
             if (c instanceof Piege) {
                 this.cases.add(new PiegeDetruit(x, y));
             }
