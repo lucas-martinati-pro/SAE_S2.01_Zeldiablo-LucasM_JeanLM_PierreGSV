@@ -39,10 +39,12 @@ public class DessinLaby implements DessinJeu {
     private BufferedImage spider;
     private BufferedImage troll;
     private BufferedImage ghost;
+    private BufferedImage blob;
     private BufferedImage hero;
     private BufferedImage spiderAttaque;
     private BufferedImage trollAttaque;
     private BufferedImage ghostAttaque;
+    private BufferedImage blobAttaque;
     private BufferedImage heroAttaque;
     private BufferedImage coeur;
 
@@ -70,10 +72,12 @@ public class DessinLaby implements DessinJeu {
             spider = ImageIO.read(new File("sprite/spider.png"));
             troll = ImageIO.read(new File("sprite/troll.png"));
             ghost = ImageIO.read(new File("sprite/ghost.png"));
+            blob = ImageIO.read(new File("sprite/blob.png"));
             hero = ImageIO.read(new File("sprite/hero.png"));
             spiderAttaque = ImageIO.read(new File("sprite/spiderAttaque.png"));
             trollAttaque = ImageIO.read(new File("sprite/trollAttaque.png"));
             ghostAttaque = ImageIO.read(new File("sprite/ghostAttaque.png"));
+            blobAttaque = ImageIO.read(new File("sprite/blobAttaque.png"));
             heroAttaque = ImageIO.read(new File("sprite/heroAttaque.png"));
             coeur = ImageIO.read(new File("sprite/coeur.png"));
         } catch (IOException e) {
@@ -131,6 +135,7 @@ public class DessinLaby implements DessinJeu {
                     case "Spider" -> spiderAttaque;
                     case "Troll" -> trollAttaque;
                     case "Ghost" -> ghostAttaque;
+                    case "Blob" -> blobAttaque;
                     default -> null;
                 };
             } else {
@@ -138,6 +143,7 @@ public class DessinLaby implements DessinJeu {
                     case "Spider" -> spider;
                     case "Troll" -> troll;
                     case "Ghost" -> ghost;
+                    case "Blob" -> blob;
                     default -> null;
                 };
             }

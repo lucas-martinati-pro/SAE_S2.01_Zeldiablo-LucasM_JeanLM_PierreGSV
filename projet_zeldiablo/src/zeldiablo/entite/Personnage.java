@@ -5,8 +5,6 @@ import moteurJeu.Commande;
 import zeldiablo.environnement.*;
 import zeldiablo.exception.ActionInconnueException;
 
-import java.util.Timer;
-
 /**
  * Represente un personnage abstrait dans le jeu.
  */
