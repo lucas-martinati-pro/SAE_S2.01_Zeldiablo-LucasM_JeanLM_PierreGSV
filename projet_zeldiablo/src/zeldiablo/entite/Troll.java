@@ -2,6 +2,7 @@ package zeldiablo.entite;
 
 import moteurJeu.Commande;
 import zeldiablo.Jeu;
+import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Labyrinthe;
 import zeldiablo.exception.ActionInconnueException;
 
@@ -31,15 +32,24 @@ public class Troll extends Personnage {
         }
     }
 
-     @Deprecated
-     public void deplacer(Jeu jeu, Commande commandeUser) {
+    /**
+     * Le troll peut se déplacer normalement, mais il détruit les pièges en marchant dessus. Il ne peut pas traverser les murs ou les murs friables, et il ne peut pas marcher sur les autres monstres.
+     * @param jeu le jeu dans lequel le troll se déplace
+     * @param commandeUser la commande de déplacement du troll
+     * @return void
+     */
+    public void deplacer(Jeu jeu, Commande commandeUser) {
         int[] coord = jeu.getSuivant(this.x, this.y, commandeUser);
         try {
             jeu.verifierDeplacement(coord[0], coord[1], commandeUser);
             switch (jeu.getChar(coord[0], coord[1])) {
                 case Labyrinthe.PIEGE -> {
-                    jeu.getCases().remove(jeu.getCase(coord[0], coord[1])); // Le Troll détruit le piège en marchant dessus
-                    this.setPos(coord[0], coord[1]);
+                    // Le Troll détruit le piège en marchant dessus
+                if (jeu.getCase(coord[0], coord[1]) != null) {
+                     jeu.detruire(coord[0], coord[1]);
+                     setPos(coord[0], coord[1]);
+                } 
+                    System.out.println("Le Troll a détruit un piège en marchant dessus !");
                 }
                 case Labyrinthe.VIDE, Labyrinthe.FIN, Labyrinthe.AMULETTE -> this.setPos(coord[0], coord[1]);
             }

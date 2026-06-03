@@ -59,4 +59,5 @@
     - critère 2 : Si le Troll ne subit aucun dégât au cours d'un tour de jeu, il regagne automatiquement un point de vie.
     - critère 3 : Les attaques des Trolls suivent le même fonctionnement que celles des monstres standards.
     - critère 4 : Par défaut, le Troll possède 6 points de vie.
+    - critère 5 : un Troll détruit les pièges si il marche dessus
   - responsables : GALLOIS Pierre

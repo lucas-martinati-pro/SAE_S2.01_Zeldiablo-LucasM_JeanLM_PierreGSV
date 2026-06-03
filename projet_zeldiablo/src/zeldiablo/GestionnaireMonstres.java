@@ -47,7 +47,7 @@ public class GestionnaireMonstres {
                     case 4 -> monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
                 }
 
-                // On déplace le monstre s'il y a une commande de déplacement, sinon on le laisse attaquer
+                // On déplace le monstre que si il utilise une commande de déplacement, sinon on le laisse attaquer
                 if (!(commandeUser.droite == false && commandeUser.gauche == false && commandeUser.haut == false && commandeUser.bas == false)) {
                     if (!jeu.getMonstres().isEmpty()) {
                         int index = (int) Math.floor(Math.random() * jeu.getMonstres().size());
