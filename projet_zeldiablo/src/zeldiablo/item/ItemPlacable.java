@@ -1,5 +1,6 @@
 package zeldiablo.item;
 
+import zeldiablo.Jeu;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.entite.Personnage;
 import zeldiablo.environnement.CaseEffet;
@@ -17,7 +18,7 @@ public abstract class ItemPlacable extends CaseEffet implements Item {
     }
 
     @Override
-    public void effet(Personnage perso) {
+    public void effet(Jeu jeu, Personnage perso) {
         if ((perso instanceof Aventurier)) ((Aventurier) perso).addInventaire(x, y);
     }
 }

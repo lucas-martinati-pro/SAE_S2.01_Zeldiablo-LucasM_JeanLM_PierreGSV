@@ -7,17 +7,6 @@ import zeldiablo.Jeu;
  * Represente une bombe dans le jeu, capable d'exploser et de detruire des elements ou blesser des personnages.
  */
 public class Bombe extends Case {
-    private Jeu jeu;
-
-    /**
-     * Assigne l'instance du jeu a la bombe.
-     *
-     * @param jeu l'instance du jeu
-     */
-    public void setJeu(Jeu jeu) {
-        if (jeu != null) this.jeu = jeu;
-        else this.jeu = new Jeu();
-    }
 
     /**
      * Cree une nouvelle bombe aux coordonnees (x, y).
@@ -35,7 +24,7 @@ public class Bombe extends Case {
         return "Bombe";
     }
 
-    public void exploser() {
+    public void exploser(Jeu jeu) {
         new Thread(() -> {
             try {
                 Thread.sleep(1500);

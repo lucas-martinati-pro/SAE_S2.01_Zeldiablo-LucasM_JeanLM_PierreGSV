@@ -219,7 +219,7 @@ public class TestJeu {
 
     @Test
     public void test_addBombe_ajouteBombe() {
-        jeu.addBombe(3, 3);
+        jeu.getCases().add(new Bombe(3, 3));
         Case c = jeu.getCase(3, 3);
         assertNotNull(c);
         assertTrue(c instanceof Bombe);
@@ -460,10 +460,9 @@ public class TestJeu {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         int vieAvant = jeu.getHero().getVie();
-        jeu.addBombe(x, y);
+        jeu.getCases().add(new Bombe(x, y));
         Bombe bombe = (Bombe) jeu.getCase(x, y);
-        bombe.setJeu(jeu);
-        bombe.exploser();
+        bombe.exploser(jeu);
         Thread.sleep(1600);
         assertEquals(vieAvant - 5, jeu.getHero().getVie());
     }
@@ -474,10 +473,9 @@ public class TestJeu {
         int y = jeu.getHero().getY();
         MurFriable mur = new MurFriable(x, y - 1);
         jeu.getCases().add(mur);
-        jeu.addBombe(x, y - 2);
+        jeu.getCases().add(new Bombe(x, y - 2));
         Bombe bombe = (Bombe) jeu.getCase(x, y - 2);
-        bombe.setJeu(jeu);
-        bombe.exploser();
+        bombe.exploser(jeu);
         Thread.sleep(1600);
         assertNull(jeu.getCase(x, y - 1));
     }
@@ -488,10 +486,9 @@ public class TestJeu {
         int y = jeu.getHero().getY();
         Spider m = new Spider(x, y - 6, 3);
         jeu.getMonstres().add(m);
-        jeu.addBombe(x, y - 5);
+        jeu.getCases().add(new Bombe(x, y - 5));
         Bombe bombe = (Bombe) jeu.getCase(x, y - 5);
-        bombe.setJeu(jeu);
-        bombe.exploser();
+        bombe.exploser(jeu);
         Thread.sleep(1600);
         assertFalse(jeu.getMonstres().contains(m));
     }

@@ -29,6 +29,7 @@ public class DessinLaby implements DessinJeu {
     private BufferedImage mur;
     private BufferedImage vide;
     private BufferedImage piege;
+    private BufferedImage teleporteur;
     private BufferedImage murFriable;
     private BufferedImage bombe;
     private BufferedImage piegeDetruit;
@@ -64,6 +65,7 @@ public class DessinLaby implements DessinJeu {
             mur = ImageIO.read(new File("sprite/mur.png"));
             vide = ImageIO.read(new File("sprite/vide.png"));
             piege = ImageIO.read(new File("sprite/piege.png"));
+            teleporteur = ImageIO.read(new File("sprite/teleporteur.png"));
             murFriable = ImageIO.read(new File("sprite/murFriable.png"));
             bombe = ImageIO.read(new File("sprite/bombe.png"));
             piegeDetruit = ImageIO.read(new File("sprite/piegeDetruit.png"));
@@ -106,17 +108,21 @@ public class DessinLaby implements DessinJeu {
         for (Case c : jeu.getCases()) {
             int x = c.getX();
             int y = c.getY();
-            switch (c.getType()) {
-                case "Mur" -> g.drawImage(mur, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+            BufferedImage img = switch (c.getType()) {
+                case "Mur" -> mur;
                 case "Piege" -> {
-                    if (((Piege) c).getIsRevele()) g.drawImage(piege, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                    // Le yield sert à renvoyer la valeur en dehors des accolade, c'est ce que le switch avec les -> demande
+                    if (((Piege) c).getIsRevele()) yield piege;
+                    else yield vide;
                 }
-                case "MurFriable" -> g.drawImage(murFriable, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                case "Bombe" -> g.drawImage(bombe, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                case "PiegeDetruit" -> g.drawImage(piegeDetruit, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                case "Amulette" -> g.drawImage(amulette, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-                default -> g.drawImage(vide, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
-            }
+                case "MurFriable" -> murFriable;
+                case "Bombe" -> bombe;
+                case "PiegeDetruit" -> piegeDetruit;
+                case "Amulette" -> amulette;
+                case "Teleporteur" -> teleporteur;
+                default -> vide;
+            };
+            g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
         }
 
         // Ajout de la porte de fin (porte ouverte ou porte fermée selon si le héros a l'amulette ou pas)

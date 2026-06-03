@@ -137,11 +137,11 @@ public abstract class Personnage extends Case {
             Case c = jeu.getCase(coord[0], coord[1]);
 
             if (c == null || c.getIsTraversable()) {
+                this.setPos(coord[0], coord[1]);
                 if (c instanceof CaseEffet cE) {
                     if (this instanceof Troll) jeu.detruire(coord[0], coord[1]);
-                    else cE.effet(this);
+                    else cE.effet(jeu, this);
                 }
-                this.setPos(coord[0], coord[1]);
             }
         } catch (ActionInconnueException e) {
             // Si le deplacement est invalide, ne rien faire

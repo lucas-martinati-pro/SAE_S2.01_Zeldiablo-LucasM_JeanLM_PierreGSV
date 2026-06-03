@@ -41,8 +41,7 @@ public class Artificier extends Personnage {
     public void attaquer(Personnage victime) {
         Bombe b = new Bombe(x, y);
         jeu.getCases().add(b);
-        b.setJeu(jeu);
-        b.exploser();
+        b.exploser(jeu);
 
         this.isAttaque = true;
         new Thread(() -> {

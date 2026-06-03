@@ -1,5 +1,6 @@
 package zeldiablo.environnement;
 
+import zeldiablo.Jeu;
 import zeldiablo.entite.Personnage;
 
 /**
@@ -33,7 +34,7 @@ public class Piege extends CaseEffet {
     }
 
     @Override
-    public void effet(Personnage perso) {
+    public void effet(Jeu jeu, Personnage perso) {
         System.out.println("Une personne à déclenché un piège ! -1pv ❤.");
         this.isRevele = true;
         perso.addVie(-1);

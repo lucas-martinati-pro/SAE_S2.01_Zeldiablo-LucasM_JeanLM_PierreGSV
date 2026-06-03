@@ -1,5 +1,6 @@
 package zeldiablo.environnement;
 
+import zeldiablo.Jeu;
 import zeldiablo.entite.Personnage;
 
 public abstract class CaseEffet extends Case {
@@ -17,5 +18,5 @@ public abstract class CaseEffet extends Case {
     /**
      * Applique l'effet de la case sur le héros.
      */
-    public abstract void effet(Personnage perso);
+    public abstract void effet(Jeu jeu, Personnage perso);
 }

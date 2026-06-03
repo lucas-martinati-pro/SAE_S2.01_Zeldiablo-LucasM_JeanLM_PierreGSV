@@ -4,6 +4,7 @@ import zeldiablo.entite.Spider;
 import zeldiablo.environnement.*;
 import zeldiablo.entite.Aventurier;
 import org.junit.jupiter.api.Test;
+import moteurJeu.Commande;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestEnvironnement {
@@ -76,10 +77,36 @@ public class TestEnvironnement {
         assertEquals(0, b.getY());
     }
 
+    // ########## Tests Teleporteur ##########
+
     @Test
-    public void test_Bombe_setJeuNull() {
-        Bombe b = new Bombe(1, 1);
-        b.setJeu(null); // ne doit pas crasher, crée un jeu vide
-        assertNotNull(b);
+    public void test_Teleporteur_creation() {
+        Teleporteur t = new Teleporteur(5, 6);
+        assertEquals("Teleporteur", t.getType());
+        assertEquals(5, t.getX());
+        assertEquals(6, t.getY());
+    }
+
+    @Test
+    public void test_Teleporteur_effet() {
+        Jeu jeu = new Jeu();
+        Aventurier a = new Aventurier(1, 1, 5);
+        a.setJeu(jeu);
+        jeu.setHero(a);
+        jeu.setSize(new int[]{10, 10});
+
+        Teleporteur t1 = new Teleporteur(2, 1);
+        Teleporteur t2 = new Teleporteur(5, 5);
+
+        jeu.getCases().add(t1);
+        jeu.getCases().add(t2);
+
+        Commande cmd = new Commande();
+        cmd.droite = true;
+
+        a.deplacer(jeu, cmd);
+
+        assertEquals(5, a.getX());
+        assertEquals(5, a.getY());
     }
 }
