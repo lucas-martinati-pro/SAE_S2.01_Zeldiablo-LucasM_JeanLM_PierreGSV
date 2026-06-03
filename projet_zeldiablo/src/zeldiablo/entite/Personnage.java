@@ -2,9 +2,7 @@ package zeldiablo.entite;
 
 import zeldiablo.Jeu;
 import moteurJeu.Commande;
-import zeldiablo.environnement.Bombe;
-import zeldiablo.environnement.Case;
-import zeldiablo.environnement.Labyrinthe;
+import zeldiablo.environnement.*;
 import zeldiablo.exception.ActionInconnueException;
 
 /**
@@ -60,8 +58,7 @@ public abstract class Personnage {
      */
     public Personnage(int x, int y, int vie) {
         setPos(x, y);
-        if (vie > 1) this.vie = vie;
-        else this.vie = 1;
+        this.vie = vie;
     }
 
     /**
@@ -107,7 +104,7 @@ public abstract class Personnage {
     /**
      * Deplace le personnage dans la direction indiquee par la commande.
      *
-     * @param jeu          l'instance du jeu pour verifier les collisions et les cases
+     * @param jeu l'instance du jeu pour verifier les collisions et les cases
      * @param commandeUser la commande contenant les directions de deplacement
      */
     public void deplacer(Jeu jeu, Commande commandeUser) {
@@ -117,7 +114,11 @@ public abstract class Personnage {
             Case c = jeu.getCase(coord[0], coord[1]);
             if (c != null) {
                 if (c instanceof Bombe) return; // Le personnage ne peut pas marcher sur une bombe, il doit attendre qu'elle explose
-                c.effet(this);
+                if (c instanceof MurFriable) return; // Le personnage ne peut pas marcher sur un mur friable
+                if (this instanceof Troll) {
+                    jeu.getCases().remove(c);
+                    jeu.getCases().add(new PiegeDetruit(c.getX(), c.getY()));
+                } else c.effet(this);
                 this.setPos(coord[0], coord[1]);
             }
             switch (jeu.getChar(coord[0], coord[1])) {

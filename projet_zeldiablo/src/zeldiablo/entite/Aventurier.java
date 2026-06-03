@@ -36,8 +36,10 @@ public class Aventurier extends Personnage {
     public void attaquer(Personnage victime) {
         jeu.addBombe(x, y);
         Case bombe = jeu.getCase(x, y);
-        ((Bombe) bombe).setJeu(jeu);
-        bombe.effet(this);
+        if (bombe instanceof Bombe b) {
+            b.setJeu(jeu);
+            b.effet(this);
+        }
     }
 
     /**

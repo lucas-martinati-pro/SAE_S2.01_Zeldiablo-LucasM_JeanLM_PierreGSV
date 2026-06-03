@@ -168,10 +168,24 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public char getChar(int x, int y) {
         if (this.laby.getCase(x, y)) return Labyrinthe.MUR;
+        else if (this.hero.getX() == x && this.hero.getY() == y) return Labyrinthe.HERO;
         else if (this.fin[0] == x && this.fin[1] == y) return Labyrinthe.FIN;
         else {
             for (Personnage m : this.monstres) {
-                if (m.getX() == x && m.getY() == y) return Labyrinthe.SPIDER;
+                if (m.getX() == x && m.getY() == y) {
+                    if (m instanceof zeldiablo.entite.Troll) return Labyrinthe.TROLL;
+                    if (m instanceof zeldiablo.entite.Ghost) return Labyrinthe.GHOST;
+                    return Labyrinthe.SPIDER;
+                }
+            }
+            Case c = getCase(x, y);
+            if (c != null) {
+                switch (c.getType()) {
+                    case "Piege": return Labyrinthe.PIEGE;
+                    case "MurFriable": return Labyrinthe.MurFriable;
+                    case "Bombe": return Labyrinthe.BOMBE;
+                    case "Amulette": return Labyrinthe.AMULETTE;
+                }
             }
             return Labyrinthe.VIDE;
         }
@@ -218,7 +232,7 @@ public class Jeu implements moteurJeu.Jeu {
     public void evoluer(Commande commandeUser) {
         if (commandeUser.space) {
             Case c = this.getCase(this.hero.getX(), this.hero.getY());
-            if (recharger && (c == null || !(c instanceof PiegeDetruit))) { // temps de recharge de la bombe pour éviter les spams
+            if (recharger && (c == null)) { // temps de recharge de la bombe pour éviter les spams
                 recharger = false;
                 this.hero.attaquer(new Spider(0, 0, 0)); // La victime n'est pas utilisée dans l'attaque de l'aventurier, on peut donc lui donner n'importe quelle position et nombre de points de vie
                 new Thread(() -> { // Obliger de créer un nouveau Thread car sinon ça bloque le jeu pendant 2 secondes, et c'est pas très drôle
@@ -243,7 +257,15 @@ public class Jeu implements moteurJeu.Jeu {
      * @return true si le hero est sur la case de fin, false sinon
      */
     public boolean etreFini() {
-        return (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1] && hero.haveItem("Amulette")) || this.hero.etreMort();
+        boolean levelHasAmulet = false;
+        for (Case c : cases) {
+            if (c instanceof Amulette) {
+                levelHasAmulet = true;
+                break;
+            }
+        }
+        boolean hasAmuletIfRequired = !levelHasAmulet || hero.haveItem("Amulette");
+        return (this.hero.getX() == this.fin[0] && this.hero.getY() == this.fin[1] && hasAmuletIfRequired) || this.hero.etreMort();
     }
 
     // =========================================================
