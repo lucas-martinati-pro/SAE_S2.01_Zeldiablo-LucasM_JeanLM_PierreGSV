@@ -124,7 +124,7 @@ public class Jeu implements moteurJeu.Jeu {
             this.cases.remove(c);
             this.cases.add(new PiegeDetruit(x, y));
         }
-        this.cases.remove(getCase(x, y));
+        if (!(c instanceof Amulette)) this.cases.remove(getCase(x, y));
     }
 
     /**

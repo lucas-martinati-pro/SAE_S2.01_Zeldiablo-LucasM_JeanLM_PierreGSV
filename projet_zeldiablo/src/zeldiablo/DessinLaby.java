@@ -87,7 +87,7 @@ public class DessinLaby implements DessinJeu {
 
         // Coeurs de vie du héros
         for (int i = 0; i < jeu.getHero().getVie(); i++) {
-            int x = coordonnee[0] * TAILLE - (i + 1) * 17, y = 3;
+            int x = coordonnee[0] * TAILLE - (i + 1) * (TAILLE - 7), y = 7;
             try {
                 BufferedImage coeurImage = ImageIO.read(new File("sprite/coeur.png"));
                 g.drawImage(coeurImage, x, y, 15, 15, null); // Pas la même taille, donc pas de addImageOval()
@@ -124,10 +124,8 @@ public class DessinLaby implements DessinJeu {
         for (int i = 0; i < inventaire.size(); i++) {
             Item o = inventaire.get(i);
             g.setColor(Color.LIGHT_GRAY);
-
             switch (o.getType()) {
-                case "Amulette" -> addImageInventaire("sprite/amulette.png", TAILLE * i, i, g, Color.YELLOW);
-                case "Bombe" -> addImageInventaire("sprite/bombe.png", TAILLE * i, TAILLE * i, g, Color.MAGENTA);
+                case "Amulette" -> addImageInventaire("sprite/amulette.png", i, g, Color.YELLOW);
             }
         }
     }
@@ -154,13 +152,13 @@ public class DessinLaby implements DessinJeu {
         }
     }
 
-    private void addImageInventaire(String image, int x, int y, Graphics2D g, Color fallbackColor) {
+    private void addImageInventaire(String image, int i, Graphics2D g, Color fallbackColor) {
         try {
             BufferedImage img = ImageIO.read(new File(image));
-            g.drawImage(img, x * TAILLE, y * TAILLE, 15, 15, null);
+            g.drawImage(img, TAILLE/6 + (i) * 20, TAILLE/6, TAILLE - 10, TAILLE - 10, null);
         } catch (IOException e) {
             g.setColor(fallbackColor);
-            g.fillOval(x * TAILLE, y * TAILLE, 15, 15);
+            g.fillOval((i + 1) * 20, TAILLE/6, TAILLE - 10, TAILLE - 10);
             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
         }
     }
