@@ -1,0 +1,41 @@
+@startuml
+title Fonctionnalité 10 - Gestion de la mort des monstres (verifMort)
+
+participant "gm:GestionnaireMonstres" as GM
+participant "jeu:Jeu" as Jeu
+participant "m:Personnage" as M
+
+[-> GM : verifMort()
+activate GM
+
+GM -> Jeu : getMonstres()
+activate Jeu
+Jeu --> GM : monstres: ArrayList<Personnage>
+deactivate Jeu
+
+loop i de 0 à monstres.size() - 1
+    GM -> GM : m = monstres.get(i)
+    GM -> M : etreMort()
+    activate M
+    M --> GM : estMort: boolean
+    deactivate M
+
+    alt estMort == true
+        GM -> M : getClass()
+        activate M
+        M --> GM : classe
+        deactivate M
+        GM -> GM : Affichage message console (ex: "Vous avez tué un monstre !")
+        
+        GM -> Jeu : getMonstres()
+        activate Jeu
+        Jeu --> GM : monstres: ArrayList<Personnage>
+        deactivate Jeu
+        GM -> GM : monstres.remove(m)
+        GM -> GM : i--
+    end
+end
+
+[<-- GM
+deactivate GM
+@enduml
