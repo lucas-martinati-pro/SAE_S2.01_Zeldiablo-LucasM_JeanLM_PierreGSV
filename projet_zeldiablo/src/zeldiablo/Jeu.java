@@ -13,8 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Classe principale gerant la logique du jeu.
@@ -38,13 +36,11 @@ public class Jeu implements moteurJeu.Jeu {
     // ########## Variables ##########
     private int[] size;
     private Aventurier hero;
-    // On utilise des CopyOnWriteArrayList pour les monstres et les cases, car ça évite les ConcurrentModificationException lors de l'itération, ce qui arrive souvent dans notre jeu (par exemple, lorsqu'on itère sur les monstres pour les faire bouger, et qu'un monstre meurt et est retiré de la liste en même temps).
-    // Utilisation d'une IA pour trouver comment résoudre ce problème
-    private List<Personnage> monstres = new CopyOnWriteArrayList<>();
+    private ArrayList<Personnage> monstres = new ArrayList<>();
     private GestionnaireMonstres gestionnaireMonstres = new GestionnaireMonstres(this);
 
-    private List<Case> cases = new CopyOnWriteArrayList<>();
-    private List<int[]> explosionAffichage = new CopyOnWriteArrayList<>();
+    private ArrayList<Case> cases = new ArrayList<>();
+    private ArrayList<int[]> explosionAffichage = new ArrayList<>();
 
     private int[] fin;
     private boolean recharger = true;
@@ -101,7 +97,7 @@ public class Jeu implements moteurJeu.Jeu {
      *
      * @return la liste des cases
      */
-    public List<Case> getCases() {
+    public ArrayList<Case> getCases() {
         return cases;
     }
 
@@ -110,7 +106,7 @@ public class Jeu implements moteurJeu.Jeu {
      *
      * @return la liste des coordonnees d'explosions
      */
-    public List<int[]> getExplosionAffichage() {
+    public ArrayList<int[]> getExplosionAffichage() {
         return explosionAffichage;
     }
 
@@ -119,7 +115,7 @@ public class Jeu implements moteurJeu.Jeu {
      *
      * @return la liste des monstres
      */
-    public List<Personnage> getMonstres() {
+    public ArrayList<Personnage> getMonstres() {
         return monstres;
     }
 

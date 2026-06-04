@@ -111,7 +111,8 @@ public class DessinLaby implements DessinJeu {
         }
 
         // Ajout des cases
-        for (Case c : jeu.getCases()) {
+        ArrayList<Case> cases = new ArrayList<>(jeu.getCases());
+        for (Case c : cases) {
             int x = c.getX();
             int y = c.getY();
             BufferedImage img = switch (c.getType()) {
@@ -143,7 +144,8 @@ public class DessinLaby implements DessinJeu {
         }
 
         // Ajout des monstres
-        for (Personnage m : jeu.getMonstres()) {
+        ArrayList<Personnage> monstres = new ArrayList<>(jeu.getMonstres());
+        for (Personnage m : monstres) {
             BufferedImage img;
 
             if (m.getIsAttaque()) {
@@ -191,7 +193,7 @@ public class DessinLaby implements DessinJeu {
         }
 
         // Ajout de l'inventaire du héros
-        ArrayList<Item> inventaire = jeu.getHero().getInventaire();
+        ArrayList<Item> inventaire = new ArrayList<>(jeu.getHero().getInventaire());
         for (int i = 0; i < inventaire.size(); i++) {
             Item o = inventaire.get(i);
             switch (o.getType()) {

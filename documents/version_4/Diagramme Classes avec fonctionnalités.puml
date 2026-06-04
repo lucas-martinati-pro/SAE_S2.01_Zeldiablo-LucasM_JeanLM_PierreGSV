@@ -20,18 +20,18 @@ class "Jeu" {
 
     - size : int[]
     - hero : Aventurier
-    - monstres : ArrayList<Personnage>
-    - cases : ArrayList<Case>
+    - monstres : List<Personnage>
+    - cases : List<Case>
     - fin : int[]
-    - explosionAffichage : ArrayList<int[]>
+    - explosionAffichage : List<int[]>
     - recharger : boolean
     - gestionnaireMonstres : GestionnaireMonstres
 
     + chargerNiveau(nomFichier : String) : void
     + getHero() : Aventurier
-    + getCases() : ArrayList<Case>
-    + getExplosionAffichage() : ArrayList<int[]>
-    + getMonstres() : ArrayList<Personnage>
+    + getCases() : List<Case>
+    + getExplosionAffichage() : List<int[]>
+    + getMonstres() : List<Personnage>
     + getCase(x : int, y : int) : Case
     + getChar(x : int, y : int) : char
     + getFin() : int[]
