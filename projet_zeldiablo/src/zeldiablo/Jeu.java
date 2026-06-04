@@ -40,11 +40,11 @@ public class Jeu implements moteurJeu.Jeu {
     private Aventurier hero;
     // On utilise des CopyOnWriteArrayList pour les monstres et les cases, car ça évite les ConcurrentModificationException lors de l'itération, ce qui arrive souvent dans notre jeu (par exemple, lorsqu'on itère sur les monstres pour les faire bouger, et qu'un monstre meurt et est retiré de la liste en même temps).
     // Utilisation d'une IA pour trouver comment résoudre ce problème
-    private java.util.List<Personnage> monstres = new CopyOnWriteArrayList<>();
+    private List<Personnage> monstres = new CopyOnWriteArrayList<>();
     private GestionnaireMonstres gestionnaireMonstres = new GestionnaireMonstres(this);
 
-    private java.util.List<Case> cases = new CopyOnWriteArrayList<>();
-    private java.util.List<int[]> explosionAffichage = new CopyOnWriteArrayList<>();
+    private List<Case> cases = new CopyOnWriteArrayList<>();
+    private List<int[]> explosionAffichage = new CopyOnWriteArrayList<>();
 
     private int[] fin;
     private boolean recharger = true;
