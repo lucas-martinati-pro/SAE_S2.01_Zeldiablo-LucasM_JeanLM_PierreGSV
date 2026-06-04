@@ -29,9 +29,9 @@ class "Jeu" {
 
     + chargerNiveau(nomFichier : String) : void
     + getHero() : Aventurier
-    + getCases() : List<Case>
-    + getExplosionAffichage() : List<int[]>
-    + getMonstres() : List<Personnage>
+    + getCases() : ArrayList<Case>
+    + getExplosionAffichage() : ArrayList<int[]>
+    + getMonstres() : ArrayList<Personnage>
     + getCase(x : int, y : int) : Case
     + getChar(x : int, y : int) : char
     + getFin() : int[]
