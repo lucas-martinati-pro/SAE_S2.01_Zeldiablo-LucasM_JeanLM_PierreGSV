@@ -116,26 +116,10 @@ public class DessinLaby implements DessinJeu {
             for (int j = 0; j < size[1]; j++) {
                 Case c = jeu.getCase(i, j);
                 if (c != null) {
-                    int x = c.getX();
-                    int y = c.getY();
-                    BufferedImage img = switch (c.getType()) {
-                        case "Mur" -> mur;
-                        case "Soins" -> soins;
-                        case "SoinsDetruit" -> soinsDetruit;
-                        case "Piege" -> {
-                            // Le yield sert à renvoyer la valeur en dehors des accolade, c'est ce que le switch avec les -> demande
-                            if (((Piege) c).getIsRevele()) yield piege;
-                            else yield vide;
-                        }
-                        case "PiegeDetruit" -> piegeDetruit;
-                        case "MurFriable" -> murFriable;
-                        case "Bombe" -> bombe;
-                        case "Amulette" -> amulette;
-                        case "Teleporteur" -> teleporteur;
-                        case "TeleporteurDetruit" -> teleporteurDetruit;
-                        default -> vide;
-                    };
-                    g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+                    if (c.getCaseSousJacente() != null) {
+                        drawCase(g, c.getCaseSousJacente());
+                    }
+                    drawCase(g, c);
                 }
             }
         }
@@ -176,7 +160,8 @@ public class DessinLaby implements DessinJeu {
         }
 
         // Ajout des flammes d'explosion
-        for (int[] coord : jeu.getExplosionAffichage()) {
+        ArrayList<int[]> explosionAffichage = new ArrayList<>(jeu.getExplosionAffichage());
+        for (int[] coord : explosionAffichage) {
             g.drawImage(flamme, coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE, null);
         }
 
@@ -212,5 +197,27 @@ public class DessinLaby implements DessinJeu {
         } else if (jeu.etreFini()) {
             g.drawImage(win, 0, 0, image.getWidth(), image.getHeight(), null);
         }
+    }
+
+    public void drawCase(Graphics2D g, Case c) {
+        int x = c.getX();
+        int y = c.getY();
+        BufferedImage img = switch (c.getType()) {
+            case "Mur" -> mur;
+            case "Soins" -> soins;
+            case "SoinsDetruit" -> soinsDetruit;
+            case "Piege" -> {
+                if (((Piege) c).getIsRevele()) yield piege;
+                else yield vide;
+            }
+            case "PiegeDetruit" -> piegeDetruit;
+            case "MurFriable" -> murFriable;
+            case "Bombe" -> bombe;
+            case "Amulette" -> amulette;
+            case "Teleporteur" -> teleporteur;
+            case "TeleporteurDetruit" -> teleporteurDetruit;
+            default -> vide;
+        };
+        g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
     }
 }

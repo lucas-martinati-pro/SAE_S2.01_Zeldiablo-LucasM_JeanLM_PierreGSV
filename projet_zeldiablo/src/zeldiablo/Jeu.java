@@ -129,15 +129,35 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     // ########## Méthodes ##########
+    /**
+     * Ajoute une case specifique a une position donnee dans la grille du labyrinthe.
+     *
+     * @param c la case a ajouter
+     * @param x la coordonnee x (colonne)
+     * @param y la coordonnee y (ligne)
+     */
     public void addCase(Case c, int x, int y) {
-        if (cases != null && x >= 0 && y >= 0 && x < cases.length && y < cases[x].length) {
+        if (x >= 0 && y >= 0 && x < cases.length && y < cases[x].length) {
+            Case existing = this.cases[x][y];
+            if (existing != null && existing != c) {
+                c.setCaseSousJacente(existing);
+            }
             this.cases[x][y] = c;
         }
     }
 
+    /**
+     * Supprime la case a une position donnee dans la grille en la remplacant par sa case sous-jacente (ou null).
+     *
+     * @param x la coordonnee x (colonne)
+     * @param y la coordonnee y (ligne)
+     */
     public void removeCase(int x, int y) {
         if (cases != null && x >= 0 && y >= 0 && x < cases.length && y < cases[x].length) {
-            this.cases[x][y] = null;
+            Case c = this.cases[x][y];
+            if (c != null) {
+                this.cases[x][y] = c.getCaseSousJacente();
+            }
         }
     }
 
@@ -216,15 +236,30 @@ public class Jeu implements moteurJeu.Jeu {
     public void detruire(int x, int y) {
         Case c = getCase(x, y);
         if (c != null) {
-            if (!(c instanceof Amulette)) this.cases[x][y] = null; // L'amulette ne peut pas être détruite, elle devient juste inaccessible
+            if (c instanceof Amulette || c instanceof CaseDetruite || c instanceof Mur) {
+                // Ces cases sont indestructibles par explosion
+                return;
+            }
+
+            Case under = c.getCaseSousJacente();
             if (c instanceof Piege) {
                 this.cases[x][y] = new PiegeDetruit(x, y);
+                this.cases[x][y].setCaseSousJacente(under);
             }
-            if (c instanceof Soins) {
+            else if (c instanceof Soins) {
                 this.cases[x][y] = new SoinsDetruit(x, y);
+                this.cases[x][y].setCaseSousJacente(under);
             }
-            if (c instanceof Teleporteur) {
+            else if (c instanceof Teleporteur) {
                 this.cases[x][y] = new TeleporteurDetruit(x, y);
+                this.cases[x][y].setCaseSousJacente(under);
+            }
+            else {
+                // Pour les autres cases destructibles (comme Bombe, MurFriable, etc.)
+                this.cases[x][y] = under;
+                if (under != null) {
+                    detruire(x, y); // Détruit la case en dessous
+                }
             }
         }
     }
@@ -289,8 +324,7 @@ public class Jeu implements moteurJeu.Jeu {
     @Override
     public void evoluer(Commande commandeUser) {
         if (commandeUser.space) {
-            Case c = this.getCase(this.hero.getX(), this.hero.getY());
-            if (recharger && (c == null)) { // temps de recharge de la bombe pour éviter les spams
+            if (recharger) { // temps de recharge de la bombe pour éviter les spams
                 recharger = false;
                 this.hero.attaquer(new Spider(0, 0, 0)); // La victime n'est pas utilisée dans l'attaque de l'aventurier, on peut donc lui donner n'importe quelle position et nombre de points de vie
                 new Thread(() -> { // Obliger de créer un nouveau Thread car sinon ça bloque le jeu pendant 2 secondes, et c'est pas très drôle

@@ -3,7 +3,7 @@ package zeldiablo.environnement;
 /**
  * Represente un piege detruit (desactive).
  */
-public class PiegeDetruit extends Case implements CaseDetruite {
+public class PiegeDetruit extends CaseDetruite {
 
     /**
      * Cree un piege detruit aux coordonnees (x, y).

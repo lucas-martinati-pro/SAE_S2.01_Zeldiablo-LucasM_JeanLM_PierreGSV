@@ -93,13 +93,13 @@ public class TestEnvironnement {
         Aventurier a = new Aventurier(1, 1, 5);
         a.setJeu(jeu);
         jeu.setHero(a);
-        jeu.setSize(new int[]{10, 10});
+        jeu.setSize(new int[] { 10, 10 });
 
         Teleporteur t1 = new Teleporteur(2, 1);
         Teleporteur t2 = new Teleporteur(5, 5);
 
-        jeu.getCases().add(t1);
-        jeu.getCases().add(t2);
+        jeu.addCase(t1, 2, 1);
+        jeu.addCase(t2, 5, 5);
 
         Commande cmd = new Commande();
         cmd.droite = true;
@@ -131,11 +131,14 @@ public class TestEnvironnement {
         Jeu jeu = new Jeu();
         Aventurier a = new Aventurier(1, 1, 3);
         Soins s = new Soins(1, 1);
-        jeu.getCases().add(s);
+        jeu.addCase(s, 1, 1);
         s.effet(jeu, a);
         assertEquals(5, a.getVie());
         // La case Soins doit etre remplacee par SoinsDetruit
-        boolean hasSoinsDetruit = jeu.getCases().stream().anyMatch(c -> c instanceof SoinsDetruit);
+        boolean hasSoinsDetruit = java.util.Arrays.stream(jeu.getCases())
+                .flatMap(java.util.Arrays::stream)
+                .filter(java.util.Objects::nonNull)
+                .anyMatch(c -> c instanceof SoinsDetruit);
         assertTrue(hasSoinsDetruit);
     }
 }

@@ -21,7 +21,7 @@ class "Jeu" {
     - size : int[]
     - hero : Aventurier
     - monstres : List<Personnage>
-    - cases : List<Case>
+    - cases : Case[][]
     - fin : int[]
     - explosionAffichage : List<int[]>
     - recharger : boolean
@@ -29,7 +29,9 @@ class "Jeu" {
 
     + chargerNiveau(nomFichier : String) : void
     + getHero() : Aventurier
-    + getCases() : ArrayList<Case>
+    + getCases() : Case[][]
+    + addCase(c : Case, x : int, y : int) : void
+    + removeCase(x : int, y : int) : void
     + getExplosionAffichage() : ArrayList<int[]>
     + getMonstres() : ArrayList<Personnage>
     + getCase(x : int, y : int) : Case
@@ -165,12 +167,15 @@ package "environnement" {
         # x : int
         # y : int
         # isTraversable : boolean
+        - caseSousJacente : Case
 
         + Case(x : int, y : int)
 
         + getX() : int
         + getY() : int
         + getIsTraversable() : boolean
+        + getCaseSousJacente() : Case
+        + setCaseSousJacente(caseSousJacente : Case) : void
         + getType() : String
     }
 
@@ -209,7 +214,8 @@ package "environnement" {
         + exploser(jeu : Jeu) : void
     }
 
-    interface CaseDetruite {
+    abstract class CaseDetruite {
+        + CaseDetruite(x : int, y : int)
     }
 
     class Soins {
@@ -270,22 +276,20 @@ package "exception" {
 ' Relations
 ' ========================
 Case <|-- Mur
-Case <|-- PiegeDetruit
 Case <|-- MurFriable
 Case <|-- Personnage
 Case <|-- CaseEffet
 Case <|-- Bombe
-Case <|-- SoinsDetruit
-Case <|-- TeleporteurDetruit
+Case <|-- CaseDetruite
 
 CaseEffet <|-- Piege
 CaseEffet <|-- ItemPlacable
 CaseEffet <|-- Soins
 CaseEffet <|-- Teleporteur
 
-CaseDetruite <|.. PiegeDetruit
-CaseDetruite <|.. SoinsDetruit
-CaseDetruite <|.. TeleporteurDetruit
+CaseDetruite <|-- PiegeDetruit
+CaseDetruite <|-- SoinsDetruit
+CaseDetruite <|-- TeleporteurDetruit
 
 ItemPlacable <|-- Amulette
 Item <|.. ItemPlacable
@@ -314,5 +318,7 @@ Aventurier "1" --> "1" Jeu : jeu
 GestionnaireMonstres "1" --> "1" Jeu : jeu
 
 DessinLaby "1" --> "1" Jeu : jeu
+
+Case "1" --> "0..1" Case : caseSousJacente
 
 @enduml

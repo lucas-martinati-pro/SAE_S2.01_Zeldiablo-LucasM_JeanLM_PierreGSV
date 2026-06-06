@@ -3,7 +3,7 @@ package zeldiablo.environnement;
 /**
  * Represente un teleporteur detruit.
  */
-public class TeleporteurDetruit extends Case implements CaseDetruite {
+public class TeleporteurDetruit extends CaseDetruite {
 
     /**
      * Cree un teleporteur detruit aux coordonnees (x, y).
@@ -13,7 +13,6 @@ public class TeleporteurDetruit extends Case implements CaseDetruite {
      */
     public TeleporteurDetruit(int x, int y) {
         super(x, y);
-        this.isTraversable = true;
     }
 
     @Override

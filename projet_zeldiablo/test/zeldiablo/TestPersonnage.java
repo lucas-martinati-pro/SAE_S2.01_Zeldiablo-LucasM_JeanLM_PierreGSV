@@ -213,7 +213,9 @@ public class TestPersonnage {
         art.setJeu(jeu);
         jeu.getMonstres().add(art);
         art.attaquer(a);
-        boolean hasBombe = jeu.getCases().stream()
+        boolean hasBombe = java.util.Arrays.stream(jeu.getCases())
+                .flatMap(java.util.Arrays::stream)
+                .filter(java.util.Objects::nonNull)
                 .anyMatch(c -> c instanceof Bombe && c.getX() == 2 && c.getY() == 2);
         assertTrue(hasBombe);
         Thread.sleep(1600); // laisser la bombe exploser pour eviter un crash en arriere-plan
@@ -222,7 +224,8 @@ public class TestPersonnage {
     // ########## Tests Affichage Visuel (Fonctionnalite 2) ##########
 
     /**
-     * Teste la transition de l'etat d'attaque (devient temporairement true puis false).
+     * Teste la transition de l'etat d'attaque (devient temporairement true puis
+     * false).
      *
      * @throws InterruptedException si le sommeil du thread est interrompu
      */
@@ -283,7 +286,7 @@ public class TestPersonnage {
     @Test
     public void test_Ghost_deplacerTraverseMur() {
         Jeu jeu = new Jeu();
-        jeu.getCases().add(new zeldiablo.environnement.Mur(1, 2));
+        jeu.addCase(new zeldiablo.environnement.Mur(1, 2), 1, 2);
         Ghost g = new Ghost(1, 1, 3);
         moteurJeu.Commande c = new moteurJeu.Commande();
         c.bas = true;

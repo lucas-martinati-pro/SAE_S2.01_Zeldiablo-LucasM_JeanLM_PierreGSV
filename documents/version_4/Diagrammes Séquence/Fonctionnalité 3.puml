@@ -3,13 +3,8 @@ title Fonctionnalité 3 - Monstres incendiaires (Pose de Bombe)
 
 participant "m : Artificier" as Artificier
 participant "j : Jeu" as Jeu
-participant "cases : ArrayList<Case>" as Cases
 
 activate Artificier
-Artificier -> Jeu : getCases()
-activate Jeu
-Jeu --> Artificier : cases
-deactivate Jeu
 
 create "b : Bombe" as Bombe
 Artificier -> Bombe : new Bombe(x, y)
@@ -17,17 +12,12 @@ activate Bombe
 Bombe --> Artificier : b
 deactivate Bombe
 
-Artificier -> Cases : add(b)
-activate Cases
-Cases --> Artificier
-deactivate Cases
+Artificier -> Jeu : addCase(b, x, y)
+activate Jeu
+Jeu --> Artificier
+deactivate Jeu
 
-Artificier -> Bombe : setJeu(j)
-activate Bombe
-Bombe --> Artificier
-deactivate Bombe
-
-Artificier -> Bombe : exploser()
+Artificier -> Bombe : exploser(j)
 activate Bombe
 Bombe --> Artificier
 deactivate Bombe

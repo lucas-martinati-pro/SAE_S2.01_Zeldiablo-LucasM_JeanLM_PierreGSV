@@ -7,6 +7,25 @@ public abstract class Case {
     protected int x;
     protected int y;
     protected boolean isTraversable = false;
+    private Case caseSousJacente = null;
+
+    /**
+     * Retourne la case sous-jacente.
+     *
+     * @return la case sous-jacente
+     */
+    public Case getCaseSousJacente() {
+        return caseSousJacente;
+    }
+
+    /**
+     * Definit la case sous-jacente.
+     *
+     * @param caseSousJacente la case sous-jacente
+     */
+    public void setCaseSousJacente(Case caseSousJacente) {
+        this.caseSousJacente = caseSousJacente;
+    }
 
     /**
      * Indique si la case est traversable par les entites.
