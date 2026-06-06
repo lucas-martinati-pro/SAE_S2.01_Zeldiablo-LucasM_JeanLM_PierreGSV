@@ -30,6 +30,7 @@ public class DessinLaby implements DessinJeu {
     private BufferedImage vide;
     private BufferedImage soins;
     private BufferedImage soinsDetruit;
+    private BufferedImage piegeCache;
     private BufferedImage piege;
     private BufferedImage piegeDetruit;
     private BufferedImage teleporteur;
@@ -69,6 +70,7 @@ public class DessinLaby implements DessinJeu {
             vide = ImageIO.read(new File("sprite/vide.png"));
             soins = ImageIO.read(new File("sprite/soins.png"));
             soinsDetruit = ImageIO.read(new File("sprite/soinsDetruit.png"));
+            piegeCache = ImageIO.read(new File("sprite/piegeCache.png"));
             piege = ImageIO.read(new File("sprite/piege.png"));
             teleporteur = ImageIO.read(new File("sprite/teleporteur.png"));
             teleporteurDetruit = ImageIO.read(new File("sprite/teleporteurDetruit.png"));
@@ -214,7 +216,7 @@ public class DessinLaby implements DessinJeu {
             case "SoinsDetruit" -> soinsDetruit;
             case "Piege" -> {
                 if (((Piege) c).getIsRevele()) yield piege;
-                else yield vide;
+                else yield piegeCache;
             }
             case "PiegeDetruit" -> piegeDetruit;
             case "MurFriable" -> murFriable;
