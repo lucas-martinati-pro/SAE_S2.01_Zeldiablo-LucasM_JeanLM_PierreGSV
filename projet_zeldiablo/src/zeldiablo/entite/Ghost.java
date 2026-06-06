@@ -12,12 +12,13 @@ public class Ghost extends Personnage {
     /**
      * Cree un nouveau monstre.
      *
-     * @param x   la coordonnee x
-     * @param y   la coordonnee y
-     * @param vie les points de vie
+     * @param x la coordonnee x
+     * @param y la coordonnee y
      */
-    public Ghost(int x, int y, int vie) {
-        super(x, y, vie);
+    public Ghost(int x, int y) {
+        super(x, y);
+        this.vie = 4;
+        this.degats = 1; // Les fantomes font moins de degats que les autres monstres
     }
 
     // ########## Methodes ##########

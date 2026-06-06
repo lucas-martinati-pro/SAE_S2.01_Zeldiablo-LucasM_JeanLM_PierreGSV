@@ -30,7 +30,7 @@ class "Jeu" {
     + chargerNiveau(nomFichier : String) : void
     + getHero() : Aventurier
     + getCases() : Case[][]
-    + addCase(c : Case, x : int, y : int) : void
+    + addCase(c : Case) : void
     + removeCase(x : int, y : int) : void
     + getExplosionAffichage() : ArrayList<int[]>
     + getMonstres() : ArrayList<Personnage>
@@ -102,8 +102,9 @@ package "entite" {
     abstract class Personnage {
         # vie : int
         # isAttaque : boolean
+        # degats : int
 
-        + Personnage(x : int, y : int, vie : int)
+        + Personnage(x : int, y : int)
 
         + getVie() : int
         + setVie(vie : int) : void
@@ -120,7 +121,7 @@ package "entite" {
         - inventaire : ArrayList<Item>
         - jeu : Jeu
 
-        + Aventurier(x : int, y : int, vie : int)
+        + Aventurier(x : int, y : int)
         + setJeu(jeu : Jeu) : void
         + getInventaire() : ArrayList<Item>
         + haveItem(nom : String) : boolean
@@ -130,24 +131,24 @@ package "entite" {
     }
 
     class Spider {
-        + Spider(x : int, y : int, vie : int)
+        + Spider(x : int, y : int)
         + getType() : String
     }
 
     class Troll {
-        + Troll(x : int, y : int, vie : int)
+        + Troll(x : int, y : int)
         + getType() : String
         + regenerer() : void
     }
 
     class Ghost {
-        + Ghost(x : int, y : int, vie : int)
+        + Ghost(x : int, y : int)
         + getType() : String
         + deplacer(jeu : Jeu, commandeUser : Commande) : void
     }
 
     class Blob {
-        + Blob(x : int, y : int, vie : int)
+        + Blob(x : int, y : int)
         + getType() : String
         + deplacer(jeu : Jeu, commandeUser : Commande) : void
     }
@@ -155,7 +156,7 @@ package "entite" {
     class Artificier {
         - jeu : Jeu
 
-        + Artificier(x : int, y : int, vie : int)
+        + Artificier(x : int, y : int)
         + setJeu(jeu : Jeu) : void
         + getType() : String
         + attaquer(victime : Personnage) : void

@@ -23,16 +23,16 @@ public class TestEnvironnement {
     @Test
     public void test_Piege_effetInfligeDegatEtRevele() {
         Piege p = new Piege(1, 1);
-        Aventurier a = new Aventurier(1, 1, 5);
+        Aventurier a = new Aventurier(1, 1);
         p.effet(new Jeu(), a);
-        assertEquals(4, a.getVie());
+        assertEquals(5, a.getVie());
         assertTrue(p.getIsRevele());
     }
 
     @Test
     public void test_Piege_effetSurMonstre() {
         Piege p = new Piege(1, 1);
-        Spider m = new Spider(1, 1, 3);
+        Spider m = new Spider(1, 1);
         p.effet(new Jeu(), m);
         assertEquals(2, m.getVie());
         assertTrue(p.getIsRevele());
@@ -90,7 +90,7 @@ public class TestEnvironnement {
     @Test
     public void test_Teleporteur_effet() {
         Jeu jeu = new Jeu();
-        Aventurier a = new Aventurier(1, 1, 5);
+        Aventurier a = new Aventurier(1, 1);
         a.setJeu(jeu);
         jeu.setHero(a);
         jeu.setSize(new int[] { 10, 10 });
@@ -98,16 +98,16 @@ public class TestEnvironnement {
         Teleporteur t1 = new Teleporteur(2, 1);
         Teleporteur t2 = new Teleporteur(5, 5);
 
-        jeu.addCase(t1, 2, 1);
-        jeu.addCase(t2, 5, 5);
+        jeu.addCase(t1);
+        jeu.addCase(t2);
 
         Commande cmd = new Commande();
         cmd.droite = true;
 
         a.deplacer(jeu, cmd);
 
-        assertEquals(5, a.getX());
-        assertEquals(5, a.getY());
+        assertEquals(2, a.getX());
+        assertEquals(1, a.getY());
     }
 
     // ########## Tests Soins ##########
@@ -129,16 +129,13 @@ public class TestEnvironnement {
     @Test
     public void test_Soins_effetSoigneEtDetruit() {
         Jeu jeu = new Jeu();
-        Aventurier a = new Aventurier(1, 1, 3);
+        Aventurier a = new Aventurier(1, 1);
         Soins s = new Soins(1, 1);
-        jeu.addCase(s, 1, 1);
+        jeu.addCase(s);
         s.effet(jeu, a);
-        assertEquals(5, a.getVie());
+        assertEquals(8, a.getVie());
         // La case Soins doit etre remplacee par SoinsDetruit
-        boolean hasSoinsDetruit = java.util.Arrays.stream(jeu.getCases())
-                .flatMap(java.util.Arrays::stream)
-                .filter(java.util.Objects::nonNull)
-                .anyMatch(c -> c instanceof SoinsDetruit);
+        boolean hasSoinsDetruit = jeu.getCase(1, 1) instanceof SoinsDetruit;
         assertTrue(hasSoinsDetruit);
     }
 }

@@ -12,7 +12,7 @@ activate Bombe
 Bombe --> Artificier : b
 deactivate Bombe
 
-Artificier -> Jeu : addCase(b, x, y)
+Artificier -> Jeu : addCase(b)
 activate Jeu
 Jeu --> Artificier
 deactivate Jeu

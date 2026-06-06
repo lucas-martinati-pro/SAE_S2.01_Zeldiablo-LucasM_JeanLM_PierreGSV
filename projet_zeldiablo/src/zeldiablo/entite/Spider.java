@@ -10,10 +10,9 @@ public class Spider extends Personnage {
      *
      * @param x la coordonnee x
      * @param y la coordonnee y
-     * @param vie les points de vie
      */
-    public Spider(int x, int y, int vie) {
-        super(x, y, vie);
+    public Spider(int x, int y) {
+        super(x, y);
     }
 
     @Override

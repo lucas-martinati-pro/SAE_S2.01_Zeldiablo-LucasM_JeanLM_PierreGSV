@@ -11,6 +11,7 @@ import zeldiablo.exception.ActionInconnueException;
 public abstract class Personnage extends Case {
     protected int vie;
     protected boolean isAttaque = false;
+    protected int degats = 2;
 
     /**
      * Indique si le personnage est en train d'attaquer.
@@ -62,11 +63,10 @@ public abstract class Personnage extends Case {
      *
      * @param x la coordonnee x
      * @param y la coordonnee y
-     * @param vie les points de vie
      */
-    public Personnage(int x, int y, int vie) {
+    public Personnage(int x, int y) {
         super(x, y);
-        this.vie = vie;
+        this.vie = 3; // Par defaut, les personnages ont 3 points de vie
     }
 
     /**
@@ -106,7 +106,7 @@ public abstract class Personnage extends Case {
      * @param victime le personnage cible
      */
     public void attaquer(Personnage victime) {
-        if (!etreMort()) victime.addVie(-2);
+        if (!etreMort()) victime.addVie(- this.degats);
 
         this.isAttaque = true;
         new Thread(() -> {

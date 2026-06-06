@@ -133,10 +133,13 @@ public class Jeu implements moteurJeu.Jeu {
      * Ajoute une case specifique a une position donnee dans la grille du labyrinthe.
      *
      * @param c la case a ajouter
-     * @param x la coordonnee x (colonne)
-     * @param y la coordonnee y (ligne)
      */
-    public void addCase(Case c, int x, int y) {
+    public void addCase(Case c) {
+        int x = c.getX(), y = c.getY();
+        if (cases == null) {
+            cases = new Case[x + 1][y + 1];
+            size = new int[]{x + 1, y + 1};
+        }
         if (x >= 0 && y >= 0 && x < cases.length && y < cases[x].length) {
             Case existing = this.cases[x][y];
             if (existing != null && existing != c) {
@@ -200,7 +203,7 @@ public class Jeu implements moteurJeu.Jeu {
                     case Jeu.VIDE -> {}
                     case Jeu.MUR -> this.cases[j][i] = new Mur(j, i);
                     case Jeu.HERO -> {
-                        hero = new Aventurier(j, i, 5);
+                        hero = new Aventurier(j, i);
                         hero.setJeu(this);
                     }
                     case Jeu.FIN -> fin = new int[]{j, i};
@@ -209,12 +212,12 @@ public class Jeu implements moteurJeu.Jeu {
                     case Jeu.TELEPORTEUR -> this.cases[j][i] = new Teleporteur(j, i);
                     case Jeu.MUR_FRIABLE -> this.cases[j][i] = new MurFriable(j, i);
                     case Jeu.AMULETTE -> this.cases[j][i] = new Amulette(j, i);
-                    case Jeu.SPIDER -> monstres.add(new Spider(j, i, 3));
-                    case Jeu.TROLL -> monstres.add(new Troll(j, i, 1));
-                    case Jeu.GHOST -> monstres.add(new Ghost(j, i, 4));
-                    case Jeu.BLOB -> monstres.add(new Blob(j, i, 2));
+                    case Jeu.SPIDER -> monstres.add(new Spider(j, i));
+                    case Jeu.TROLL -> monstres.add(new Troll(j, i));
+                    case Jeu.GHOST -> monstres.add(new Ghost(j, i));
+                    case Jeu.BLOB -> monstres.add(new Blob(j, i));
                     case Jeu.ARTIFICIER -> {
-                        Artificier artificier = new Artificier(j, i, 15);
+                        Artificier artificier = new Artificier(j, i);
                         artificier.setJeu(this);
                         monstres.add(artificier);
                     }
@@ -326,7 +329,7 @@ public class Jeu implements moteurJeu.Jeu {
         if (commandeUser.space) {
             if (recharger) { // temps de recharge de la bombe pour éviter les spams
                 recharger = false;
-                this.hero.attaquer(new Spider(0, 0, 0)); // La victime n'est pas utilisée dans l'attaque de l'aventurier, on peut donc lui donner n'importe quelle position et nombre de points de vie
+                this.hero.attaquer(new Spider(0, 0)); // La victime n'est pas utilisée dans l'attaque de l'aventurier, on peut donc lui donner n'importe quelle position et nombre de points de vie
                 new Thread(() -> { // Obliger de créer un nouveau Thread car sinon ça bloque le jeu pendant 2 secondes, et c'est pas très drôle
                     try {
                         Thread.sleep(2000);

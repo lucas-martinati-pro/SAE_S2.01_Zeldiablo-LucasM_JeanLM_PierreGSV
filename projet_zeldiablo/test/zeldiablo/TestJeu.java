@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,7 +42,7 @@ public class TestJeu {
 
     @Test
     public void test_setPerso_modifiePerso() {
-        Aventurier p = new Aventurier(2, 2, 3);
+        Aventurier p = new Aventurier(2, 2);
         jeu.setHero(p);
         assertEquals(p, jeu.getHero());
     }
@@ -68,7 +67,7 @@ public class TestJeu {
     @Test
     public void test_getCase_existante() {
         Piege p = new Piege(5, 5);
-        jeu.addCase(p, 5, 5);
+        jeu.addCase(p);
         assertEquals(p, jeu.getCase(5, 5));
     }
 
@@ -215,7 +214,7 @@ public class TestJeu {
     @Test
     public void test_detruire_retireCase() {
         MurFriable m = new MurFriable(5, 5);
-        jeu.addCase(m, 5, 5);
+        jeu.addCase(m);
         assertNotNull(jeu.getCase(5, 5));
         jeu.detruire(5, 5);
         assertNull(jeu.getCase(5, 5));
@@ -224,7 +223,7 @@ public class TestJeu {
     @Test
     public void test_detruire_remplacePiegeParPiegeDetruit() {
         Piege p = new Piege(5, 5);
-        jeu.addCase(p, 5, 5);
+        jeu.addCase(p);
         assertNotNull(jeu.getCase(5, 5));
         jeu.detruire(5, 5);
         assertTrue(jeu.getCase(5, 5) instanceof PiegeDetruit);
@@ -233,9 +232,9 @@ public class TestJeu {
     @Test
     public void test_bombeSurPiegeDetruit_preservePiegeDetruit() throws InterruptedException {
         PiegeDetruit pd = new PiegeDetruit(5, 5);
-        jeu.addCase(pd, 5, 5);
+        jeu.addCase(pd);
         Bombe b = new Bombe(5, 5);
-        jeu.addCase(b, 5, 5);
+        jeu.addCase(b);
         assertEquals(b, jeu.getCase(5, 5));
         b.exploser(jeu);
         Thread.sleep(1600);
@@ -246,7 +245,7 @@ public class TestJeu {
 
     @Test
     public void test_addBombe_ajouteBombe() {
-        jeu.addCase(new Bombe(3, 3), 3, 3);
+        jeu.addCase(new Bombe(3, 3));
         Case c = jeu.getCase(3, 3);
         assertNotNull(c);
         assertTrue(c instanceof Bombe);
@@ -353,7 +352,8 @@ public class TestJeu {
 
     @Test
     public void test_etreFini_heroMort() {
-        Aventurier hero = new Aventurier(1, 1, 0);
+        Aventurier hero = new Aventurier(1, 1);
+        hero.setVie(0);
         jeu.setHero(hero);
         assertTrue(jeu.etreFini());
     }
@@ -388,7 +388,7 @@ public class TestJeu {
     public void test_monstreAttaque_heroProche() {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
-        Spider m = new Spider(x + 1, y, 3);
+        Spider m = new Spider(x + 1, y);
         jeu.getMonstres().add(m);
         int vieAvant = jeu.getHero().getVie();
         jeu.getGestionnaireMonstres().monstreAttaque(x, y);
@@ -397,7 +397,7 @@ public class TestJeu {
 
     @Test
     public void test_monstreAttaque_heroLoin_pasDeDegat() {
-        Spider m = new Spider(1, 1, 3);
+        Spider m = new Spider(1, 1);
         jeu.getMonstres().add(m);
         int vieAvant = jeu.getHero().getVie();
         jeu.getGestionnaireMonstres().monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
@@ -408,7 +408,8 @@ public class TestJeu {
 
     @Test
     public void test_verifMort_monstreMortRetire() {
-        Spider m = new Spider(1, 1, 0);
+        Spider m = new Spider(1, 1);
+        m.setVie(0);
         jeu.getMonstres().add(m);
         jeu.getGestionnaireMonstres().verifMort();
         assertFalse(jeu.getMonstres().contains(m));
@@ -416,7 +417,7 @@ public class TestJeu {
 
     @Test
     public void test_verifMort_monstreVivantReste() {
-        Spider m = new Spider(1, 1, 3);
+        Spider m = new Spider(1, 1);
         jeu.getMonstres().add(m);
         jeu.getGestionnaireMonstres().verifMort();
         assertTrue(jeu.getMonstres().contains(m));
@@ -426,7 +427,7 @@ public class TestJeu {
 
     @Test
     public void test_evoluerMonster_deplacement() {
-        Spider m = new Spider(1, 1, 3);
+        Spider m = new Spider(1, 1);
         jeu.getMonstres().add(m);
         Commande c = new Commande();
         c.droite = true;
@@ -443,7 +444,7 @@ public class TestJeu {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         Piege piege = new Piege(x, y - 1);
-        jeu.addCase(piege, x, y - 1);
+        jeu.addCase(piege);
         int vieAvant = jeu.getHero().getVie();
         Commande c = new Commande();
         c.haut = true;
@@ -459,7 +460,7 @@ public class TestJeu {
         jeu.chargerNiveau("laby/laby_simple.txt");
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
-        jeu.addCase(new MurFriable(x, y - 1), x, y - 1);
+        jeu.addCase(new MurFriable(x, y - 1));
         Commande c = new Commande();
         c.haut = true;
         jeu.evoluer(c);
@@ -474,7 +475,7 @@ public class TestJeu {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         assertNull(jeu.getCase(x, y));
-        jeu.getHero().attaquer(new Spider(0, 0, 0)); // L'attaque de l'aventurier pose une bombe sur sa position
+        jeu.getHero().attaquer(new Spider(0, 0)); // L'attaque de l'aventurier pose une bombe sur sa position
         Case bombe = jeu.getCase(x, y);
         assertNotNull(bombe);
         assertTrue(bombe instanceof Bombe);
@@ -487,7 +488,7 @@ public class TestJeu {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         int vieAvant = jeu.getHero().getVie();
-        jeu.addCase(new Bombe(x, y), x, y);
+        jeu.addCase(new Bombe(x, y));
         Bombe bombe = (Bombe) jeu.getCase(x, y);
         bombe.exploser(jeu);
         Thread.sleep(1600);
@@ -499,8 +500,8 @@ public class TestJeu {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
         MurFriable mur = new MurFriable(x, y - 1);
-        jeu.addCase(mur, x, y - 1);
-        jeu.addCase(new Bombe(x, y - 2), x, y - 2);
+        jeu.addCase(mur);
+        jeu.addCase(new Bombe(x, y - 2));
         Bombe bombe = (Bombe) jeu.getCase(x, y - 2);
         bombe.exploser(jeu);
         Thread.sleep(1600);
@@ -511,9 +512,9 @@ public class TestJeu {
     public void test_bombeExplosionTueMonstre() throws InterruptedException {
         int x = jeu.getHero().getX();
         int y = jeu.getHero().getY();
-        Spider m = new Spider(x, y - 6, 3);
+        Spider m = new Spider(x, y - 6);
         jeu.getMonstres().add(m);
-        jeu.addCase(new Bombe(x, y - 5), x, y - 5);
+        jeu.addCase(new Bombe(x, y - 5));
         Bombe bombe = (Bombe) jeu.getCase(x, y - 5);
         bombe.exploser(jeu);
         Thread.sleep(1600);

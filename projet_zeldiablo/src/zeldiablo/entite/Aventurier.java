@@ -19,10 +19,10 @@ public class Aventurier extends Personnage {
      *
      * @param x coordonné x de l'aventurier
      * @param y coordonné y de l'aventurier
-     * @param vie point de vie de l'aventurier
      */
-    public Aventurier(int x, int y, int vie) {
-        super(x, y, vie);
+    public Aventurier(int x, int y) {
+        super(x, y);
+        this.vie = 6;
     }
 
     /**
@@ -51,7 +51,7 @@ public class Aventurier extends Personnage {
     @Override
     public void attaquer(Personnage victime) {
         Bombe b = new Bombe(x, y);
-        jeu.addCase(b, x, y);
+        jeu.addCase(b);
         b.exploser(jeu);
 
         this.isAttaque = true;

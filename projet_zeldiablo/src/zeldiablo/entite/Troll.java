@@ -10,10 +10,11 @@ public class Troll extends Personnage {
      *
      * @param x la coordonnee x
      * @param y la coordonnee y
-     * @param vie les points de vie
      */
-    public Troll(int x, int y, int vie) {
-        super(x, y, vie);
+    public Troll(int x, int y) {
+        super(x, y);
+        this.vie = 6; // Les trolls ont plus de vie que les autres monstres
+        this.degats = 3; // Les trolls font plus de degats que les autres monstres
     }
 
     @Override

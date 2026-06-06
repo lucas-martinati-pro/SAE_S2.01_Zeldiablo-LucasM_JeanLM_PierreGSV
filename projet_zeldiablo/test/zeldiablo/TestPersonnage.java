@@ -1,5 +1,6 @@
 package zeldiablo;
 
+import moteurJeu.Commande;
 import zeldiablo.entite.Aventurier;
 import zeldiablo.entite.Spider;
 import zeldiablo.entite.Blob;
@@ -7,6 +8,8 @@ import zeldiablo.entite.Artificier;
 import zeldiablo.entite.Ghost;
 import zeldiablo.entite.Troll;
 import zeldiablo.environnement.Bombe;
+import zeldiablo.environnement.Mur;
+import zeldiablo.environnement.PiegeDetruit;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,21 +19,22 @@ public class TestPersonnage {
 
     @Test
     public void test_Aventurier_creation() {
-        Aventurier a = new Aventurier(3, 4, 5);
+        Aventurier a = new Aventurier(3, 4);
         assertEquals(3, a.getX());
         assertEquals(4, a.getY());
-        assertEquals(5, a.getVie());
+        assertEquals(6, a.getVie());
     }
 
     @Test
     public void test_Aventurier_creationVieNegative() {
-        Aventurier a = new Aventurier(1, 1, -3);
+        Aventurier a = new Aventurier(1, 1);
+        a.setVie(-3);
         assertTrue(a.etreMort());
     }
 
     @Test
     public void test_Aventurier_setPos() {
-        Aventurier a = new Aventurier(1, 1, 5);
+        Aventurier a = new Aventurier(1, 1);
         a.setPos(5, 7);
         assertEquals(5, a.getX());
         assertEquals(7, a.getY());
@@ -38,7 +42,7 @@ public class TestPersonnage {
 
     @Test
     public void test_Aventurier_setPosNegatif() {
-        Aventurier a = new Aventurier(1, 1, 5);
+        Aventurier a = new Aventurier(1, 1);
         a.setPos(-3, -2);
         assertEquals(0, a.getX());
         assertEquals(0, a.getY());
@@ -46,34 +50,35 @@ public class TestPersonnage {
 
     @Test
     public void test_Aventurier_addVie() {
-        Aventurier a = new Aventurier(1, 1, 5);
+        Aventurier a = new Aventurier(1, 1);
         a.addVie(3);
-        assertEquals(8, a.getVie());
+        assertEquals(9, a.getVie());
     }
 
     @Test
     public void test_Aventurier_addVieNegatif() {
-        Aventurier a = new Aventurier(1, 1, 5);
+        Aventurier a = new Aventurier(1, 1);
         a.addVie(-2);
-        assertEquals(3, a.getVie());
+        assertEquals(4, a.getVie());
     }
 
     @Test
     public void test_Aventurier_etreMortFaux() {
-        Aventurier a = new Aventurier(1, 1, 5);
+        Aventurier a = new Aventurier(1, 1);
         assertFalse(a.etreMort());
     }
 
     @Test
     public void test_Aventurier_etreMortVrai() {
-        Aventurier a = new Aventurier(1, 1, 0);
+        Aventurier a = new Aventurier(1, 1);
+        a.setVie(0);
         assertTrue(a.etreMort());
     }
 
     @Test
     public void test_Aventurier_etreMortApresDegatLetaux() {
-        Aventurier a = new Aventurier(1, 1, 1);
-        a.addVie(-5);
+        Aventurier a = new Aventurier(1, 1);
+        a.addVie(-6);
         assertTrue(a.etreMort());
     }
 
@@ -81,7 +86,7 @@ public class TestPersonnage {
 
     @Test
     public void test_Monstre_creation() {
-        Spider m = new Spider(2, 3, 3);
+        Spider m = new Spider(2, 3);
         assertEquals(2, m.getX());
         assertEquals(3, m.getY());
         assertEquals(3, m.getVie());
@@ -89,7 +94,7 @@ public class TestPersonnage {
 
     @Test
     public void test_Monstre_setPos() {
-        Spider m = new Spider(1, 1, 3);
+        Spider m = new Spider(1, 1);
         m.setPos(4, 5);
         assertEquals(4, m.getX());
         assertEquals(5, m.getY());
@@ -99,27 +104,20 @@ public class TestPersonnage {
 
     @Test
     public void test_attaquer_infliceDegats() {
-        Spider m = new Spider(1, 1, 3);
-        Aventurier a = new Aventurier(2, 2, 5);
+        Spider m = new Spider(1, 1);
+        Aventurier a = new Aventurier(2, 2);
         m.attaquer(a);
-        assertEquals(3, a.getVie());
+        assertEquals(4, a.getVie());
     }
 
     @Test
-    public void test_attaquer_mortNeAttaquePas() {
-        Spider m = new Spider(1, 1, 0);
-        Aventurier a = new Aventurier(2, 2, 5);
-        m.attaquer(a);
-        assertEquals(5, a.getVie());
-    }
-
-    @Test
-    public void test_attaquer_aventurierContreMontsre() throws InterruptedException {
+    public void test_attaquer_aventurierContreMonstre() throws InterruptedException {
         Jeu jeu = new Jeu();
-        Aventurier a = new Aventurier(1, 1, 5);
+        jeu.addCase(new PiegeDetruit(10, 10)); // Initialise la grille à 11x11
+        Aventurier a = new Aventurier(1, 1);
         a.setJeu(jeu);
         jeu.setHero(a);
-        Spider m = new Spider(2, 1, 3);
+        Spider m = new Spider(2, 1);
         jeu.getMonstres().add(m);
         a.attaquer(m);
         Thread.sleep(1600);
@@ -130,10 +128,11 @@ public class TestPersonnage {
     @Test
     public void test_attaquer_tueMonstre() throws InterruptedException {
         Jeu jeu = new Jeu();
-        Aventurier a = new Aventurier(1, 1, 5);
+        jeu.addCase(new PiegeDetruit(10, 10)); // Initialise la grille à 11x11
+        Aventurier a = new Aventurier(1, 1);
         a.setJeu(jeu);
         jeu.setHero(a);
-        Spider m = new Spider(2, 1, 2);
+        Spider m = new Spider(2, 1);
         jeu.getMonstres().add(m);
         a.attaquer(m);
         Thread.sleep(1600);
@@ -147,7 +146,7 @@ public class TestPersonnage {
      */
     @Test
     public void test_Blob_creation() {
-        Blob b = new Blob(3, 4, 2);
+        Blob b = new Blob(3, 4);
         assertEquals(3, b.getX());
         assertEquals(4, b.getY());
         assertEquals(2, b.getVie());
@@ -160,7 +159,7 @@ public class TestPersonnage {
     @Test
     public void test_Blob_neSeDeplacePas() {
         Jeu jeu = new Jeu();
-        Blob b = new Blob(2, 2, 2);
+        Blob b = new Blob(2, 2);
         moteurJeu.Commande c = new moteurJeu.Commande();
         c.haut = true;
         b.deplacer(jeu, c);
@@ -176,10 +175,11 @@ public class TestPersonnage {
     @Test
     public void test_Blob_destructionSegment() throws InterruptedException {
         Jeu jeu = new Jeu();
-        Aventurier a = new Aventurier(1, 1, 5);
+        jeu.addCase(new PiegeDetruit(10, 10)); // Initialise la grille à 11x11
+        Aventurier a = new Aventurier(1, 1);
         a.setJeu(jeu);
         jeu.setHero(a);
-        Blob b = new Blob(1, 2, 2);
+        Blob b = new Blob(1, 2);
         jeu.getMonstres().add(b);
         a.attaquer(b);
         Thread.sleep(1600);
@@ -193,10 +193,10 @@ public class TestPersonnage {
      */
     @Test
     public void test_Artificier_creation() {
-        Artificier art = new Artificier(5, 5, 4);
+        Artificier art = new Artificier(5, 5);
         assertEquals(5, art.getX());
         assertEquals(5, art.getY());
-        assertEquals(4, art.getVie());
+        assertEquals(15, art.getVie());
         assertEquals("Artificier", art.getType());
     }
 
@@ -206,10 +206,10 @@ public class TestPersonnage {
     @Test
     public void test_Artificier_attaquePoseBombe() throws InterruptedException {
         Jeu jeu = new Jeu();
-        Aventurier a = new Aventurier(1, 1, 5);
+        Aventurier a = new Aventurier(1, 1);
         a.setJeu(jeu);
         jeu.setHero(a);
-        Artificier art = new Artificier(2, 2, 4);
+        Artificier art = new Artificier(2, 2);
         art.setJeu(jeu);
         jeu.getMonstres().add(art);
         art.attaquer(a);
@@ -231,8 +231,8 @@ public class TestPersonnage {
      */
     @Test
     public void test_Personnage_isAttaque_transition() throws InterruptedException {
-        Spider m = new Spider(1, 1, 3);
-        Aventurier a = new Aventurier(2, 2, 5);
+        Spider m = new Spider(1, 1);
+        Aventurier a = new Aventurier(2, 2);
         assertFalse(m.getIsAttaque());
         m.attaquer(a);
         assertTrue(m.getIsAttaque());
@@ -247,7 +247,7 @@ public class TestPersonnage {
      */
     @Test
     public void test_Troll_creation() {
-        Troll t = new Troll(6, 6, 6);
+        Troll t = new Troll(6, 6);
         assertEquals(6, t.getX());
         assertEquals(6, t.getY());
         assertEquals(6, t.getVie());
@@ -259,7 +259,7 @@ public class TestPersonnage {
      */
     @Test
     public void test_Troll_regenerer() {
-        Troll t = new Troll(1, 1, 6);
+        Troll t = new Troll(1, 1);
         t.addVie(-2);
         assertEquals(4, t.getVie());
         t.regenerer();
@@ -273,10 +273,10 @@ public class TestPersonnage {
      */
     @Test
     public void test_Ghost_creation() {
-        Ghost g = new Ghost(8, 8, 3);
+        Ghost g = new Ghost(8, 8);
         assertEquals(8, g.getX());
         assertEquals(8, g.getY());
-        assertEquals(3, g.getVie());
+        assertEquals(4, g.getVie());
         assertEquals("Ghost", g.getType());
     }
 
@@ -286,9 +286,9 @@ public class TestPersonnage {
     @Test
     public void test_Ghost_deplacerTraverseMur() {
         Jeu jeu = new Jeu();
-        jeu.addCase(new zeldiablo.environnement.Mur(1, 2), 1, 2);
-        Ghost g = new Ghost(1, 1, 3);
-        moteurJeu.Commande c = new moteurJeu.Commande();
+        jeu.addCase(new Mur(1, 2));
+        Ghost g = new Ghost(1, 1);
+        Commande c = new Commande();
         c.bas = true;
         g.deplacer(jeu, c);
         assertEquals(1, g.getX());

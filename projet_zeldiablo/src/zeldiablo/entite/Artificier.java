@@ -15,10 +15,10 @@ public class Artificier extends Personnage {
      *
      * @param x coordonné x de l'artificier
      * @param y coordonné y de l'artificier
-     * @param vie point de vie de l'artificier
      */
-    public Artificier(int x, int y, int vie) {
-        super(x, y, vie);
+    public Artificier(int x, int y) {
+        super(x, y);
+        this.vie = 15;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Artificier extends Personnage {
     @Override
     public void attaquer(Personnage victime) {
         Bombe b = new Bombe(x, y);
-        jeu.addCase(b, x, y);
+        jeu.addCase(b);
         b.exploser(jeu);
 
         this.isAttaque = true;

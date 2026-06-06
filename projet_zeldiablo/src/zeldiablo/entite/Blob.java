@@ -11,12 +11,13 @@ public class Blob extends Personnage {
     /**
      * Cree un nouveau monstre.
      *
-     * @param x   la coordonnee x
-     * @param y   la coordonnee y
-     * @param vie les points de vie
+     * @param x la coordonnee x
+     * @param y la coordonnee y
      */
-    public Blob(int x, int y, int vie) {
-        super(x, y, vie);
+    public Blob(int x, int y) {
+        super(x, y);
+        this.vie = 2;
+        this.degats = 1; // Les blobs font moins de degats que les autres monstres
     }
 
     @Override
