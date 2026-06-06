@@ -199,6 +199,12 @@ public class DessinLaby implements DessinJeu {
         }
     }
 
+    /**
+     * Dessine une case specifique a l'ecran.
+     *
+     * @param g le contexte graphique 2D
+     * @param c la case a dessiner
+     */
     public void drawCase(Graphics2D g, Case c) {
         int x = c.getX();
         int y = c.getY();
