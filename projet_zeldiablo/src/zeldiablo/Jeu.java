@@ -39,7 +39,7 @@ public class Jeu implements moteurJeu.Jeu {
     private ArrayList<Personnage> monstres = new ArrayList<>();
     private GestionnaireMonstres gestionnaireMonstres = new GestionnaireMonstres(this);
 
-    private ArrayList<Case> cases = new ArrayList<>();
+    private Case[][] cases; // Matrice de cases pour un accès plus rapide aux cases par coordonnées
     private ArrayList<int[]> explosionAffichage = new ArrayList<>();
 
     private int[] fin;
@@ -97,7 +97,7 @@ public class Jeu implements moteurJeu.Jeu {
      *
      * @return la liste des cases
      */
-    public ArrayList<Case> getCases() {
+    public Case[][] getCases() {
         return cases;
     }
 
@@ -129,6 +129,18 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     // ########## Méthodes ##########
+    public void addCase(Case c, int x, int y) {
+        if (cases != null && x >= 0 && y >= 0 && x < cases.length && y < cases[x].length) {
+            this.cases[x][y] = c;
+        }
+    }
+
+    public void removeCase(int x, int y) {
+        if (cases != null && x >= 0 && y >= 0 && x < cases.length && y < cases[x].length) {
+            this.cases[x][y] = null;
+        }
+    }
+
     /**
      * Charge un jeu a partir d'un fichier texte.
      *
@@ -148,7 +160,7 @@ public class Jeu implements moteurJeu.Jeu {
         }
         file.close();
 
-        this.cases.clear();
+        this.cases = null;
         this.monstres.clear();
         this.hero = null;
         this.fin = null;
@@ -159,22 +171,24 @@ public class Jeu implements moteurJeu.Jeu {
         }
         this.size = new int[]{max, ligne.size()};
 
+        this.cases = new Case[max][ligne.size()];
+
         for (int i = 0; i < ligne.size(); i++) {
             String line = ligne.get(i);
             for (int j = 0; j < line.length(); j++) {
                 switch (line.charAt(j)) {
                     case Jeu.VIDE -> {}
-                    case Jeu.MUR -> this.cases.add(new Mur(j, i));
+                    case Jeu.MUR -> this.cases[j][i] = new Mur(j, i);
                     case Jeu.HERO -> {
                         hero = new Aventurier(j, i, 5);
                         hero.setJeu(this);
                     }
                     case Jeu.FIN -> fin = new int[]{j, i};
-                    case Jeu.PIEGE -> this.cases.add(new Piege(j, i));
-                    case Jeu.SOINS -> this.cases.add(new Soins(j, i));
-                    case Jeu.TELEPORTEUR -> this.cases.add(new Teleporteur(j, i));
-                    case Jeu.MUR_FRIABLE -> this.cases.add(new MurFriable(j, i));
-                    case Jeu.AMULETTE -> this.cases.add(new Amulette(j, i));
+                    case Jeu.PIEGE -> this.cases[j][i] = new Piege(j, i);
+                    case Jeu.SOINS -> this.cases[j][i] = new Soins(j, i);
+                    case Jeu.TELEPORTEUR -> this.cases[j][i] = new Teleporteur(j, i);
+                    case Jeu.MUR_FRIABLE -> this.cases[j][i] = new MurFriable(j, i);
+                    case Jeu.AMULETTE -> this.cases[j][i] = new Amulette(j, i);
                     case Jeu.SPIDER -> monstres.add(new Spider(j, i, 3));
                     case Jeu.TROLL -> monstres.add(new Troll(j, i, 1));
                     case Jeu.GHOST -> monstres.add(new Ghost(j, i, 4));
@@ -202,15 +216,15 @@ public class Jeu implements moteurJeu.Jeu {
     public void detruire(int x, int y) {
         Case c = getCase(x, y);
         if (c != null) {
-            if (!(c instanceof Amulette)) this.cases.remove(c);
+            if (!(c instanceof Amulette)) this.cases[x][y] = null; // L'amulette ne peut pas être détruite, elle devient juste inaccessible
             if (c instanceof Piege) {
-                this.cases.add(new PiegeDetruit(x, y));
+                this.cases[x][y] = new PiegeDetruit(x, y);
             }
             if (c instanceof Soins) {
-                this.cases.add(new SoinsDetruit(x, y));
+                this.cases[x][y] = new SoinsDetruit(x, y);
             }
             if (c instanceof Teleporteur) {
-                this.cases.add(new TeleporteurDetruit(x, y));
+                this.cases[x][y] = new TeleporteurDetruit(x, y);
             }
         }
     }
@@ -227,11 +241,8 @@ public class Jeu implements moteurJeu.Jeu {
      * @return la case correspondante ou null si aucune case n'est trouvee
      */
     public Case getCase(int x, int y) {
-        for (Case c : cases) {
-            if (c.getX() == x && c.getY() == y) {
-                // Si c'est une case détruite, on le considère comme une case vide
-                if (!(c instanceof CaseDetruite)) return c;
-            }
+        if (cases != null && x >= 0 && y >= 0 && x < cases.length && y < cases[x].length) {
+            return cases[x][y];
         }
         return null;
     }
@@ -305,10 +316,12 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public boolean etreFini() {
         boolean levelHasAmulet = false;
-        for (Case c : cases) {
-            if (c instanceof Amulette) {
-                levelHasAmulet = true;
-                break;
+        for (Case[] column : cases) {
+            for (Case c : column) {
+                if (c instanceof Amulette) {
+                    levelHasAmulet = true;
+                    break;
+                }
             }
         }
         boolean hasAmuletIfRequired = !levelHasAmulet || hero.haveItem("Amulette");

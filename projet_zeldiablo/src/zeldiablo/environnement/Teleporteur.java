@@ -31,21 +31,27 @@ public class Teleporteur extends CaseEffet {
      */
     @Override
     public void effet(Jeu jeu, Personnage perso) {
-        for (Case c : jeu.getCases()) {
-            if (c instanceof Teleporteur && (c.getX() != this.x || c.getY() != this.y)) {
-                boolean libre = true;
-                for (Personnage m : jeu.getMonstres()) {
-                    if (m.getX() == c.getX() && m.getY() == c.getY()) {
-                        libre = false;
-                        break;
+        int[] size = jeu.getSize();
+        for (int i = 0; i < size[0]; i++) {
+            for (int j = 0; j < size[1]; j++) {
+                Case c = jeu.getCase(i, j);
+                if (c != null) {
+                    if (c instanceof Teleporteur && (c.getX() != this.x || c.getY() != this.y)) {
+                        boolean libre = true;
+                        for (Personnage m : jeu.getMonstres()) {
+                            if (m.getX() == c.getX() && m.getY() == c.getY()) {
+                                libre = false;
+                                break;
+                            }
+                        }
+                        if (jeu.getHero() != perso && jeu.getHero().getX() == c.getX() && jeu.getHero().getY() == c.getY()) {
+                            libre = false;
+                        }
+                        if (libre) {
+                            perso.setPos(c.getX(), c.getY());
+                            return;
+                        }
                     }
-                }
-                if (jeu.getHero() != perso && jeu.getHero().getX() == c.getX() && jeu.getHero().getY() == c.getY()) {
-                    libre = false;
-                }
-                if (libre) {
-                    perso.setPos(c.getX(), c.getY());
-                    return;
                 }
             }
         }

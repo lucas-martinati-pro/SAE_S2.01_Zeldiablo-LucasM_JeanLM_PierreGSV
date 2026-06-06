@@ -52,7 +52,7 @@ public class Artificier extends Personnage {
     @Override
     public void attaquer(Personnage victime) {
         Bombe b = new Bombe(x, y);
-        jeu.getCases().add(b);
+        jeu.addCase(b, x, y);
         b.exploser(jeu);
 
         this.isAttaque = true;

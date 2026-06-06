@@ -111,28 +111,33 @@ public class DessinLaby implements DessinJeu {
         }
 
         // Ajout des cases
-        ArrayList<Case> cases = new ArrayList<>(jeu.getCases());
-        for (Case c : cases) {
-            int x = c.getX();
-            int y = c.getY();
-            BufferedImage img = switch (c.getType()) {
-                case "Mur" -> mur;
-                case "Soins" -> soins;
-                case "SoinsDetruit" -> soinsDetruit;
-                case "Piege" -> {
-                    // Le yield sert à renvoyer la valeur en dehors des accolade, c'est ce que le switch avec les -> demande
-                    if (((Piege) c).getIsRevele()) yield piege;
-                    else yield vide;
+        int[] size = jeu.getSize();
+        for (int i = 0; i < size[0]; i++) {
+            for (int j = 0; j < size[1]; j++) {
+                Case c = jeu.getCase(i, j);
+                if (c != null) {
+                    int x = c.getX();
+                    int y = c.getY();
+                    BufferedImage img = switch (c.getType()) {
+                        case "Mur" -> mur;
+                        case "Soins" -> soins;
+                        case "SoinsDetruit" -> soinsDetruit;
+                        case "Piege" -> {
+                            // Le yield sert à renvoyer la valeur en dehors des accolade, c'est ce que le switch avec les -> demande
+                            if (((Piege) c).getIsRevele()) yield piege;
+                            else yield vide;
+                        }
+                        case "PiegeDetruit" -> piegeDetruit;
+                        case "MurFriable" -> murFriable;
+                        case "Bombe" -> bombe;
+                        case "Amulette" -> amulette;
+                        case "Teleporteur" -> teleporteur;
+                        case "TeleporteurDetruit" -> teleporteurDetruit;
+                        default -> vide;
+                    };
+                    g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
                 }
-                case "PiegeDetruit" -> piegeDetruit;
-                case "MurFriable" -> murFriable;
-                case "Bombe" -> bombe;
-                case "Amulette" -> amulette;
-                case "Teleporteur" -> teleporteur;
-                case "TeleporteurDetruit" -> teleporteurDetruit;
-                default -> vide;
-            };
-            g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+            }
         }
 
         // Ajout de la porte de fin (porte ouverte ou porte fermée selon si le héros a l'amulette ou pas)

@@ -51,7 +51,7 @@ public class Aventurier extends Personnage {
     @Override
     public void attaquer(Personnage victime) {
         Bombe b = new Bombe(x, y);
-        jeu.getCases().add(b);
+        jeu.addCase(b, x, y);
         b.exploser(jeu);
 
         this.isAttaque = true;
@@ -87,7 +87,7 @@ public class Aventurier extends Personnage {
     public void addInventaire(int x, int y) {
         Case c = jeu.getCase(x, y);
         inventaire.add((Item) c);
-        jeu.getCases().remove(c);
+        jeu.removeCase(x, y);
     }
 
     @Override
