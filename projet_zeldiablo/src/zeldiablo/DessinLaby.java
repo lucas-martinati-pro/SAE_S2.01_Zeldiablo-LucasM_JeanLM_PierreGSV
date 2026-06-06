@@ -21,36 +21,36 @@ public class DessinLaby implements DessinJeu {
     public static final int TAILLE = 30;
     private Jeu jeu;
 
-    private BufferedImage flamme;
-    private BufferedImage gameOver;
-    private BufferedImage win;
-    private BufferedImage porte;
-    private BufferedImage porteOuverte;
-    private BufferedImage mur;
-    private BufferedImage vide;
-    private BufferedImage soins;
-    private BufferedImage soinsDetruit;
-    private BufferedImage piegeCache;
-    private BufferedImage piege;
-    private BufferedImage piegeDetruit;
-    private BufferedImage teleporteur;
-    private BufferedImage teleporteurDetruit;
-    private BufferedImage murFriable;
-    private BufferedImage bombe;
-    private BufferedImage amulette;
-    private BufferedImage spider;
-    private BufferedImage troll;
-    private BufferedImage ghost;
-    private BufferedImage blob;
-    private BufferedImage artificier;
-    private BufferedImage hero;
-    private BufferedImage spiderAttaque;
-    private BufferedImage trollAttaque;
-    private BufferedImage ghostAttaque;
-    private BufferedImage blobAttaque;
-    private BufferedImage artificierAttaque;
-    private BufferedImage heroAttaque;
-    private BufferedImage coeur;
+    private BufferedImage flamme = chargerImage("flamme.png");
+    private BufferedImage gameOver = chargerImage("gameOver.png");
+    private BufferedImage win = chargerImage("win.png");
+    private BufferedImage porte = chargerImage("porte.png");
+    private BufferedImage porteOuverte = chargerImage("porteOuverte.png");
+    private BufferedImage mur = chargerImage("mur.png");
+    private BufferedImage vide = chargerImage("vide.png");
+    private BufferedImage soins = chargerImage("soins.png");
+    private BufferedImage soinsDetruit = chargerImage("soinsDetruit.png");
+    private BufferedImage piegeCache = chargerImage("piegeCache.png");
+    private BufferedImage piege = chargerImage("piege.png");
+    private BufferedImage piegeDetruit = chargerImage("piegeDetruit.png");
+    private BufferedImage teleporteur = chargerImage("teleporteur.png");
+    private BufferedImage teleporteurDetruit = chargerImage("teleporteurDetruit.png");
+    private BufferedImage murFriable = chargerImage("murFriable.png");
+    private BufferedImage bombe = chargerImage("bombe.png");
+    private BufferedImage amulette = chargerImage("amulette.png");
+    private BufferedImage spider = chargerImage("spider.png");
+    private BufferedImage troll = chargerImage("troll.png");
+    private BufferedImage ghost = chargerImage("ghost.png");
+    private BufferedImage blob = chargerImage("blob.png");
+    private BufferedImage artificier = chargerImage("artificier.png");
+    private BufferedImage hero = chargerImage("hero.png");
+    private BufferedImage spiderAttaque = chargerImage("spiderAttaque.png");
+    private BufferedImage trollAttaque = chargerImage("trollAttaque.png");
+    private BufferedImage ghostAttaque = chargerImage("ghostAttaque.png");
+    private BufferedImage blobAttaque = chargerImage("blobAttaque.png");
+    private BufferedImage artificierAttaque = chargerImage("artificierAttaque.png");
+    private BufferedImage heroAttaque = chargerImage("heroAttaque.png");
+    private BufferedImage coeur = chargerImage("coeur.png");
 
     /**
      * Constructeur de DessinLaby
@@ -59,40 +59,6 @@ public class DessinLaby implements DessinJeu {
     public DessinLaby(Jeu jeu) {
         if (jeu != null) this.jeu = jeu;
         else this.jeu = new Jeu();
-
-        try {
-            flamme = ImageIO.read(new File("sprite/flamme.png"));
-            gameOver = ImageIO.read(new File("sprite/gameOver.jpg"));
-            win = ImageIO.read(new File("sprite/win.png"));
-            porte = ImageIO.read(new File("sprite/porte.png"));
-            porteOuverte = ImageIO.read(new File("sprite/porteOuverte.png"));
-            mur = ImageIO.read(new File("sprite/mur.png"));
-            vide = ImageIO.read(new File("sprite/vide.png"));
-            soins = ImageIO.read(new File("sprite/soins.png"));
-            soinsDetruit = ImageIO.read(new File("sprite/soinsDetruit.png"));
-            piegeCache = ImageIO.read(new File("sprite/piegeCache.png"));
-            piege = ImageIO.read(new File("sprite/piege.png"));
-            teleporteur = ImageIO.read(new File("sprite/teleporteur.png"));
-            teleporteurDetruit = ImageIO.read(new File("sprite/teleporteurDetruit.png"));
-            murFriable = ImageIO.read(new File("sprite/murFriable.png"));
-            bombe = ImageIO.read(new File("sprite/bombe.png"));
-            piegeDetruit = ImageIO.read(new File("sprite/piegeDetruit.png"));
-            amulette = ImageIO.read(new File("sprite/amulette.png"));
-            spider = ImageIO.read(new File("sprite/spider.png"));
-            troll = ImageIO.read(new File("sprite/troll.png"));
-            ghost = ImageIO.read(new File("sprite/ghost.png"));
-            blob = ImageIO.read(new File("sprite/blob.png"));
-            artificier = ImageIO.read(new File("sprite/artificier.png"));
-            hero = ImageIO.read(new File("sprite/hero.png"));
-            spiderAttaque = ImageIO.read(new File("sprite/spiderAttaque.png"));
-            trollAttaque = ImageIO.read(new File("sprite/trollAttaque.png"));
-            ghostAttaque = ImageIO.read(new File("sprite/ghostAttaque.png"));
-            blobAttaque = ImageIO.read(new File("sprite/blobAttaque.png"));
-            artificierAttaque = ImageIO.read(new File("sprite/artificierAttaque.png"));
-            heroAttaque = ImageIO.read(new File("sprite/heroAttaque.png"));
-            coeur = ImageIO.read(new File("sprite/coeur.png"));
-        } catch (IOException e) {
-        }
     }
 
         /**
@@ -227,5 +193,20 @@ public class DessinLaby implements DessinJeu {
             default -> vide;
         };
         g.drawImage(img, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
+    }
+
+    /**
+     * Charge une image a partir d'un chemin specifique.
+     *
+     * @param chemin le chemin de l'image a charger
+     * @return l'image chargee ou null en cas d'erreur
+     */
+    private BufferedImage chargerImage(String chemin) {
+        try {
+            return ImageIO.read(new File("sprite/" + chemin));
+        } catch (IOException e) {
+            System.err.println("Erreur chargement : " + chemin + " - " + e.getMessage());
+            return null; // Ou retourne une image par défaut (placeholder)
+        }
     }
 }

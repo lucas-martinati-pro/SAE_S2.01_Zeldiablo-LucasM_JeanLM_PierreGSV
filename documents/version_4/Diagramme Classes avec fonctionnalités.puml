@@ -97,6 +97,7 @@ class DessinLaby {
     + DessinLaby(jeu : Jeu)
     + dessiner(image : BufferedImage) : void
     + drawCase(g : Graphics2D, c : Case) : void
+    + chargerImage(chemin : String) : BufferedImage
 }
 
 package "entite" {
