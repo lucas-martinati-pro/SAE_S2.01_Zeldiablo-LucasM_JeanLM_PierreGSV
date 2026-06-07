@@ -32,12 +32,15 @@ public class Ghost extends Personnage {
     @Override
     public void deplacer(Jeu jeu, Commande commandeUser) {
         int[] coord = jeu.getSuivant(this.x, this.y, commandeUser);
-        for (Personnage m : jeu.getMonstres()) {
-            if (m.getX() == coord[0] && m.getY() == coord[1]) {
-                return;
+        int[] size = jeu.getSize();
+        if (coord[0] >= 0 && coord[0] < size[0] && coord[1] >= 0 && coord[1] < size[1]) {
+            for (Personnage m : jeu.getMonstres()) {
+                if (m.getX() == coord[0] && m.getY() == coord[1]) {
+                    return;
+                }
             }
+            setPos(coord[0], coord[1]);
         }
-        setPos(coord[0], coord[1]);
     }
 
     @Override

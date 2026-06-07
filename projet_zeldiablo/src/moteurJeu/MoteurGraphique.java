@@ -42,8 +42,12 @@ public class MoteurGraphique {
 	 */
 	public void lancerJeu(int width, int height) throws InterruptedException {
 
-		// creation de l'interface graphique
-		this.gui = new InterfaceGraphique(this.dessin,width,height);
+		// creation ou mise a jour de l'interface graphique
+		if (this.gui == null) {
+			this.gui = new InterfaceGraphique(this.dessin, width, height);
+		} else {
+			this.gui.redimensionner(width, height);
+		}
 		Controleur controle = this.gui.getControleur();
 
 		// boucle de jeu

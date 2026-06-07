@@ -11,6 +11,11 @@ import javax.swing.JFrame;
 public class InterfaceGraphique  {
 
 	/**
+	 * la JFrame de l'interface
+	 */
+	private JFrame frame;
+
+	/**
 	 * le Panel lie a la JFrame
 	 */
 	private PanelDessin panel;
@@ -31,12 +36,12 @@ public class InterfaceGraphique  {
 	public InterfaceGraphique(DessinJeu afficheurUtil,int x,int y)
 	{
 		//creation JFrame
-		JFrame f=new JFrame();
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.frame=new JFrame();
+		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		// creation panel
 		this.panel=new PanelDessin(x, y,afficheurUtil);
-		f.setContentPane(this.panel);
+		this.frame.setContentPane(this.panel);
 		
 		//ajout du controleur
 		Controleur controlleurGraph=new Controleur();
@@ -44,11 +49,11 @@ public class InterfaceGraphique  {
 		this.panel.addKeyListener(controlleurGraph);	
 		
 		//recuperation du focus
-		f.pack();
-		f.getContentPane().setFocusable(true);
-		f.getContentPane().requestFocus();
+		this.frame.pack();
+		this.frame.getContentPane().setFocusable(true);
+		this.frame.getContentPane().requestFocus();
 
-		f.setVisible(true);
+		this.frame.setVisible(true);
 		
 	}
 	
@@ -66,6 +71,31 @@ public class InterfaceGraphique  {
 	 */
 	public void dessiner() {
 		this.panel.dessinerJeu();	
+	}
+
+	/**
+	 * ferme la fenetre et libere les ressources associees.
+	 */
+	public void dispose() {
+		if (this.frame != null) {
+			this.frame.dispose();
+		}
+	}
+
+	/**
+	 * Met a jour la taille du panel interne et re-pack la fenetre.
+	 * 
+	 * @param x nouvelle largeur
+	 * @param y nouvelle hauteur
+	 */
+	public void redimensionner(int x, int y) {
+		if (this.panel != null) {
+			this.panel.setTaille(x, y);
+		}
+		if (this.frame != null) {
+			this.frame.pack();
+			this.frame.getContentPane().requestFocus();
+		}
 	}
 	
 }

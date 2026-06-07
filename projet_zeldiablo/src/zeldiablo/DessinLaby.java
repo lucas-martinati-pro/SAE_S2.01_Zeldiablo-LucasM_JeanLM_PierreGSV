@@ -136,7 +136,6 @@ public class DessinLaby implements DessinJeu {
         // Ajout du héros
         Personnage hero = jeu.getHero();
         int x = hero.getX(), y = hero.getY();
-        g.drawImage(this.hero, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
         if (hero.getIsAttaque()) {
             g.drawImage(heroAttaque, x * TAILLE, y * TAILLE, TAILLE, TAILLE, null);
         } else {

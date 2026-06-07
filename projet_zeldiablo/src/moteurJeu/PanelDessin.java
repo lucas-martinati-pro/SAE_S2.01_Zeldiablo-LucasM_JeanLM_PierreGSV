@@ -84,4 +84,22 @@ public class PanelDessin extends JPanel {
 				getWidth(), getHeight(), null);
 	}
 
+	/**
+	 * Met a jour la taille du panel et recree les buffers d'images.
+	 * 
+	 * @param x nouvelle largeur
+	 * @param y nouvelle hauteur
+	 */
+	public void setTaille(int x, int y) {
+		this.width = x;
+		this.height = y;
+		this.setPreferredSize(new Dimension(x, y));
+
+		// Cree les nouvelles images avec la nouvelle taille
+		this.imageSuivante = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		this.imageEnCours = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		
+		this.revalidate();
+	}
+
 }
