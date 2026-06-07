@@ -77,9 +77,7 @@ public class InterfaceGraphique  {
 	 * ferme la fenetre et libere les ressources associees.
 	 */
 	public void dispose() {
-		if (this.frame != null) {
-			this.frame.dispose();
-		}
+		this.frame.dispose();
 	}
 
 	/**

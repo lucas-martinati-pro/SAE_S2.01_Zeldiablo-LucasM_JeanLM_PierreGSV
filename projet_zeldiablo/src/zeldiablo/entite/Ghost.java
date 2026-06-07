@@ -39,6 +39,10 @@ public class Ghost extends Personnage {
                     return;
                 }
             }
+            Aventurier hero = jeu.getHero();
+            if (hero != null && hero.getX() == coord[0] && hero.getY() == coord[1]) {
+                return;
+            }
             setPos(coord[0], coord[1]);
         }
     }
