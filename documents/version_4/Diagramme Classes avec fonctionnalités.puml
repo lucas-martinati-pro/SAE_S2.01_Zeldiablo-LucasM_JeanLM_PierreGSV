@@ -48,8 +48,6 @@ class "Jeu" {
     + verifierDeplacement(x : int, y : int, commandeUser : Commande) : void
     + evoluer(commandeUser : Commande) : void
     + etreFini() : boolean
-
-    + jeuToString() : String
 }
 
 class GestionnaireMonstres {

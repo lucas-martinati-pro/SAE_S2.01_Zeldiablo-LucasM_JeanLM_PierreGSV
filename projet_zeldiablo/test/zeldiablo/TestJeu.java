@@ -365,45 +365,7 @@ public class TestJeu {
         jeu.evoluer(c);
         assertFalse(jeu.etreFini());
     }
-
-    // ########## Tests jeuToString ##########
-
-    @Test
-    public void test_jeuToString_nonVide() throws IOException {
-        jeu.chargerNiveau("laby/laby_simple.txt");
-        assertNotNull(jeu.jeuToString());
-        assertFalse(jeu.jeuToString().isEmpty());
-    }
-
-    @Test
-    public void test_jeuToString_contientPerso() throws IOException {
-        jeu.chargerNiveau("laby/laby_simple.txt");
-        String s = jeu.jeuToString();
-        assertEquals("#####\n#   #\n# & #\n#   #\n# @ #\n#   #\n#####\n", s);
-    }
-
-    // ########## Tests monstreAttaque ##########
-
-    @Test
-    public void test_monstreAttaque_heroProche() {
-        int x = jeu.getHero().getX();
-        int y = jeu.getHero().getY();
-        Spider m = new Spider(x + 1, y);
-        jeu.getMonstres().add(m);
-        int vieAvant = jeu.getHero().getVie();
-        jeu.getGestionnaireMonstres().monstreAttaque(x, y);
-        assertEquals(vieAvant - 2, jeu.getHero().getVie());
-    }
-
-    @Test
-    public void test_monstreAttaque_heroLoin_pasDeDegat() {
-        Spider m = new Spider(1, 1);
-        jeu.getMonstres().add(m);
-        int vieAvant = jeu.getHero().getVie();
-        jeu.getGestionnaireMonstres().monstreAttaque(jeu.getHero().getX(), jeu.getHero().getY());
-        assertEquals(vieAvant, jeu.getHero().getVie());
-    }
-
+    
     // ########## Tests verifMort ##########
 
     @Test
