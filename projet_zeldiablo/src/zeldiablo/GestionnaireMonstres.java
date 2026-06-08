@@ -66,7 +66,7 @@ public class GestionnaireMonstres {
                     }
                 }
             }
-        }, 100L, 100L); // Exécute toutes les 100 ms (100 long)
+        }, 100L, 100L); // Exécute toutes les 100ms (100 long)
     }
 
     /**
