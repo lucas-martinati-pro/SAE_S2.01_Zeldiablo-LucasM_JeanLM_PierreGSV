@@ -62,40 +62,40 @@ class GestionnaireMonstres {
 
 class DessinLaby {
     - jeu : Jeu
-    - flamme : BufferedImage
-    - gameOver : BufferedImage
-    - win : BufferedImage
-    - porte : BufferedImage
-    - porteOuverte : BufferedImage
-    - mur : BufferedImage
-    - vide : BufferedImage
-    - soins : BufferedImage
-    - soinsDetruit : BufferedImage
-    - piege : BufferedImage
-    - teleporteur : BufferedImage
-    - teleporteurDetruit : BufferedImage
-    - murFriable : BufferedImage
-    - bombe : BufferedImage
-    - piegeDetruit : BufferedImage
-    - amulette : BufferedImage
-    - spider : BufferedImage
-    - troll : BufferedImage
-    - ghost : BufferedImage
-    - blob : BufferedImage
-    - artificier : BufferedImage
-    - hero : BufferedImage
-    - spiderAttaque : BufferedImage
-    - trollAttaque : BufferedImage
-    - ghostAttaque : BufferedImage
-    - blobAttaque : BufferedImage
-    - artificierAttaque : BufferedImage
-    - heroAttaque : BufferedImage
-    - coeur : BufferedImage
+    - {static} flamme : BufferedImage
+    - {static} gameOver : BufferedImage
+    - {static} win : BufferedImage
+    - {static} porte : BufferedImage
+    - {static} porteOuverte : BufferedImage
+    - {static} mur : BufferedImage
+    - {static} vide : BufferedImage
+    - {static} soins : BufferedImage
+    - {static} soinsDetruit : BufferedImage
+    - {static} piege : BufferedImage
+    - {static} teleporteur : BufferedImage
+    - {static} teleporteurDetruit : BufferedImage
+    - {static} murFriable : BufferedImage
+    - {static} bombe : BufferedImage
+    - {static} piegeDetruit : BufferedImage
+    - {static} amulette : BufferedImage
+    - {static} spider : BufferedImage
+    - {static} troll : BufferedImage
+    - {static} ghost : BufferedImage
+    - {static} blob : BufferedImage
+    - {static} artificier : BufferedImage
+    - {static} hero : BufferedImage
+    - {static} spiderAttaque : BufferedImage
+    - {static} trollAttaque : BufferedImage
+    - {static} ghostAttaque : BufferedImage
+    - {static} blobAttaque : BufferedImage
+    - {static} artificierAttaque : BufferedImage
+    - {static} heroAttaque : BufferedImage
+    - {static} coeur : BufferedImage
 
     + DessinLaby(jeu : Jeu)
     + dessiner(image : BufferedImage) : void
     + drawCase(g : Graphics2D, c : Case) : void
-    + chargerImage(chemin : String) : BufferedImage
+    + {static} chargerImage(chemin : String) : BufferedImage
 }
 
 package "entite" {

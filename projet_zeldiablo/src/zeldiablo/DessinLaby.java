@@ -21,36 +21,36 @@ public class DessinLaby implements DessinJeu {
     public static final int TAILLE = 30;
     private Jeu jeu;
 
-    private BufferedImage flamme = chargerImage("flamme.png");
-    private BufferedImage gameOver = chargerImage("gameOver.png");
-    private BufferedImage win = chargerImage("win.png");
-    private BufferedImage porte = chargerImage("porte.png");
-    private BufferedImage porteOuverte = chargerImage("porteOuverte.png");
-    private BufferedImage mur = chargerImage("mur.png");
-    private BufferedImage vide = chargerImage("vide.png");
-    private BufferedImage soins = chargerImage("soins.png");
-    private BufferedImage soinsDetruit = chargerImage("soinsDetruit.png");
-    private BufferedImage piegeCache = chargerImage("piegeCache.png");
-    private BufferedImage piege = chargerImage("piege.png");
-    private BufferedImage piegeDetruit = chargerImage("piegeDetruit.png");
-    private BufferedImage teleporteur = chargerImage("teleporteur.png");
-    private BufferedImage teleporteurDetruit = chargerImage("teleporteurDetruit.png");
-    private BufferedImage murFriable = chargerImage("murFriable.png");
-    private BufferedImage bombe = chargerImage("bombe.png");
-    private BufferedImage amulette = chargerImage("amulette.png");
-    private BufferedImage spider = chargerImage("spider.png");
-    private BufferedImage troll = chargerImage("troll.png");
-    private BufferedImage ghost = chargerImage("ghost.png");
-    private BufferedImage blob = chargerImage("blob.png");
-    private BufferedImage artificier = chargerImage("artificier.png");
-    private BufferedImage hero = chargerImage("hero.png");
-    private BufferedImage spiderAttaque = chargerImage("spiderAttaque.png");
-    private BufferedImage trollAttaque = chargerImage("trollAttaque.png");
-    private BufferedImage ghostAttaque = chargerImage("ghostAttaque.png");
-    private BufferedImage blobAttaque = chargerImage("blobAttaque.png");
-    private BufferedImage artificierAttaque = chargerImage("artificierAttaque.png");
-    private BufferedImage heroAttaque = chargerImage("heroAttaque.png");
-    private BufferedImage coeur = chargerImage("coeur.png");
+    private static final BufferedImage flamme = chargerImage("flamme.png");
+    private static final BufferedImage gameOver = chargerImage("gameOver.jpg");
+    private static final BufferedImage win = chargerImage("win.png");
+    private static final BufferedImage porte = chargerImage("porte.png");
+    private static final BufferedImage porteOuverte = chargerImage("porteOuverte.png");
+    private static final BufferedImage mur = chargerImage("mur.png");
+    private static final BufferedImage vide = chargerImage("vide.png");
+    private static final BufferedImage soins = chargerImage("soins.png");
+    private static final BufferedImage soinsDetruit = chargerImage("soinsDetruit.png");
+    private static final BufferedImage piegeCache = chargerImage("piegeCache.png");
+    private static final BufferedImage piege = chargerImage("piege.png");
+    private static final BufferedImage piegeDetruit = chargerImage("piegeDetruit.png");
+    private static final BufferedImage teleporteur = chargerImage("teleporteur.png");
+    private static final BufferedImage teleporteurDetruit = chargerImage("teleporteurDetruit.png");
+    private static final BufferedImage murFriable = chargerImage("murFriable.png");
+    private static final BufferedImage bombe = chargerImage("bombe.png");
+    private static final BufferedImage amulette = chargerImage("amulette.png");
+    private static final BufferedImage spider = chargerImage("spider.png");
+    private static final BufferedImage troll = chargerImage("troll.png");
+    private static final BufferedImage ghost = chargerImage("ghost.png");
+    private static final BufferedImage blob = chargerImage("blob.png");
+    private static final BufferedImage artificier = chargerImage("artificier.png");
+    private static final BufferedImage hero = chargerImage("hero.png");
+    private static final BufferedImage spiderAttaque = chargerImage("spiderAttaque.png");
+    private static final BufferedImage trollAttaque = chargerImage("trollAttaque.png");
+    private static final BufferedImage ghostAttaque = chargerImage("ghostAttaque.png");
+    private static final BufferedImage blobAttaque = chargerImage("blobAttaque.png");
+    private static final BufferedImage artificierAttaque = chargerImage("artificierAttaque.png");
+    private static final BufferedImage heroAttaque = chargerImage("heroAttaque.png");
+    private static final BufferedImage coeur = chargerImage("coeur.png");
 
     /**
      * Constructeur de DessinLaby
@@ -200,7 +200,7 @@ public class DessinLaby implements DessinJeu {
      * @param chemin le chemin de l'image a charger
      * @return l'image chargee ou null en cas d'erreur
      */
-    private BufferedImage chargerImage(String chemin) {
+    private static BufferedImage chargerImage(String chemin) {
         try {
             return ImageIO.read(new File("sprite/" + chemin));
         } catch (IOException e) {
