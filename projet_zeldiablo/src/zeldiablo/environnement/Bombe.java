@@ -3,6 +3,8 @@ package zeldiablo.environnement;
 import zeldiablo.entite.Personnage;
 import zeldiablo.Jeu;
 
+import java.util.ArrayList;
+
 /**
  * Represente une bombe dans le jeu, capable d'exploser et de detruire des elements ou blesser des personnages.
  */
@@ -38,7 +40,7 @@ public class Bombe extends Case {
             }
 
             int degâts = -5;
-            java.util.ArrayList<int[]> casesTouchees = new java.util.ArrayList<>();
+            ArrayList<int[]> casesTouchees = new ArrayList<>();
             casesTouchees.add(new int[]{x, y}); // Case centrale de la bombe
 
             // 4 directions : Droite, Gauche, Bas, Haut
@@ -56,7 +58,7 @@ public class Bombe extends Case {
 
                     // Si on détruit un objet comme un mur friable, la flamme s'arrête
                     Case c = jeu.getCase(cx, cy);
-                    if (c instanceof zeldiablo.environnement.MurFriable) break;
+                    if (c instanceof MurFriable) break;
                 }
             }
 
