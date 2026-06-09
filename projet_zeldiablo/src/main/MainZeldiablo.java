@@ -24,8 +24,18 @@ public class MainZeldiablo {
      *
      */
     public static void main(String[] args) throws InterruptedException {
-        String laby;
         Scanner sc = new Scanner(System.in);
+        Jeu j = new Jeu();
+        DessinJeu jeu;
+
+        // Le dessin fancy est généré par IA et est plus esthétique
+        System.out.println("Voulez-vous activer le dessin fancy ? (y/n) : ");
+        String reponse = sc.nextLine().trim().toLowerCase();
+        if (reponse.equals("y")) {
+            jeu = new DessinLabyFancy(j);
+        } else {
+            jeu = new DessinLaby(j);
+        }
 
         String choix = "";
         if (args.length > 0) choix = args[0];
@@ -49,11 +59,8 @@ public class MainZeldiablo {
             }
         }
 
-        laby = "laby/niveaux/lvl" + lvl + ".txt";
-        Jeu j = new Jeu();
-
         try {
-            j.chargerNiveau(laby);
+            j.chargerNiveau("laby/niveaux/lvl" + lvl + ".txt");
             j.setNiveau(lvl);
         } catch (FichierIncorrectException e) {
             System.err.println("Le fichier n'est pas valide, veuillez réessayer : " + e.getMessage());
@@ -69,12 +76,6 @@ public class MainZeldiablo {
                         "\n[Q][S][D]" +
                         "\n[ESPACE] : BOMBE " +
                         "\nDéplacez-vous avec ZQSD et posez vos bombes avec Espace !");
-
-        DessinJeu jeu;
-        // Pour tester le dessin fancy, il suffit de mettre la condition à true
-        // Le dessin fancy est généré par IA et est plus esthétique
-        if (false) jeu = new DessinLabyFancy(j);
-        else jeu = new DessinLaby(j);
 
         int[] size = j.getSize();
 
@@ -93,10 +94,8 @@ public class MainZeldiablo {
                 if (j.etreFini() && !(j.getHero().etreMort())) {
                     lvl++;
 
-                    String path = "laby/niveaux/lvl" + lvl + ".txt";
-
                     try {
-                        j.chargerNiveau(path);
+                        j.chargerNiveau("laby/niveaux/lvl" + lvl + ".txt");
                         j.setNiveau(lvl);
                     } catch (IOException e) {
                         System.err.println("Une erreur s'est produite lors de la lecture du fichier : " + e.getMessage());

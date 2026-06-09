@@ -51,20 +51,22 @@ public class MoteurGraphique {
 		Controleur controle = this.gui.getControleur();
 
 		// boucle de jeu
+		int logicFps = 10; // Fréquence de mise à jour de la logique (déplacement du héros)
+		int imageFps = 150; // Fréquence de mise à jour de l'affichage (dessin du jeu)
 		long lastLogicTick = System.currentTimeMillis();
 		while (!this.jeu.etreFini()) {
 			long now = System.currentTimeMillis();
-			if (now - lastLogicTick >= 100) {
+			if (now - lastLogicTick >= 1000 / logicFps) {
 				// demande controle utilisateur
 				Commande c = controle.getCommande();
 				// fait evoluer le jeu
 				this.jeu.evoluer(c);
 				lastLogicTick = now;
 			}
-			// affiche le jeu (60 FPS)
+			// affiche le jeu
 			this.gui.dessiner();
-			// met en attente
-			Thread.sleep(16);
+			// limite le taux d'images pour éviter de surcharger le CPU
+			Thread.sleep(1000/imageFps);
 		}
 	}
 

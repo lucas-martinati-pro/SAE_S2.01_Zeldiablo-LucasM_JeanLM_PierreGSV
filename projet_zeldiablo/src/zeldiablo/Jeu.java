@@ -350,7 +350,7 @@ public class Jeu implements moteurJeu.Jeu {
                 this.hero.attaquer(new Spider(0, 0)); // La victime n'est pas utilisée dans l'attaque de l'aventurier, on peut donc lui donner n'importe quelle position et nombre de points de vie
                 new Thread(() -> { // Obliger de créer un nouveau Thread car sinon ça bloque le jeu pendant 2 secondes, et c'est pas très drôle
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(1500);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }

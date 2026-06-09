@@ -19,6 +19,7 @@ import java.util.List;
 /**
  * Gere le dessin du labyrinthe et des entites du jeu.
  * Architecture refondue pour séparer la logique visuelle du rendu.
+ * Ce dessin à était généré par une IA et est utilisé pour pouvoir avoir une vision du jeu avec de meilleur graphismes
  */
 public class DessinLabyFancy implements DessinJeu {
     public static final int TAILLE = 30;
@@ -142,7 +143,7 @@ public class DessinLabyFancy implements DessinJeu {
         if (vHero.update(heroInstance.getX(), heroInstance.getY())) {
             // S'il a sauté de plus de 2 cases, on déclenche l'animation de TP !
             triggerTeleportParticles(oldHX * TAILLE, oldHY * TAILLE, vHero.visualX * TAILLE, vHero.visualY * TAILLE);
-            shakeIntensity = 8.0; 
+            shakeIntensity = 8.0;
         }
 
         // Poussière en marchant
@@ -162,7 +163,7 @@ public class DessinLabyFancy implements DessinJeu {
 
         // 2. Les Monstres (On vérifie la liste de ce qu'on connaissait à la frame d'avant !)
         List<Personnage> monstresActuels = new ArrayList<>(jeu.getMonstres());
-        
+
         for (Personnage m : new ArrayList<>(lastMonsterHealth.keySet())) {
             VisualEntity vM = visualEntities.get(m);
             if (vM == null) continue;
@@ -188,7 +189,7 @@ public class DessinLabyFancy implements DessinJeu {
                 lastMonsterHealth.put(m, currentVie);
             }
         }
-        
+
         // 3. Nouveaux monstres qui viennent d'apparaître
         for (Personnage m : monstresActuels) {
             if (!lastMonsterHealth.containsKey(m)) {
@@ -201,7 +202,7 @@ public class DessinLabyFancy implements DessinJeu {
         floatingTexts.removeIf(txt -> !txt.update());
         handleExplosionsAndParticles(heroInstance, currentFin);
     }
-    
+
     private void spawnSplatter(double cx, double cy, Color color) {
         for (int i = 0; i < 5; i++) {
             double angle = Math.random() * Math.PI * 2;
@@ -405,6 +406,40 @@ public class DessinLabyFancy implements DessinJeu {
                 g.drawImage(amulette, 15 + i * 24, 9, 16, 16, null);
             }
         }
+
+        // Niveau (en bas à droite)
+        String levelText = "Niveau " + jeu.getNiveau();
+        g.setFont(fontLevel);
+        FontMetrics fmLevel = g.getFontMetrics(fontLevel);
+        int levelWidth = fmLevel.stringWidth(levelText);
+        int levelBoxW = levelWidth + 16;
+        int levelBoxH = 22;
+        int levelBoxX = image.getWidth() - levelBoxW - 8;
+        int levelBoxY = image.getHeight() - levelBoxH - 8;
+        drawUIBox(g, levelBoxX, levelBoxY, levelBoxW, levelBoxH);
+        g.setColor(new Color(255, 255, 255, 220));
+        int levelTextY = levelBoxY + (levelBoxH - fmLevel.getHeight()) / 2 + fmLevel.getAscent();
+        g.drawString(levelText, levelBoxX + 8, levelTextY);
+
+        // Filigrane IA (au centre en bas)
+        String wmText = "Dessin par IA";
+        g.setFont(fontWatermark);
+        FontMetrics fmWm = g.getFontMetrics(fontWatermark);
+        int wmWidth = fmWm.stringWidth(wmText);
+        int wmBoxW = wmWidth + 16;
+        int wmBoxH = 22;
+        int wmBoxX = (image.getWidth() - wmBoxW) / 2;
+        int wmBoxY = image.getHeight() - wmBoxH - 8;
+
+        // Boîte UI plus subtile pour le filigrane
+        g.setColor(new Color(15, 12, 28, 110));
+        g.fillRoundRect(wmBoxX, wmBoxY, wmBoxW, wmBoxH, 10, 10);
+        g.setColor(new Color(255, 255, 255, 20));
+        g.drawRoundRect(wmBoxX, wmBoxY, wmBoxW, wmBoxH, 10, 10);
+
+        g.setColor(new Color(255, 255, 255, 130));
+        int wmTextY = wmBoxY + (wmBoxH - fmWm.getHeight()) / 2 + fmWm.getAscent();
+        g.drawString(wmText, wmBoxX + 8, wmTextY);
 
         // 3. Effet Dégâts & Transitions
         if (damageFlash > 0.01) {
@@ -618,7 +653,7 @@ public class DessinLabyFancy implements DessinJeu {
                 bobTimer += 0.25;
                 if (Math.abs(dx) > 0.02) faceRight = dx > 0;
             } else bobTimer = 0;
-            
+
             return teleported; // NOUVEAU
         }
 
