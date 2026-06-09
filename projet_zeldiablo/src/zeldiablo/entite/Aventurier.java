@@ -1,9 +1,9 @@
 package zeldiablo.entite;
 
-import zeldiablo.item.Item;
-import zeldiablo.environnement.Case;
-import zeldiablo.environnement.Bombe;
 import zeldiablo.Jeu;
+import zeldiablo.environnement.Bombe;
+import zeldiablo.environnement.Case;
+import zeldiablo.item.Item;
 
 import java.util.ArrayList;
 

@@ -1,12 +1,11 @@
 package arkanoidJeu;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
 import arkanoidJeu.modele.Balle;
 import arkanoidJeu.modele.Raquette;
 import moteurJeu.DessinJeu;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class ArkanoidDessin implements DessinJeu {
 

@@ -1,7 +1,7 @@
 package zeldiablo.environnement;
 
-import zeldiablo.entite.Personnage;
 import zeldiablo.Jeu;
+import zeldiablo.entite.Personnage;
 
 import java.util.ArrayList;
 

@@ -1,11 +1,10 @@
 package zeldiablo;
 
-import zeldiablo.entite.*;
-import zeldiablo.item.Item;
+import moteurJeu.DessinJeu;
+import zeldiablo.entite.Personnage;
 import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Piege;
-
-import moteurJeu.DessinJeu;
+import zeldiablo.item.Item;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

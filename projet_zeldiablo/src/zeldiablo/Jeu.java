@@ -1,12 +1,11 @@
 package zeldiablo;
 
-import zeldiablo.exception.FichierIncorrectException;
-import zeldiablo.item.Amulette;
+import moteurJeu.Commande;
 import zeldiablo.entite.*;
 import zeldiablo.environnement.*;
 import zeldiablo.exception.ActionInconnueException;
-
-import moteurJeu.Commande;
+import zeldiablo.exception.FichierIncorrectException;
+import zeldiablo.item.Amulette;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

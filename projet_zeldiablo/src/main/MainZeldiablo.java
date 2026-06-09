@@ -1,11 +1,11 @@
 package main;
 
 import moteurJeu.DessinJeu;
+import moteurJeu.MoteurGraphique;
 import zeldiablo.DessinLaby;
 import zeldiablo.DessinLabyFancy;
-import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.Jeu;
-import moteurJeu.MoteurGraphique;
+import zeldiablo.exception.FichierIncorrectException;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

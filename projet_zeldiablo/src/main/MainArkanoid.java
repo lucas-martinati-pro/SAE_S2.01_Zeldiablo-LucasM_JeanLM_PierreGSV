@@ -1,10 +1,10 @@
 package main;
 
-import java.util.Scanner;
-
 import arkanoidJeu.ArkanoidDessin;
 import arkanoidJeu.ArkanoidJeu;
 import moteurJeu.MoteurGraphique;
+
+import java.util.Scanner;
 
 public class MainArkanoid {
 	public static void main(String[] args) throws InterruptedException {

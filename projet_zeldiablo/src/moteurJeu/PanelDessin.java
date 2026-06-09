@@ -1,10 +1,8 @@
 package moteurJeu;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JPanel;
 
 public class PanelDessin extends JPanel {
 
@@ -32,7 +30,7 @@ public class PanelDessin extends JPanel {
 	 * constructeur Il construit les images pour doublebuffering ainsi que le
 	 * Panel associe. Les images stockent le dessin et on demande au panel la
 	 * mise a jour quand le dessin est fini
-	 * 
+	 *
 	 * @param width
 	 *            largeur de l'image
 	 * @param height
@@ -74,7 +72,7 @@ public class PanelDessin extends JPanel {
 
 	/**
 	 * redefinit la methode paint consiste a dessiner l'image en cours
-	 * 
+	 *
 	 * @param g
 	 *            graphics pour dessiner
 	 */
@@ -86,7 +84,7 @@ public class PanelDessin extends JPanel {
 
 	/**
 	 * Met a jour la taille du panel et recree les buffers d'images.
-	 * 
+	 *
 	 * @param x nouvelle largeur
 	 * @param y nouvelle hauteur
 	 */
@@ -98,7 +96,7 @@ public class PanelDessin extends JPanel {
 		// Cree les nouvelles images avec la nouvelle taille
 		this.imageSuivante = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.imageEnCours = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		
+
 		this.revalidate();
 	}
 

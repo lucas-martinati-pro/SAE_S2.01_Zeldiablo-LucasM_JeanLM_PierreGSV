@@ -1,8 +1,9 @@
 package zeldiablo.entite;
 
-import zeldiablo.Jeu;
 import moteurJeu.Commande;
-import zeldiablo.environnement.*;
+import zeldiablo.Jeu;
+import zeldiablo.environnement.Case;
+import zeldiablo.environnement.CaseEffet;
 import zeldiablo.exception.ActionInconnueException;
 
 /**
