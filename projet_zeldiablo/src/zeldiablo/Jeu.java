@@ -44,6 +44,7 @@ public class Jeu implements moteurJeu.Jeu {
 
     private int[] fin;
     private boolean recharger = true;
+    private int niveau;
 
     // ########## Getters/Setters ##########
 
@@ -75,6 +76,24 @@ public class Jeu implements moteurJeu.Jeu {
     }
 
     /**
+     * modifie le niveau du jeu
+     *
+     * @param niveau le nouveau niveau
+     */
+    public void setNiveau(int niveau) {
+        this.niveau = niveau;
+    }
+
+    /**
+     * Retourne le niveau actuel du jeu
+     *
+     * @return le niveau actuel du jeu
+     */
+    public int getNiveau() {
+        return niveau;
+    }
+
+    /**
      * Retourne le hero du jeu.
      *
      * @return le hero du jeu
@@ -90,15 +109,6 @@ public class Jeu implements moteurJeu.Jeu {
      */
     public int[] getSize() {
         return this.size;
-    }
-
-    /**
-     * Retourne la liste des cases (pieges, bombes, murs friables, etc.) presentes dans le jeu.
-     *
-     * @return la liste des cases
-     */
-    public Case[][] getCases() {
-        return cases;
     }
 
     /**

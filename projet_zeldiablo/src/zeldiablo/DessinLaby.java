@@ -52,6 +52,8 @@ public class DessinLaby implements DessinJeu {
     private static final BufferedImage heroAttaque = chargerImage("heroAttaque.png");
     private static final BufferedImage coeur = chargerImage("coeur.png");
 
+    private Font customFont;
+
     /**
      * Constructeur de DessinLaby
      * @param jeu un objet de Type jeu
@@ -59,6 +61,15 @@ public class DessinLaby implements DessinJeu {
     public DessinLaby(Jeu jeu) {
         if (jeu != null) this.jeu = jeu;
         else this.jeu = new Jeu();
+
+        try {
+            // Chargement du fichier TTF
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/CutePixel.ttf"));
+        } catch (Exception e) {
+            System.err.println("Impossible de charger la police personnalisée : " + e.getMessage());
+            // Police de secours si le fichier est introuvable
+            customFont = new Font("Arial", Font.PLAIN, 12);
+        }
     }
 
         /**
@@ -157,6 +168,12 @@ public class DessinLaby implements DessinJeu {
                 case "Amulette" -> g.drawImage(amulette, TAILLE/6 + (i) * 20, TAILLE/6, TAILLE - 10, TAILLE - 10, null);
             }
         }
+
+        // Ajout du niveau actuel en bas à gauche
+        int niveau = jeu.getNiveau();
+        g.setColor(Color.WHITE);
+        g.setFont(customFont.deriveFont(25f));
+        g.drawString("Niveau : " + niveau, 10, image.getHeight() - 10);
 
         // Affichage de l'écran de fin si le héros est mort ou a gagné
         if (hero.etreMort()) {

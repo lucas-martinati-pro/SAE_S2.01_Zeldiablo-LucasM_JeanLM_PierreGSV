@@ -1,6 +1,8 @@
 package main;
 
+import moteurJeu.DessinJeu;
 import zeldiablo.DessinLaby;
+import zeldiablo.DessinLabyFancy;
 import zeldiablo.exception.FichierIncorrectException;
 import zeldiablo.Jeu;
 import moteurJeu.MoteurGraphique;
@@ -52,6 +54,7 @@ public class MainZeldiablo {
 
         try {
             j.chargerNiveau(laby);
+            j.setNiveau(lvl);
         } catch (FichierIncorrectException e) {
             System.err.println("Le fichier n'est pas valide, veuillez réessayer : " + e.getMessage());
             main(args);
@@ -63,11 +66,15 @@ public class MainZeldiablo {
         j.getGestionnaireMonstres().startMonsters();
 
         System.out.println("   [Z]    " +
-                "\n[Q][S][D]" +
-                "\n[ESPACE] : BOMBE " +
-                "\nDéplacez-vous avec ZQSD et posez vos bombes avec Espace !");
+                        "\n[Q][S][D]" +
+                        "\n[ESPACE] : BOMBE " +
+                        "\nDéplacez-vous avec ZQSD et posez vos bombes avec Espace !");
 
-        DessinLaby jeu = new DessinLaby(j);
+        DessinJeu jeu;
+        // Pour tester le dessin fancy, il suffit de mettre la condition à true
+        // Le dessin fancy est généré par IA et est plus esthétique
+        if (false) jeu = new DessinLabyFancy(j);
+        else jeu = new DessinLaby(j);
 
         int[] size = j.getSize();
 
@@ -84,13 +91,13 @@ public class MainZeldiablo {
             if (lvl < 11) {
                 vie = j.getHero().getVie();
                 if (j.etreFini() && !(j.getHero().etreMort())) {
-                    System.out.println("next level");
                     lvl++;
 
                     String path = "laby/niveaux/lvl" + lvl + ".txt";
 
                     try {
                         j.chargerNiveau(path);
+                        j.setNiveau(lvl);
                     } catch (IOException e) {
                         System.err.println("Une erreur s'est produite lors de la lecture du fichier : " + e.getMessage());
                         enCours = false; // On arrête si on ne trouve plus de niveau (fin du jeu)
