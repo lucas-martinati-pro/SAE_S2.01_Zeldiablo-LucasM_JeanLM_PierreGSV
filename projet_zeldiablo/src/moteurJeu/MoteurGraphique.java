@@ -3,7 +3,7 @@ package moteurJeu;
 
 /**
  * classe MoteurGraphique represente un moteur de jeu generique.
- * 
+ *
  * On lui passe un jeu et un afficheur et il permet d'executer un jeu.
  */
 public class MoteurGraphique {
@@ -25,7 +25,7 @@ public class MoteurGraphique {
 
 	/**
 	 * construit un moteur
-	 * 
+	 *
 	 * @param pJeu
 	 *            jeu a lancer
 	 * @param pAffiche
@@ -51,15 +51,20 @@ public class MoteurGraphique {
 		Controleur controle = this.gui.getControleur();
 
 		// boucle de jeu
+		long lastLogicTick = System.currentTimeMillis();
 		while (!this.jeu.etreFini()) {
-			// demande controle utilisateur
-			Commande c = controle.getCommande();
-			// fait evoluer le jeu
-			this.jeu.evoluer(c);
-			// affiche le jeu
+			long now = System.currentTimeMillis();
+			if (now - lastLogicTick >= 100) {
+				// demande controle utilisateur
+				Commande c = controle.getCommande();
+				// fait evoluer le jeu
+				this.jeu.evoluer(c);
+				lastLogicTick = now;
+			}
+			// affiche le jeu (60 FPS)
 			this.gui.dessiner();
 			// met en attente
-			Thread.sleep(100);
+			Thread.sleep(16);
 		}
 	}
 
