@@ -5,6 +5,7 @@ import zeldiablo.entite.Aventurier;
 import zeldiablo.entite.Personnage;
 import zeldiablo.environnement.Case;
 import zeldiablo.environnement.Piege;
+import zeldiablo.environnement.Bombe;
 import zeldiablo.item.Item;
 
 import javax.imageio.ImageIO;
@@ -60,6 +61,7 @@ public class DessinLabyFancy implements DessinJeu {
     private final List<FloatingText> floatingTexts = new ArrayList<>();
     private final List<Decal> decals = new ArrayList<>();
     private final HashMap<Personnage, Integer> lastMonsterHealth = new HashMap<>();
+    private final HashMap<Case, Long> bombTimers = new HashMap<>();
 
     private final Font fontWatermark = new Font("SansSerif", Font.PLAIN, 10);
     private final Font fontLevel = new Font("SansSerif", Font.BOLD, 11);
@@ -129,6 +131,7 @@ public class DessinLabyFancy implements DessinJeu {
             lastMonsterHealth.clear();
             visualEntities.clear();
             particles.clear();
+            bombTimers.clear();
         }
         if (fadeTimer > 0.0) fadeTimer = Math.max(0, fadeTimer - 0.05);
 
@@ -200,6 +203,7 @@ public class DessinLabyFancy implements DessinJeu {
 
         visualEntities.keySet().removeIf(key -> key != heroInstance && !monstresActuels.contains(key) && !lastMonsterHealth.containsKey(key));
         floatingTexts.removeIf(txt -> !txt.update());
+        bombTimers.keySet().removeIf(b -> jeu.getCase(b.getX(), b.getY()) != b);
         handleExplosionsAndParticles(heroInstance, currentFin);
     }
 
@@ -508,6 +512,28 @@ public class DessinLabyFancy implements DessinJeu {
             default -> vide;
         };
         g.drawImage(img, c.getX() * TAILLE, c.getY() * TAILLE, TAILLE, TAILLE, null);
+
+        if (c.getType().equals("Bombe")) {
+            bombTimers.putIfAbsent(c, System.currentTimeMillis());
+            Long creationTime = bombTimers.get(c);
+            double remaining = 1.5;
+            if (creationTime != null) {
+                long elapsed = System.currentTimeMillis() - creationTime;
+                remaining = Math.max(0.0, (1500.0 - elapsed) / 1000.0);
+            }
+            Font oldFont = g.getFont();
+            g.setFont(new Font("SansSerif", Font.BOLD, 10));
+            String text = String.format(java.util.Locale.US, "%.1fs", remaining);
+            FontMetrics fm = g.getFontMetrics();
+            int tx = c.getX() * TAILLE + (TAILLE - fm.stringWidth(text)) / 2;
+            int ty = c.getY() * TAILLE + (TAILLE - fm.getHeight()) / 2 + fm.getAscent();
+
+            g.setColor(Color.BLACK);
+            g.drawString(text, tx + 1, ty + 1);
+            g.setColor(Color.YELLOW);
+            g.drawString(text, tx, ty);
+            g.setFont(oldFont);
+        }
     }
 
     private void renderWallShadows(Graphics2D g, Case[][] grid, Case c, int i, int j, int sizeY) {
