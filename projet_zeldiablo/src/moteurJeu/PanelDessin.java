@@ -31,17 +31,17 @@ public class PanelDessin extends JPanel {
 	 * Panel associe. Les images stockent le dessin et on demande au panel la
 	 * mise a jour quand le dessin est fini
 	 *
-	 * @param width
-	 *            largeur de l'image
-	 * @param height
-	 *            hauteur de l'image
+	 * @param x largeur de l'image
+	 * @param y hauteur de l'image
+	 * @param affiche le dessin a utiliser pour dessiner le jeu
 	 */
 	public PanelDessin(int x, int y, DessinJeu affiche) {
 		super();
 		this.setPreferredSize(new Dimension(x, y));
 		this.width = x;
 		this.height = y;
-		this.dessin=affiche;
+		this.dessin = affiche;
+		this.setBackground(Color.BLACK);
 
 		// cree l'image buffer et son graphics
 		this.imageSuivante = new BufferedImage(width, height,
@@ -73,13 +73,32 @@ public class PanelDessin extends JPanel {
 	/**
 	 * redefinit la methode paint consiste a dessiner l'image en cours
 	 *
-	 * @param g
-	 *            graphics pour dessiner
+	 * @param g graphics pour dessiner
 	 */
+	// HORS SAÉ : Utilisation de l'IA pour centrer l'image dans le panel et adapter la taille de l'image
 	public void paint(Graphics g) {
 		super.paint(g);
-		g.drawImage(this.imageEnCours, 0, 0, getWidth(), getHeight(), 0, 0,
-				getWidth(), getHeight(), null);
+		int pWidth = getWidth();
+		int pHeight = getHeight();
+
+		double originalRatio = (double) this.width / this.height;
+		double panelRatio = (double) pWidth / pHeight;
+
+		int drawWidth = pWidth;
+		int drawHeight = pHeight;
+		int drawX = 0;
+		int drawY = 0;
+
+		// Ajustement selon le ratio le plus restrictif
+		if (panelRatio > originalRatio) {
+			drawWidth = (int) (pHeight * originalRatio);
+			drawX = (pWidth - drawWidth) / 2; // Centrage horizontal
+		} else {
+			drawHeight = (int) (pWidth / originalRatio);
+			drawY = (pHeight - drawHeight) / 2; // Centrage vertical
+		}
+
+		g.drawImage(this.imageEnCours, drawX, drawY, drawWidth, drawHeight, null);
 	}
 
 	/**
