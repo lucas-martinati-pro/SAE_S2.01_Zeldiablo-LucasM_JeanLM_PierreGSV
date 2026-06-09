@@ -68,6 +68,41 @@ public class DessinLabyFancy implements DessinJeu {
     private long frameCount = 0;
     private int lastHeroVie = -1;
     private double damageFlash = 0.0;
+    private BufferedImage lightmap;
+    private final Font fontWatermark = new Font("SansSerif", Font.PLAIN, 10);
+    private final Font fontLevel = new Font("SansSerif", Font.BOLD, 11);
+
+    /**
+     * Accède rapidement et de façon sûre aux cases de la grille locale.
+     */
+    private Case getCaseFromGrid(Case[][] grid, int x, int y) {
+        if (grid != null && x >= 0 && y >= 0 && x < grid.length && y < grid[x].length) {
+            return grid[x][y];
+        }
+        return null;
+    }
+
+    /**
+     * Dessine une ombre au sol douce et progressive pour les entités (héros, monstres).
+     */
+    private void drawEntityShadow(Graphics2D g, double x, double y) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        float[] fractions = {0.0f, 1.0f};
+        Color[] colors = {new Color(10, 8, 20, 110), new Color(0, 0, 0, 0)};
+
+        float rx = TAILLE / 2.2f;
+        RadialGradientPaint paint = new RadialGradientPaint(
+            0f, 0f, rx, fractions, colors
+        );
+        g2.setPaint(paint);
+
+        g2.translate(x + TAILLE / 2.0, y + TAILLE - 2);
+        g2.scale(1.0, 0.35);
+        g2.fillOval((int)-rx, (int)-rx, (int)(rx * 2), (int)(rx * 2));
+        g2.dispose();
+    }
 
     /**
      * Constructeur de DessinLaby
@@ -86,14 +121,23 @@ public class DessinLabyFancy implements DessinJeu {
     public void dessiner(BufferedImage image) {
         Graphics2D g = (Graphics2D) image.getGraphics();
 
-        // Enable high quality rendering hints
+        // Clear the canvas with solid black to prevent background/white borders showing during camera shake
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, image.getWidth(), image.getHeight());
+
+        // Enable high quality rendering hints and pixel-art interpolation for sprites
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
         int[] coordonnee = jeu.getSize();
         if (coordonnee == null) return;
         int sizeX = coordonnee[0];
         int sizeY = coordonnee[1];
+
+        // Cache cases array locally to avoid method call overhead in loops
+        Case[][] casesGrid = jeu.getCases();
+        ArrayList<Case> lightCases = new ArrayList<>();
 
         // 1. Level transition detection & handling
         int[] currentFin = jeu.getFin();
@@ -158,39 +202,11 @@ public class DessinLabyFancy implements DessinJeu {
         lastExplosions.clear();
         lastExplosions.addAll(currentExplosions);
 
-        // B. Teleporters sparkles
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                Case c = jeu.getCase(i, j);
-                if (c != null && c.getType().equals("Teleporteur")) {
-                    if (Math.random() < 0.15) {
-                        double px = i * TAILLE + Math.random() * TAILLE;
-                        double py = j * TAILLE + Math.random() * TAILLE;
-                        double vx = (Math.random() - 0.5) * 0.4;
-                        double vy = -Math.random() * 0.5 - 0.2;
-                        particles.add(new Particle(px, py, vx, vy, new Color(100, 220, 255), 4 + Math.random() * 4, 20 + (int)(Math.random() * 20), true));
-                    }
-                }
-                // Soins green sparkles
-                if (c != null && c.getType().equals("Soins") && Math.random() < 0.1) {
-                    double px = i * TAILLE + Math.random() * TAILLE;
-                    double py = j * TAILLE + Math.random() * TAILLE;
-                    particles.add(new Particle(px, py, (Math.random()-0.5)*0.3, -Math.random()*0.4-0.1, new Color(50, 255, 120), 3+Math.random()*3, 18+(int)(Math.random()*12), true));
-                }
-                // Amulette golden sparkles
-                if (c != null && c.getType().equals("Amulette") && Math.random() < 0.12) {
-                    double px = i * TAILLE + Math.random() * TAILLE;
-                    double py = j * TAILLE + Math.random() * TAILLE;
-                    particles.add(new Particle(px, py, (Math.random()-0.5)*0.3, -Math.random()*0.3-0.1, new Color(255, 215, 50), 3+Math.random()*3, 20+(int)(Math.random()*15), true));
-                }
-            }
-        }
-
-        // B2. Door sparkles when open
-        int[] finForParticles = jeu.getFin();
-        if (finForParticles != null && hero.haveItem("Amulette") && Math.random() < 0.2) {
-            double px = finForParticles[0] * TAILLE + Math.random() * TAILLE;
-            double py = finForParticles[1] * TAILLE + Math.random() * TAILLE;
+        // B. Dynamic door sparkles when open
+        int[] fin = jeu.getFin();
+        if (fin != null && hero.haveItem("Amulette") && Math.random() < 0.2) {
+            double px = fin[0] * TAILLE + Math.random() * TAILLE;
+            double py = fin[1] * TAILLE + Math.random() * TAILLE;
             particles.add(new Particle(px, py, (Math.random()-0.5)*0.3, -Math.random()*0.5-0.2, new Color(100, 255, 150), 4+Math.random()*4, 22+(int)(Math.random()*15), true));
         }
 
@@ -212,28 +228,53 @@ public class DessinLabyFancy implements DessinJeu {
         lastHeroVie = currentVie;
         frameCount++;
 
-        // 5. Draw background/floors
+        // 5. Single loop for background floor rendering, case rendering, and sparkling particles
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
+                // Background floor
                 g.drawImage(vide, i * TAILLE, j * TAILLE, TAILLE, TAILLE, null);
-            }
-        }
 
-        // 7. Draw cases
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                Case c = jeu.getCase(i, j);
+                // Case
+                Case c = getCaseFromGrid(casesGrid, i, j);
                 if (c != null) {
                     if (c.getCaseSousJacente() != null) {
                         drawCase(g, c.getCaseSousJacente());
                     }
                     drawCase(g, c);
+
+                    // Gather light sources and spawn passive sparkles
+                    String type = c.getType();
+                    if (type.equals("Teleporteur")) {
+                        lightCases.add(c);
+                        if (Math.random() < 0.15) {
+                            double px = i * TAILLE + Math.random() * TAILLE;
+                            double py = j * TAILLE + Math.random() * TAILLE;
+                            double vx = (Math.random() - 0.5) * 0.4;
+                            double vy = -Math.random() * 0.5 - 0.2;
+                            particles.add(new Particle(px, py, vx, vy, new Color(100, 220, 255), 4 + Math.random() * 4, 20 + (int)(Math.random() * 20), true));
+                        }
+                    } else if (type.equals("Soins")) {
+                        lightCases.add(c);
+                        if (Math.random() < 0.1) {
+                            double px = i * TAILLE + Math.random() * TAILLE;
+                            double py = j * TAILLE + Math.random() * TAILLE;
+                            particles.add(new Particle(px, py, (Math.random()-0.5)*0.3, -Math.random()*0.4-0.1, new Color(50, 255, 120), 3+Math.random()*3, 18+(int)(Math.random()*12), true));
+                        }
+                    } else if (type.equals("Amulette")) {
+                        lightCases.add(c);
+                        if (Math.random() < 0.12) {
+                            double px = i * TAILLE + Math.random() * TAILLE;
+                            double py = j * TAILLE + Math.random() * TAILLE;
+                            particles.add(new Particle(px, py, (Math.random()-0.5)*0.3, -Math.random()*0.3-0.1, new Color(255, 215, 50), 3+Math.random()*3, 20+(int)(Math.random()*15), true));
+                        }
+                    } else if (type.equals("Bombe")) {
+                        lightCases.add(c);
+                    }
                 }
             }
         }
 
-        // 8. Draw end gate
-        int[] fin = jeu.getFin();
+        // 6. Draw end gate
         if (fin != null) {
             if (hero.haveItem("Amulette")) {
                 g.drawImage(porteOuverte, fin[0] * TAILLE, fin[1] * TAILLE, TAILLE, TAILLE, null);
@@ -242,45 +283,46 @@ public class DessinLabyFancy implements DessinJeu {
             }
         }
 
-        // 6. Draw wall drop shadows (for depth) - drawn after cases so it applies to all tiles
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY - 1; j++) {
-                Case c = jeu.getCase(i, j);
-                if (c != null && (c.getType().equals("Mur") || c.getType().equals("MurFriable"))) {
-                    Case below = jeu.getCase(i, j + 1);
-                    if (below == null || (!below.getType().equals("Mur") && !below.getType().equals("MurFriable"))) {
-                        int sy = (j + 1) * TAILLE;
-                        int sx = i * TAILLE;
-                        GradientPaint shadowPaint = new GradientPaint(
-                            sx, sy, new Color(0, 0, 0, 120),
-                            sx, sy + 12, new Color(0, 0, 0, 0)
-                        );
-                        g.setPaint(shadowPaint);
-                        g.fillRect(sx, sy, TAILLE, 12);
-                    }
-                }
-            }
-        }
-
-        // 7b. Ambient occlusion near walls (drawn after cases so it applies to all tiles)
+        // 7. Combined pass for wall drop shadows and ambient occlusion
         for (int i = 0; i < sizeX; i++) {
             for (int j = 0; j < sizeY; j++) {
-                Case c = jeu.getCase(i, j);
-                if (c == null || (!c.getType().equals("Mur") && !c.getType().equals("MurFriable"))) {
+                Case c = getCaseFromGrid(casesGrid, i, j);
+                boolean isWall = c != null && (c.getType().equals("Mur") || c.getType().equals("MurFriable"));
+
+                if (isWall) {
+                    // Wall drop shadow
+                    if (j < sizeY - 1) {
+                        Case below = getCaseFromGrid(casesGrid, i, j + 1);
+                        if (below == null || (!below.getType().equals("Mur") && !below.getType().equals("MurFriable"))) {
+                            int sy = (j + 1) * TAILLE;
+                            int sx = i * TAILLE;
+                            GradientPaint shadowPaint = new GradientPaint(
+                                sx, sy, new Color(0, 0, 0, 120),
+                                sx, sy + 12, new Color(0, 0, 0, 0)
+                            );
+                            g.setPaint(shadowPaint);
+                            g.fillRect(sx, sy, TAILLE, 12);
+                        }
+                    }
+                } else {
+                    // Ambient occlusion shade near walls
                     boolean adjWall = false;
                     for (int[] d : new int[][]{{-1,0},{1,0},{0,-1},{0,1}}) {
-                        Case adj = jeu.getCase(i+d[0], j+d[1]);
-                        if (adj != null && (adj.getType().equals("Mur") || adj.getType().equals("MurFriable"))) { adjWall = true; break; }
+                        Case adj = getCaseFromGrid(casesGrid, i + d[0], j + d[1]);
+                        if (adj != null && (adj.getType().equals("Mur") || adj.getType().equals("MurFriable"))) {
+                            adjWall = true;
+                            break;
+                        }
                     }
                     if (adjWall) {
-                        g.setColor(new Color(0, 0, 0, 35));
+                        g.setColor(new Color(15, 12, 28, 30));
                         g.fillRect(i * TAILLE, j * TAILLE, TAILLE, TAILLE);
                     }
                 }
             }
         }
 
-        // 9. Draw monsters at their visual coordinates
+        // 8. Draw monsters at their visual coordinates
         for (Personnage m : monstres) {
             VisualEntity vM = visualEntities.get(m);
             if (vM == null) continue;
@@ -296,9 +338,8 @@ public class DessinLabyFancy implements DessinJeu {
                 mDrawY += breathe;
             }
 
-            // Entity drop shadow
-            g.setColor(new Color(0, 0, 0, 60));
-            g.fillOval((int)(mDrawX + 4), (int)(mDrawY + TAILLE - 6), TAILLE - 8, 8);
+            // Entity soft drop shadow
+            drawEntityShadow(g, mDrawX, mDrawY);
 
             BufferedImage img;
             if (m.getIsAttaque()) {
@@ -322,27 +363,20 @@ public class DessinLabyFancy implements DessinJeu {
             }
 
             if (img != null) {
-                // Ghost transparency effect
-                Composite oldComp = g.getComposite();
-                if (m.getType().equals("Ghost")) {
-                    float ghostAlpha = 0.45f + 0.2f * (float)Math.sin(frameCount * 0.04 + m.hashCode());
-                    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ghostAlpha));
-                }
                 if (!vM.faceRight) {
                     g.drawImage(img, (int) mDrawX + TAILLE, (int) mDrawY, -TAILLE, TAILLE, null);
                 } else {
                     g.drawImage(img, (int) mDrawX, (int) mDrawY, TAILLE, TAILLE, null);
                 }
-                g.setComposite(oldComp);
             }
         }
 
-        // 10. Draw flames of explosion
+        // 9. Draw flames of explosion
         for (int[] coord : currentExplosions) {
             g.drawImage(flamme, coord[0] * TAILLE, coord[1] * TAILLE, TAILLE, TAILLE, null);
         }
 
-        // 11. Draw hero
+        // 10. Draw hero
         double heroDrawX = vHero.visualX * TAILLE;
         double heroDrawY = vHero.visualY * TAILLE;
         double heroBreathe = Math.sin(frameCount * 0.05) * 1.2;
@@ -352,9 +386,8 @@ public class DessinLabyFancy implements DessinJeu {
             heroDrawY += heroBreathe;
         }
 
-        // Hero drop shadow
-        g.setColor(new Color(0, 0, 0, 70));
-        g.fillOval((int)(heroDrawX + 4), (int)(heroDrawY + TAILLE - 6), TAILLE - 8, 8);
+        // Hero soft drop shadow
+        drawEntityShadow(g, heroDrawX, heroDrawY);
 
         BufferedImage heroImg = hero.getIsAttaque() ? heroAttaque : this.hero;
         if (!vHero.faceRight) {
@@ -363,20 +396,24 @@ public class DessinLabyFancy implements DessinJeu {
             g.drawImage(heroImg, (int) heroDrawX, (int) heroDrawY, TAILLE, TAILLE, null);
         }
 
-        // 12. Draw particles
-        for (int i = 0; i < particles.size(); i++) {
+        // 11. Draw particles (backward loop for safe, fast removals)
+        for (int i = particles.size() - 1; i >= 0; i--) {
             Particle p = particles.get(i);
             if (!p.update()) {
                 particles.remove(i);
-                i--;
             } else {
                 p.draw(g);
             }
         }
 
-        // 13. Ambient darkness & Dynamic Lighting Overlay
-        BufferedImage lightmap = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        // 12. Ambient darkness & Dynamic Lighting Overlay (optimized to reuse lightmap buffer)
+        if (lightmap == null || lightmap.getWidth() != image.getWidth() || lightmap.getHeight() != image.getHeight()) {
+            lightmap = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        }
         Graphics2D lg = lightmap.createGraphics();
+        lg.setComposite(AlphaComposite.Clear);
+        lg.fillRect(0, 0, lightmap.getWidth(), lightmap.getHeight());
+        lg.setComposite(AlphaComposite.SrcOver);
         lg.setColor(new Color(15, 12, 28, 215)); // Deep blue-black dungeon ambient light
         lg.fillRect(0, 0, lightmap.getWidth(), lightmap.getHeight());
         lg.setComposite(AlphaComposite.DstOut);
@@ -388,23 +425,18 @@ public class DessinLabyFancy implements DessinJeu {
         double flicker = 1.0 + 0.08 * Math.sin(frameCount * 0.15) + 0.05 * Math.sin(frameCount * 0.37) + 0.03 * Math.cos(frameCount * 0.53);
         drawLightCircle(lg, hX, hY, (int)(135 * flicker), 1.0f);
 
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                Case c = jeu.getCase(i, j);
-                if (c != null && c.getType().equals("Teleporteur")) {
-                    drawLightCircle(lg, i * TAILLE + TAILLE / 2.0, j * TAILLE + TAILLE / 2.0, 90, 0.8f);
-                }
-                if (c != null && c.getType().equals("Amulette")) {
-                    drawLightCircle(lg, i * TAILLE + TAILLE / 2.0, j * TAILLE + TAILLE / 2.0, 75, 0.7f);
-                }
-                if (c != null && c.getType().equals("Bombe")) {
-                    drawLightCircle(lg, i * TAILLE + TAILLE / 2.0, j * TAILLE + TAILLE / 2.0, 60, 0.6f);
-                }
-                if (c != null && c.getType().equals("Soins")) {
-                    drawLightCircle(lg, i * TAILLE + TAILLE / 2.0, j * TAILLE + TAILLE / 2.0, 55, 0.5f);
-                }
+        // Loop over the gathered small list of light sources (huge performance win over whole-grid traversal)
+        for (Case c : lightCases) {
+            double cx = c.getX() * TAILLE + TAILLE / 2.0;
+            double cy = c.getY() * TAILLE + TAILLE / 2.0;
+            switch (c.getType()) {
+                case "Teleporteur" -> drawLightCircle(lg, cx, cy, 90, 0.8f);
+                case "Amulette" -> drawLightCircle(lg, cx, cy, 75, 0.7f);
+                case "Bombe" -> drawLightCircle(lg, cx, cy, 60, 0.6f);
+                case "Soins" -> drawLightCircle(lg, cx, cy, 55, 0.5f);
             }
         }
+
         // Door light
         if (fin != null) {
             drawLightCircle(lg, fin[0] * TAILLE + TAILLE / 2.0, fin[1] * TAILLE + TAILLE / 2.0, 70, 0.6f);
@@ -415,21 +447,24 @@ public class DessinLabyFancy implements DessinJeu {
         lg.dispose();
         g.drawImage(lightmap, 0, 0, null);
 
-        // 14. Colored Glow Overlay (tints)
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
-                Case c = jeu.getCase(i, j);
-                if (c != null && c.getType().equals("Teleporteur")) {
-                    double tpPulse = 0.8 + 0.2 * Math.sin(frameCount * 0.05 + i * 0.7 + j * 1.3);
-                    drawColoredGlow(g, i * TAILLE + TAILLE / 2.0, j * TAILLE + TAILLE / 2.0, (int)(85 * tpPulse), new Color(0, 180, 255, 45));
+        // 13. Colored Glow Overlay (tints, optimized using gathered light sources)
+        for (Case c : lightCases) {
+            double cx = c.getX() * TAILLE + TAILLE / 2.0;
+            double cy = c.getY() * TAILLE + TAILLE / 2.0;
+            int cxX = c.getX();
+            int cxY = c.getY();
+            switch (c.getType()) {
+                case "Teleporteur" -> {
+                    double tpPulse = 0.8 + 0.2 * Math.sin(frameCount * 0.05 + cxX * 0.7 + cxY * 1.3);
+                    drawColoredGlow(g, cx, cy, (int)(85 * tpPulse), new Color(0, 180, 255, 45));
                 }
-                if (c != null && c.getType().equals("Amulette")) {
+                case "Amulette" -> {
                     double amPulse = 0.7 + 0.3 * Math.sin(frameCount * 0.07);
-                    drawColoredGlow(g, i * TAILLE + TAILLE / 2.0, j * TAILLE + TAILLE / 2.0, (int)(70 * amPulse), new Color(255, 215, 50, 40));
+                    drawColoredGlow(g, cx, cy, (int)(70 * amPulse), new Color(255, 215, 50, 40));
                 }
-                if (c != null && c.getType().equals("Soins")) {
-                    double sPulse = 0.8 + 0.2 * Math.sin(frameCount * 0.06 + i + j);
-                    drawColoredGlow(g, i * TAILLE + TAILLE / 2.0, j * TAILLE + TAILLE / 2.0, (int)(55 * sPulse), new Color(50, 255, 120, 30));
+                case "Soins" -> {
+                    double sPulse = 0.8 + 0.2 * Math.sin(frameCount * 0.06 + cxX + cxY);
+                    drawColoredGlow(g, cx, cy, (int)(55 * sPulse), new Color(50, 255, 120, 30));
                 }
             }
         }
@@ -445,7 +480,7 @@ public class DessinLabyFancy implements DessinJeu {
         // Hero warm glow
         drawColoredGlow(g, hX, hY, (int)(60 * flicker), new Color(255, 200, 100, 25));
 
-        // 15. Vignette Overlay
+        // 14. Vignette Overlay
         float[] vigFractions = {0.0f, 0.6f, 1.0f};
         Color[] vigColors = {new Color(0, 0, 0, 0), new Color(0, 0, 0, 60), new Color(0, 0, 0, 180)};
         double vigRad = Math.sqrt(image.getWidth() * image.getWidth() + image.getHeight() * image.getHeight()) / 1.7;
@@ -459,7 +494,7 @@ public class DessinLabyFancy implements DessinJeu {
         // Reset shake translation before drawing UI
         g.translate(-shakeX, -shakeY);
 
-        // 16. HUD: Hearts with pulsation & background panel
+        // 15. HUD: Hearts with pulsation & background panel
         int maxVie = hero.getVie();
         int heartIconSize = TAILLE - 10;
         int spacing = TAILLE - 7;
@@ -480,7 +515,7 @@ public class DessinLabyFancy implements DessinJeu {
             }
         }
 
-        // 17. HUD: Inventory with background panel
+        // 16. HUD: Inventory with background panel
         ArrayList<Item> inventaire = new ArrayList<>(hero.getInventaire());
         int numItems = inventaire.size();
         if (numItems > 0) {
@@ -498,20 +533,20 @@ public class DessinLabyFancy implements DessinJeu {
             }
         }
 
-        // 18. Damage red flash overlay
+        // 17. Damage red flash overlay
         if (damageFlash > 0.01) {
             g.setColor(new Color(255, 0, 0, (int)(100 * damageFlash)));
             g.fillRect(0, 0, image.getWidth(), image.getHeight());
             damageFlash *= 0.88;
         }
 
-        // 19. Level transitions (Fade from black)
+        // 18. Level transitions (Fade from black)
         if (fadeTimer > 0.0) {
             g.setColor(new Color(0, 0, 0, (int)(255 * fadeTimer)));
             g.fillRect(0, 0, image.getWidth(), image.getHeight());
         }
 
-        // 20. GameOver and Win Screen smooth fade-in
+        // 19. GameOver and Win Screen smooth fade-in
         if (hero.etreMort()) {
             gameOverFade = Math.min(1.0, gameOverFade + 0.025);
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)gameOverFade));
@@ -529,7 +564,7 @@ public class DessinLabyFancy implements DessinJeu {
         if (!hero.etreMort() && !jeu.etreFini()) {
             // Level indicator
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
-            g.setFont(new Font("SansSerif", Font.BOLD, 11));
+            g.setFont(fontLevel);
             String lvlText = "Niveau : " + jeu.getNiveau();
             FontMetrics lvlf = g.getFontMetrics();
             int lvlW = lvlf.stringWidth(lvlText);
@@ -547,7 +582,7 @@ public class DessinLabyFancy implements DessinJeu {
 
             // IA watermark
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-            g.setFont(new Font("SansSerif", Font.PLAIN, 10));
+            g.setFont(fontWatermark);
             String text = "Fait par IA - Uniquement pour voir le rendu du jeu avec de beaux graphismes";
             FontMetrics fm = g.getFontMetrics();
             int textWidth = fm.stringWidth(text);
@@ -599,8 +634,13 @@ public class DessinLabyFancy implements DessinJeu {
 
     private void drawLightCircle(Graphics2D lg, double x, double y, double radius, float intensity) {
         if (radius <= 0) return;
-        float[] fractions = {0.0f, 1.0f};
-        Color[] colors = {new Color(0, 0, 0, (int)(255 * intensity)), new Color(0, 0, 0, 0)};
+        float[] fractions = {0.0f, 0.15f, 0.5f, 1.0f};
+        Color[] colors = {
+            new Color(0, 0, 0, (int)(255 * intensity)),
+            new Color(0, 0, 0, (int)(230 * intensity)),
+            new Color(0, 0, 0, (int)(110 * intensity)),
+            new Color(0, 0, 0, 0)
+        };
         RadialGradientPaint paint = new RadialGradientPaint(
             (float) x, (float) y, (float) radius, fractions, colors
         );
@@ -610,8 +650,15 @@ public class DessinLabyFancy implements DessinJeu {
 
     private void drawColoredGlow(Graphics2D g, double x, double y, double radius, Color color) {
         if (radius <= 0) return;
-        float[] fractions = {0.0f, 1.0f};
-        Color[] colors = {color, new Color(color.getRed(), color.getGreen(), color.getBlue(), 0)};
+        float[] fractions = {0.0f, 0.25f, 1.0f};
+        Color coreColor = new Color(
+            Math.min(255, color.getRed() + 30),
+            Math.min(255, color.getGreen() + 30),
+            Math.min(255, color.getBlue() + 30),
+            Math.min(255, (int)(color.getAlpha() * 1.5))
+        );
+        Color endColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), 0);
+        Color[] colors = {coreColor, color, endColor};
         RadialGradientPaint paint = new RadialGradientPaint(
             (float) x, (float) y, (float) radius, fractions, colors
         );
@@ -736,15 +783,16 @@ public class DessinLabyFancy implements DessinJeu {
             int currentSize = (int) (size * ratio);
             if (currentSize <= 0) return;
 
-            int alpha = (int) (255 * ratio);
-            Color drawColor = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
-            g.setColor(drawColor);
+            Composite oldComp = g.getComposite();
+            g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float)(ratio * 0.8f)));
+            g.setColor(color);
 
             if (isSparkle) {
                 g.fillRect((int) (x - currentSize / 2.0), (int) (y - currentSize / 2.0), currentSize, currentSize);
             } else {
                 g.fillOval((int) (x - currentSize / 2.0), (int) (y - currentSize / 2.0), currentSize, currentSize);
             }
+            g.setComposite(oldComp);
         }
     }
 }

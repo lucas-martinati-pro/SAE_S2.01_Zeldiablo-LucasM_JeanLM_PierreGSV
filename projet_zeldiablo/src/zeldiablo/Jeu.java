@@ -138,6 +138,15 @@ public class Jeu implements moteurJeu.Jeu {
         return fin;
     }
 
+    /**
+     * Retourne la matrice des cases du labyrinthe.
+     *
+     * @return la matrice des cases
+     */
+    public Case[][] getCases() {
+        return cases;
+    }
+
     // ########## Méthodes ##########
     /**
      * Ajoute une case specifique a une position donnee dans la grille du labyrinthe.
